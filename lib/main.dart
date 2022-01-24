@@ -293,7 +293,6 @@ class _MapViewState extends State<MapView> {
   }
 
   // Formula for calculating distance between two coordinates
-  // https://stackoverflow.com/a/54138876/11910277
   double _coordinateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;
@@ -505,7 +504,7 @@ class _MapViewState extends State<MapView> {
                                       .showSnackBar(
                                     const SnackBar(
                                       content: Text(
-                                          'Distance Calculated Sucessfully'),
+                                          'Distance Calculated Successfully'),
                                     ),
                                   );
                                 } else {
