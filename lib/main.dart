@@ -158,9 +158,9 @@ class _MapViewState extends State<MapView> {
   // Method for calculating the distance between two places
   Future<bool> _calculateDistance() async {
     try {
-      // Retrieving placers from addresses
-      List<Location>? startPlacemark = await locationFromAddress(_startAddress);
-      List<Location>? destinationPlacemark =
+      // Retrieving placemarks from addresses
+      List<Location> startPlacemark = await locationFromAddress(_startAddress);
+      List<Location> destinationPlacemark =
       await locationFromAddress(_destinationAddress);
 
       // Use the retrieved coordinates of the current position,
@@ -253,11 +253,11 @@ class _MapViewState extends State<MapView> {
 
       // Calculating the distance between the start and the end positions
       // with a straight path, without considering any route
-      // double distanceInMeters = await Geolocator().bearingBetween(
-      //   startCoordinates.latitude,
-      //   startCoordinates.longitude,
-      //   destinationCoordinates.latitude,
-      //   destinationCoordinates.longitude,
+      // double distanceInMeters = await Geolocator.bearingBetween(
+      //   startLatitude,
+      //   startLongitude,
+      //   destinationLatitude,
+      //   destinationLongitude,
       // );
 
       await _createPolylines(startLatitude, startLongitude, destinationLatitude,
@@ -293,6 +293,7 @@ class _MapViewState extends State<MapView> {
   }
 
   // Formula for calculating distance between two coordinates
+  // https://stackoverflow.com/a/54138876/11910277
   double _coordinateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;
@@ -519,10 +520,6 @@ class _MapViewState extends State<MapView> {
                               });
                             }
                                 : null,
-                            // color: Colors.red,
-                            // shape: RoundedRectangleBorder(
-                            //   borderRadius: BorderRadius.circular(20.0),
-                            // ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
@@ -531,6 +528,12 @@ class _MapViewState extends State<MapView> {
                                   color: Colors.white,
                                   fontSize: 20.0,
                                 ),
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                               ),
                             ),
                           ),
