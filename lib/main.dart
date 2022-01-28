@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
           title: TextFormField(
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
-              labelText: 'Enter your username',
+              labelText: 'Enter a location',
             ),
           ),
           backgroundColor: Colors.blue[400],
