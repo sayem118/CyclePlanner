@@ -15,4 +15,8 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <string name="app_name">cycle_planner</string>
+    <string name="mapbox_access_token" translatable="false">sk.eyJ1Ijoic2F5ZW0xMTgiLCJhIjoiY2t6NDgzbWFtMDYxcjJubXRzbjA2Zm0wdiJ9.vGMS9SWTSFV26Kz60cPIrg</string>
+    <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
+    <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
 </resources>
