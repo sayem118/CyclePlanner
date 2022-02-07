@@ -1,11 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cycle_planner">
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
-
         android:label="cycle_planner"
         android:icon="@mipmap/ic_launcher">
 
@@ -13,11 +8,8 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY"/>
 
-
         <activity
-
             android:name=".MainActivity"
-
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -39,9 +31,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
     </application>
-
 </manifest>
-
 
