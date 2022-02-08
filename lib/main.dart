@@ -12,7 +12,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
-
+  final searchController = TextEditingController();
   final LatLng _center = const LatLng(51.5, -0.12);
 
   void _onMapCreated(GoogleMapController controller) {
@@ -20,12 +20,25 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Cycle planner testing phase'),
-          backgroundColor: Colors.green[700],
+          title: TextField(
+            controller: searchController,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: 'Enter your destination',
+            ),
+          ),
+          backgroundColor: Colors.blue[400],
         ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
@@ -33,6 +46,11 @@ class _MyAppState extends State<MyApp> {
             target: _center,
             zoom: 11.0,
           ),
+        ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        print(searchController.text);
+      },
         ),
       ),
     );
