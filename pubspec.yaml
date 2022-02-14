@@ -39,6 +39,9 @@ dependencies:
   google_geocoding: ^0.2.0
   flutter_tags: ^1.0.0-nullsafety.1
   flutter_mapbox_navigation: ^0.0.26
+  flutter_typeahead: any
+  get: any
+  geolocator: ^8.2.0
 
 dev_dependencies:
   flutter_test:

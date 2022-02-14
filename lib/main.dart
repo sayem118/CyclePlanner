@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
+import 'package:geolocator/geolocator.dart';
 
 void main() => runApp(const MyApp());
 
@@ -34,6 +35,8 @@ class _MyAppState extends State<MyApp> {
       name: "Way Point 5",
       latitude: 51.61078,
       longitude: 0.27956);
+
+  var wayPoints = <WayPoint>[];
 
   late MapBoxNavigation _directions;
   late MapBoxOptions _options;
@@ -118,8 +121,16 @@ class _MyAppState extends State<MyApp> {
                         ElevatedButton(
                           child: const Text("Start Route"),
                           onPressed: () async {
+                            Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+                            final _currentPosition = WayPoint(
+                                name: "current position",
+                                latitude: position.latitude,
+                                longitude: position.longitude);
+
                             _isMultipleStop = true;
-                            var wayPoints = <WayPoint>[];
+                            wayPoints.clear();
+                            wayPoints.add(_currentPosition);
                             wayPoints.add(_origin);
                             wayPoints.add(_stop1);
                             wayPoints.add(_stop2);
