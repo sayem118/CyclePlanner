@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0-31.0.dev <3.0.0"
+  sdk: ">=2.16.0-31.0.dev <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,8 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_maps_flutter: ^2.1.1
   google_maps_flutter_web: ^0.3.2+1
-  geolocator: ^7.0.3
-  geocoding: ^2.0.0
+  google_geocoding: ^0.2.0
+  flutter_tags: ^1.0.0-nullsafety.1
+  flutter_mapbox_navigation: ^0.0.26
+  flutter_typeahead: any
+  get: any
+  geolocator: ^8.2.0
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +53,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  flutter_polyline_points: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

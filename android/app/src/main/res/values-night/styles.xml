@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Navigation map</string>
+    <string name="mapbox_access_token" translatable="false">sk.eyJ1Ijoic2F5ZW0xMTgiLCJhIjoiY2t6YTAzcHVxMWFqMDJwczg4Nmg2dXp3eiJ9.exqgbcg1bVgruvaMpPscaA</string>
+    <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
+    <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is on -->
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when
