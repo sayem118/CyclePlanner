@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 void main() => runApp(const MyApp());
 
@@ -43,6 +44,8 @@ class _MyAppState extends State<MyApp> {
 
   bool _isMultipleStop = false;
   late MapBoxNavigationViewController _controller;
+
+  var groupSize = 1;
 
   @override
   void initState() {
@@ -98,55 +101,54 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: Column(children: <Widget>[
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text('Running on: $_platformVersion\n'),
-                    Container(
-                      color: Colors.grey,
-                      width: double.infinity,
-                      child: const Padding(
-                        padding: EdgeInsets.all(0),
-                        child: (Text(
-                          "Full Screen Navigation",
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        )),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Start Route"),
-                          onPressed: () async {
-                            Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Group size',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SpinBox(
+                    min: 1,
+                    max: 8,
+                    value: groupSize.toDouble(),
+                    onChanged: (value) => setState(() {
+                      groupSize = value.toInt();
+                    }),
+                  ),
+                  SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        child: const Text("Start Route"),
+                        onPressed: () async {
+                          Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-                            final _currentPosition = WayPoint(
-                                name: "current position",
-                                latitude: position.latitude,
-                                longitude: position.longitude);
+                          final _currentPosition = WayPoint(
+                              name: "current position",
+                              latitude: position.latitude,
+                              longitude: position.longitude);
 
-                            _isMultipleStop = true;
-                            wayPoints.clear();
-                            wayPoints.add(_currentPosition);
-                            wayPoints.add(_origin);
-                            wayPoints.add(_stop1);
-                            wayPoints.add(_stop2);
-                            wayPoints.add(_stop3);
-                            wayPoints.add(_stop4);
+                          _isMultipleStop = true;
+                          wayPoints.clear();
+                          wayPoints.add(_currentPosition);
+                          wayPoints.add(_origin);
+                          wayPoints.add(_stop1);
+                          wayPoints.add(_stop2);
+                          wayPoints.add(_stop3);
+                          wayPoints.add(_stop4);
 
 
-                            await _directions.startNavigation(
-                                wayPoints: wayPoints,
-                                options: _options);
-                          },
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                          await _directions.startNavigation(
+                              wayPoints: wayPoints,
+                              options: _options);
+                        },
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
             Expanded(

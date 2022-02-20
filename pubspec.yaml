@@ -42,6 +42,7 @@ dependencies:
   flutter_typeahead: any
   get: any
   geolocator: ^8.2.0
+  flutter_spinbox: ^0.8.0
 
 dev_dependencies:
   flutter_test:
