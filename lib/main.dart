@@ -131,6 +131,7 @@ class _MyAppState extends State<MyApp> {
                             _isMultipleStop = true;
                             wayPoints.clear();
                             wayPoints.add(_currentPosition);
+
                             wayPoints.add(_origin);
                             wayPoints.add(_stop1);
                             wayPoints.add(_stop2);
@@ -165,12 +166,12 @@ class _MyAppState extends State<MyApp> {
             )
           ]),
         ),
+
       ),
     );
   }
 
   Future<void> _onEmbeddedRouteEvent(e) async {
-
     switch (e.eventType) {
       case MapBoxEvent.progress_change:
         var progressEvent = e.data as RouteProgressEvent;
