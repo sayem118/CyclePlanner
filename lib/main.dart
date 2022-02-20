@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -15,7 +14,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
   final _origin = WayPoint(
       name: "Way Point 1",
       latitude: 51.52233,
@@ -79,16 +77,10 @@ class _MyAppState extends State<MyApp> {
         longPressDestinationEnabled: true,
         language: "en");
 
-    String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await _directions.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+
 
     setState(() {
-      _platformVersion = platformVersion;
     });
   }
 
@@ -104,8 +96,8 @@ class _MyAppState extends State<MyApp> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'Group size',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -117,7 +109,7 @@ class _MyAppState extends State<MyApp> {
                       groupSize = value.toInt();
                     }),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
