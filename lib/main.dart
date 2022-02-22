@@ -22,25 +22,25 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _origin = WayPoint(
-      name: "Way Point 1",
-      latitude: 51.52233,
-      longitude: 0.04330);
+      name: "Big Ben",
+      latitude: 51.500863,
+      longitude: -0.124593);
   final _stop1 = WayPoint(
-      name: "Way Point 2",
-      latitude: 51.53769,
-      longitude: 0.07006);
+      name: "Buckingham Palace",
+      latitude: 51.50204176039292,
+      longitude: -0.14188788458748477);
   final _stop2 = WayPoint(
-      name: "Way Point 3",
-      latitude: 51.55418,
-      longitude: 0.11457);
+      name: "British Museum",
+      latitude: 51.521285300295474,
+      longitude: -0.126953347081018);
   final _stop3 = WayPoint(
-      name: "Way Point 4",
-      latitude: 51.57794,
-      longitude: 0.20648);
+      name: "Trafalgar Square",
+      latitude: 51.50809338374528,
+      longitude: -0.12804891498586773);
   final _stop4 = WayPoint(
-      name: "Way Point 5",
-      latitude: 51.61078,
-      longitude: 0.27956);
+      name: "London Eye",
+      latitude: 51.50461919293181,
+      longitude: -0.11954631306912968);
 
   var wayPoints = <WayPoint>[];
 
@@ -127,7 +127,9 @@ class _MyAppState extends State<MyApp> {
                       ElevatedButton(
                         child: const Text("Start Route"),
                         onPressed: () async {
-                          Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                          Position position = await Geolocator
+                              .getCurrentPosition(
+                              desiredAccuracy: LocationAccuracy.high);
 
                           final _currentPosition = WayPoint(
                               name: "current position",
@@ -143,12 +145,34 @@ class _MyAppState extends State<MyApp> {
                           wayPoints.add(_stop3);
                           wayPoints.add(_stop4);
 
+                          // Find closest stations
+                          WayPoint start = wayPoints.first;
+
+                          Future<Map> futureOfStartStation = getStationWithBikes(start.latitude, start.longitude);
+                          Map startStation = await futureOfStartStation;
+
+                          WayPoint startStationWayPoint = WayPoint(
+                              name: "startStation",
+                              latitude: startStation['lat'],
+                              longitude: startStation['lon']);
+                          wayPoints.insert(0, startStationWayPoint);
+
+                          WayPoint end = wayPoints.last;
+
+                          Future<Map> futureOfEndStation = getStationWithSpaces(end.latitude, end.longitude);
+                          Map endStation = await futureOfEndStation;
+
+                          WayPoint endStationWayPoint = WayPoint(
+                              name: "endStation",
+                              latitude: endStation['lat'],
+                              longitude: endStation['lon']);
+                          wayPoints.add(endStationWayPoint);
 
                           await _directions.startNavigation(
                               wayPoints: wayPoints,
                               options: _options);
-                        },
-                      )
+                        }
+                      ),
                     ],
                   ),
                 ],
@@ -213,7 +237,7 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-Future<Map> getStationWithBikes(double lat, double lon) async {
+Future<Map> getStationWithBikes(double ?lat, double ?lon) async {
   Future<List> futureOfStations = getClosestStations(lat, lon);
   List stations = await futureOfStations;
 
@@ -225,7 +249,7 @@ Future<Map> getStationWithBikes(double lat, double lon) async {
   return {};
 }
 
-Future<Map> getStationWithSpaces(double lat, double lon) async {
+Future<Map> getStationWithSpaces(double ?lat, double ?lon) async {
   Future<List> futureOfStations = getClosestStations(lat, lon);
   List stations = await futureOfStations;
 
@@ -237,8 +261,8 @@ Future<Map> getStationWithSpaces(double lat, double lon) async {
   return {};
 }
 
-Future<List> getClosestStations(double lat, double lon) async {
-  Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=3000&lat=$lat&lon=$lon'));
+Future<List> getClosestStations(double ?lat, double ?lon) async {
+  Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=6000&lat=$lat&lon=$lon'));
   List stations = jsonDecode(response.body)['places'];
 
   return stations;
