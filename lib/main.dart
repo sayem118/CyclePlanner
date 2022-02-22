@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:http/http.dart';
 
 void main() => runApp(const MyApp());
 
@@ -208,4 +211,13 @@ class _MyAppState extends State<MyApp> {
     }
     setState(() {});
   }
+}
+
+Future<Map> getClosestStation(double lat, double lon) async {
+  Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=3000&lat=51.51319639524396&lon=-0.11734097327839618'));
+  Map data = jsonDecode(response.body);
+
+  // String nameOfStation = data['places'][0]['commonName']; // you can access data from json like this.
+  // print(name);
+  return data;
 }
