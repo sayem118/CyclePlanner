@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:http/http.dart';
 
+int groupSize = 1;
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
@@ -47,8 +49,6 @@ class _MyAppState extends State<MyApp> {
 
   bool _isMultipleStop = false;
   late MapBoxNavigationViewController _controller;
-
-  var groupSize = 1;
 
   @override
   void initState() {
@@ -213,11 +213,33 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-Future<Map> getClosestStation(double lat, double lon) async {
-  Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=3000&lat=51.51319639524396&lon=-0.11734097327839618'));
-  Map data = jsonDecode(response.body);
+Future<Map> getStationWithBikes(double lat, double lon) async {
+  Future<List> futureOfStations = getClosestStations(lat, lon);
+  List stations = await futureOfStations;
 
-  // String nameOfStation = data['places'][0]['commonName']; // you can access data from json like this.
-  // print(name);
-  return data;
+  for (int i = 0; i < stations.length; i++) {
+    if (int.parse(stations[i]['additionalProperties'][6]['value']) >= groupSize) {
+      return stations[i];
+    }
+  }
+  return {};
+}
+
+Future<Map> getStationWithSpaces(double lat, double lon) async {
+  Future<List> futureOfStations = getClosestStations(lat, lon);
+  List stations = await futureOfStations;
+
+  for (int i = 0; i < stations.length; i++) {
+    if (int.parse(stations[i]['additionalProperties'][7]['value']) >= groupSize) {
+      return stations[i];
+    }
+  }
+  return {};
+}
+
+Future<List> getClosestStations(double lat, double lon) async {
+  Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=3000&lat=$lat&lon=$lon'));
+  List stations = jsonDecode(response.body)['places'];
+
+  return stations;
 }
