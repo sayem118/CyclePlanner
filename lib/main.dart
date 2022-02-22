@@ -3,6 +3,11 @@ import 'dart:async';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
+
 
 void main() => runApp(const MyApp());
 
@@ -96,6 +101,9 @@ class _MyAppState extends State<MyApp> {
             SingleChildScrollView(
               child: Column(
                 children: [
+                  TextField(
+                    decoration: InputDecoration(hintText: 'Search Location'),
+                  ),
                   const SizedBox(height: 20.0),
                   const Text(
                     'Group size',
