@@ -145,7 +145,7 @@ class _MyAppState extends State<MyApp> {
                           wayPoints.add(_stop3);
                           wayPoints.add(_stop4);
 
-                          // Find closest stations
+                          // Find closest start station
                           WayPoint start = wayPoints.first;
 
                           Future<Map> futureOfStartStation = getStationWithBikes(start.latitude, start.longitude);
@@ -155,7 +155,9 @@ class _MyAppState extends State<MyApp> {
                               name: "startStation",
                               latitude: startStation['lat'],
                               longitude: startStation['lon']);
-                          wayPoints.insert(0, startStationWayPoint);
+                          wayPoints.insert(1, startStationWayPoint);
+
+                          // Find closest end station
 
                           WayPoint end = wayPoints.last;
 
@@ -168,6 +170,7 @@ class _MyAppState extends State<MyApp> {
                               longitude: endStation['lon']);
                           wayPoints.add(endStationWayPoint);
 
+                          // start navigating
                           await _directions.startNavigation(
                               wayPoints: wayPoints,
                               options: _options);
