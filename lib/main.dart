@@ -80,11 +80,7 @@ class _MyAppState extends State<MyApp> {
         longPressDestinationEnabled: true,
         language: "en");
 
-    // Platform messages may fail, so we use a try/catch PlatformException.
 
-
-    setState(() {
-    });
   }
 
   @override
