@@ -6,6 +6,11 @@ import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:http/http.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+
+
+
 
 int groupSize = 1;
 
@@ -52,6 +57,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initialize();
+    PermissionStatus _status;
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -257,4 +263,6 @@ Future<List> getClosestStations(double ?lat, double ?lon) async {
   List stations = jsonDecode(response.body)['places'];
 
   return stations;
+
+
 }

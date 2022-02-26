@@ -44,6 +44,8 @@ dependencies:
   geolocator: ^8.2.0
   flutter_spinbox: ^0.8.0
   http: ^0.13.4
+  permission_handler: ^9.2.0
+
 
 dev_dependencies:
   flutter_test:
