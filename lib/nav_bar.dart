@@ -32,8 +32,8 @@ class NavBar extends StatelessWidget {
               image: DecorationImage(
                   fit: BoxFit.fill,
                   image: NetworkImage(
-                      'https://media1.giphy.com/media/2Ozjbk786Umdy/giphy.gif?cid=ecf05e47vihcftxs1yzhnt85rsxcs9xhjkka9yalmlet95jd&rid=giphy.gif&ct=g'
-                      'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg')),
+                      'https://media1.giphy.com/media/2Ozjbk786Umdy/giphy.gif?cid=ecf05e47vihcftxs1yzhnt85rsxcs9xhjkka9yalmlet95jd&rid=giphy.gif&ct=g')
+              ),
             ),
           ),
           ListTile(
