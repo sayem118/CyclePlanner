@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
-// import 'package:cycle_planner/services/bike_station_sevice.dart';
+// import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_spinbox/material.dart';
 import 'package:cycle_planner/models/groups.dart';

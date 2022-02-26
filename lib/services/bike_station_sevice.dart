@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 
 /// Class description:
 
-class BikeStationSevice {
+class BikeStationService {
   
   // Return a list of bike stations closest to the user.
   Future<List> getClosestStations(double ?lat, double ?lon) async {
