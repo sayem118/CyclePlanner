@@ -7,6 +7,7 @@ import 'package:cycle_planner/models/groups.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+import 'package:cycle_planner/views/nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -98,6 +99,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
     return Scaffold(
+      drawer: const NavBar(),
+      appBar: AppBar(
+        title: const Text("Cycle Planner"),
+      ),
       body: (applicationProcesses.setCurrentLocation() == null) ? const Center(child: CircularProgressIndicator())
       :ListView(
         children: <Widget>[

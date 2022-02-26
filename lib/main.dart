@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cycle_planner/views/home_screen.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
-import 'package:cycle_planner/nav_bar.dart';
 
 void main() => runApp(const MyApp());
 
