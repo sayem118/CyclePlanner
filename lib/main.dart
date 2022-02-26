@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
-import 'package:google_api_headers/google_api_headers.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
+import 'package:cycle_planner/nav_bar.dart';
 
 
 void main() => runApp(const MyApp());
@@ -93,6 +90,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        drawer: const NavBar(),
         appBar: AppBar(
           title: const Text('Cycle planner'),
         ),
@@ -101,7 +99,7 @@ class _MyAppState extends State<MyApp> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  TextField(
+                  const TextField(
                     decoration: InputDecoration(hintText: 'Search Location'),
                   ),
                   const SizedBox(height: 20.0),
