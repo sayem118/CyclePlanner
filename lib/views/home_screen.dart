@@ -155,10 +155,10 @@ class _HomeScreenState extends State<HomeScreen> {
                  WayPoint start = wayPoints.first;
                 
                  // For debugging
-                 //  print("The closest start location is: $start"); // Output -> The closest start location is: WayPoint{latitude: 55.1175275, longitude: 0.4839524}
+                 // print("The closest start location is: $start"); // Output -> The closest start location is: WayPoint{latitude: 55.1175275, longitude: 0.4839524}
 
                  // Using Ammar's refactored code, doesn't work for now
-                 //  Future<Map> futureOfStartStation = bikeStationSevice.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
+                 // Future<Map> futureOfStartStation = bikeStationSevice.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
 
                  Future<Map> futureOfStartStation = getStationWithBikes(start.latitude, start.longitude);
                  Map startStation = await futureOfStartStation;
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  WayPoint end = wayPoints.last;
 
                  // Using Ammar's refactored code, doesn't work for now.
-                 //  Future<Map> futureOfEndStation = bikeStationSevice.getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
+                 // Future<Map> futureOfEndStation = bikeStationSevice.getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
 
                  Future<Map> futureOfEndStation = getStationWithSpaces(end.latitude, end.longitude);
                  Map endStation = await futureOfEndStation;
