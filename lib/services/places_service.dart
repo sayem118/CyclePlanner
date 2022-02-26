@@ -16,7 +16,7 @@ class PlacesService {
   // Return autocompleted user typed search results
   Future<List<PlaceSearch>> getAutocomplete(String search) async {
     // Request URL
-    var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=geocode&key=$key';
+    var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=geocode|establishment&location=51.509865,-0.118092&radius=500&key=$key';
     
     // Get URL response
     var response = await http.get(Uri.parse(url));
