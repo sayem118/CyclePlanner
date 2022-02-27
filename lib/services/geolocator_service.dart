@@ -11,7 +11,7 @@ class GeolocatorService {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Check User's location services setting
+    // Check User's location services settings
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     
     // Give the user an error message on disabled location service.
@@ -19,13 +19,13 @@ class GeolocatorService {
       return Future.error('Location services are disabled.');
     }
 
-    // Check user's app permissions settings
+    // Check user's app location permissions settings
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      // Check user's permission again
+      // Request access to user's location
       permission = await Geolocator.requestPermission();
 
-      // If user's app permissions is still not granted, give an error message.
+      // If the user's app location permissions is still denied, give an error message.
       if (permission == LocationPermission.denied) {
         return Future.error('Location permission are denied');
       }
