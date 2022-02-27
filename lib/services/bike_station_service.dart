@@ -41,29 +41,4 @@ class BikeStationService {
     return {};
   }
 
-  // Maya's original code
-  // Future<Map> getStationWithBikes(double? lat, double? lon, int groupSize) async {
-  //   Future<List> futureOfStations = getClosestStations(lat, lon);
-  //   List stations = await futureOfStations;
-  //
-  //   for (int i = 0; i < stations.length; i++) {
-  //     if (int.parse(stations[i]['additionalProperties'][6]['value']) >= groupSize) {
-  //       return stations[i];
-  //     }
-  //   }
-  //   return{};
-  // }
-  //
-  // Future<Map> getStationWithSpaces(double? lat, double? lon, int groupSize) async {
-  //   Future<List> futureOfStations = getClosestStations(lat, lon);
-  //   List stations = await futureOfStations;
-  //
-  //   for (int i = 0; i < stations.length; i++) {
-  //     if (int.parse(stations[i]['additionalProperties'][7]['value']) >= groupSize) {
-  //       return stations[i];
-  //     }
-  //   }
-  //   return {};
-  // }
-
 }
