@@ -3,6 +3,7 @@ import 'package:cycle_planner/views/home_screen.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
 
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
