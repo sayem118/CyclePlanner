@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
-// import 'package:cycle_planner/services/bike_station_sevice.dart';
+import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_spinbox/material.dart';
 import 'package:cycle_planner/models/groups.dart';
@@ -58,8 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Groups groupSize = Groups(groupSize: 1);
 
-  // Ammar's refactored code, doesn't work for now
-  // BikeStationSevice bikeStationSevice = BikeStationSevice();
+  BikeStationService bikeStationService = BikeStationService();
 
   @override
   void initState() {
@@ -162,10 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  // For debugging
                  // print("The closest start location is: $start"); // Output -> The closest start location is: WayPoint{latitude: 55.1175275, longitude: 0.4839524}
 
-                 // Using Ammar's refactored code, doesn't work for now
-                 // Future<Map> futureOfStartStation = bikeStationSevice.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
-
-                 Future<Map> futureOfStartStation = getStationWithBikes(start.latitude, start.longitude);
+                 Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
                  Map startStation = await futureOfStartStation;
                  //  print("This is an example of map: $startStation");
                  WayPoint startStationWayPoint = WayPoint(
@@ -181,10 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  // Find closest end station
                  WayPoint end = wayPoints.last;
 
-                 // Using Ammar's refactored code, doesn't work for now.
-                 // Future<Map> futureOfEndStation = bikeStationSevice.getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
-
-                 Future<Map> futureOfEndStation = getStationWithSpaces(end.latitude, end.longitude);
+                 Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
                  Map endStation = await futureOfEndStation;
                  WayPoint endStationWayPoint = WayPoint(
                    name: "endStation",
@@ -286,37 +279,5 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
     }
     setState(() {});
-  }
-
-  // To be refactored later...
-  Future<Map> getStationWithBikes(double ?lat, double ?lon) async {
-    Future<List> futureOfStations = getClosestStations(lat, lon);
-    List stations = await futureOfStations;
-
-    for (int i = 0; i < stations.length; i++) {
-      if (int.parse(stations[i]['additionalProperties'][6]['value']) >= groupSize.getGroupSize()) {
-        return stations[i];
-      }
-    }
-    return{};
-  }
-
-  Future<Map> getStationWithSpaces(double ?lat, double ?lon) async {
-    Future<List> futureOfStations = getClosestStations(lat, lon);
-    List stations = await futureOfStations;
-
-    for (int i = 0; i < stations.length; i++) {
-      if (int.parse(stations[i]['additionalProperties'][7]['value']) >= groupSize.getGroupSize()) {
-        return stations[i];
-      }
-    }
-    return {};
-  }
-
-  Future<List> getClosestStations(double ?lat, double ?lon) async {
-    Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=6000&lat=$lat&lon=$lon'));
-    List stations = jsonDecode(response.body)['places'];
-
-    return stations;
   }
 }
