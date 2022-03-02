@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 /// Class description:
+/// This class gets the bicycle stations based of the user's location and
+/// from TFL API and filter the data to show available bike stations
 
 class BikeStationService {
   
   // Return a list of bike stations closest to the user.
-  Future<List> getClosestStations(double ?lat, double ?lon) async {
+  Future<List> getClosestStations(double? lat, double? lon) async {
     // Request URL with user latitude and longitude
     Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=6000&lat=$lat&lon=$lon'));
     
@@ -16,19 +18,14 @@ class BikeStationService {
     return stations;
   }
 
-  // Ammar's refactored code, commented until a solution is found
   // Return a map of bike stations with available bycicles.
   Future<Map> getStationWithBikes(double? lat, double? lon, int groupSize) async {
-    Future<List> futureOfStations = getClosestStations(lat, lon);
-    List stations = await futureOfStations;
-    return filterData(stations, 6, groupSize);
+    return filterData(await getClosestStations(lat, lon), 6, groupSize);
   }
 
   // Return a map of bike stations with ??? -> Maya fill this part :)
   Future<Map> getStationWithSpaces(double? lat, double? lon, int groupSize) async {
-    Future<List> futureOfStations = getClosestStations(lat, lon);
-    List stations = await futureOfStations;
-    return filterData(stations, 7, groupSize);
+    return filterData(await getClosestStations(lat, lon), 7, groupSize);
   }
 
   // Filter received data with the appropriate additionalProperties number

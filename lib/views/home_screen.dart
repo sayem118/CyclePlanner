@@ -157,9 +157,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                  // Find closest start location
                  WayPoint start = wayPoints.first;
-                
-                 // For debugging
-                 // print("The closest start location is: $start"); // Output -> The closest start location is: WayPoint{latitude: 55.1175275, longitude: 0.4839524}
 
                  Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
                  Map startStation = await futureOfStartStation;
@@ -169,9 +166,13 @@ class _HomeScreenState extends State<HomeScreen> {
                    latitude: startStation['lat'],
                    longitude: startStation['lon']
                  );
-                 // For debugging
-                 // print("The start point way point is:$startStationWayPoint");
+
                  wayPoints.insert(1, startStationWayPoint);
+                 
+                 // For debugging -> Prints waypoints & bike station's name, latitude and longitude
+                 // for (int i = 0; i < wayPoints.length; i++){print("Waypoint station are: ${wayPoints[i].name}, ${wayPoints[i]}");}
+                 // for (int i = 1; i < startStation.length; i++){print("Bike station no.$i is: ${startStation}");}
+                 // print("bike station map size: ${startStation.length}");
 
 
                  // Find closest end station
