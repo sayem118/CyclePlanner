@@ -47,4 +47,44 @@ void main() {
           []);
     });
   });
+
+  // GeolocatorService Geolocator = GeolocatorService();
+  // group('GetCurrentLocation', () {
+  //   test('returns if autocomplete search works',
+  //   () async {
+  //     bool serviceEnabled = true;
+  //
+  //
+  //
+  //
+  //
+  //
+  //   };
+  //
+  //
+  // };
+  BikeStationSevice BikeStationService= BikeStationSevice();
+  group('getClosestStations', () {
+    test('returns closest bike stations to latitude and longitude given)',
+            () async {
+
+          // Mock the API call to return a json response with http status 200 Ok //
+          final mockHTTPClient = MockClient((request) async {
+
+            // Create sample response of the HTTP call //
+            final response = {
+              'text':
+              "22834 is the feet above sea level of the highest mountain"
+            };
+            return Response(jsonEncode(response), 200);
+          });
+          // Check whether getAutocomplete function returns
+          // a list of PlaceSearch
+          expect(await place.getAutocomplete("poplar"), isA<List<PlaceSearch>>());
+        });
+
+
+
 }
+
+
