@@ -69,19 +69,31 @@ void main() {
             () async {
 
           // Mock the API call to return a json response with http status 200 Ok //
-          final mockHTTPClient = MockClient((request) async {
+          final mockBikeStationService = MockClient((request) async {
 
             // Create sample response of the HTTP call //
             final response = {
               'text':
-              "22834 is the feet above sea level of the highest mountain"
+              "Strand, Waterloo"
             };
             return Response(jsonEncode(response), 200);
           });
           // Check whether getAutocomplete function returns
           // a list of PlaceSearch
-          expect(await place.getAutocomplete("poplar"), isA<List<PlaceSearch>>());
+          expect(await BikeStationService.getClosestStations(60.66,-65.66), isA<List<places>>());
         });
+
+    test('return error message when http response is unsuccessful and cant give closest bike stations', () async {
+
+      // Mock the API call to return an
+      // empty json response with http status 404
+      final mockBikeStationService = MockClient((request) async {
+        final response = {};
+        return Response(jsonEncode(response), 404);
+      });
+      expect(await BikeStationService.getClosestStations(0,0),
+  []);
+
 
 
 
