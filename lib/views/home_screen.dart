@@ -155,43 +155,50 @@ class _HomeScreenState extends State<HomeScreen> {
                  wayPoints.add(_stop3);
                  wayPoints.add(_stop4);
 
-                 // Find closest start location
+                 // Find closest start station
                  WayPoint start = wayPoints.first;
-
+                 // These are random coords in East that don't have any bike stations nearby. So uncomment if you wanna see the 'no available bike stations alert.
+                 // Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
                  Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
                  Map startStation = await futureOfStartStation;
-                 //  print("This is an example of map: $startStation");
-                 WayPoint startStationWayPoint = WayPoint(
-                   name: "startStation",
-                   latitude: startStation['lat'],
-                   longitude: startStation['lon']
-                 );
 
-                 wayPoints.insert(1, startStationWayPoint);
+                 // Find closest end station
+                 WayPoint end = wayPoints.last;
+                 Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
+                 Map endStation = await futureOfEndStation;
+
+                 // check if there are available bike stations nearby. If not the user is alerted.
+                 if(startStation.isEmpty || endStation.isEmpty) {
+                   _showNoStationsAlert(context);
+                 }
+                 else {
+                   WayPoint startStationWayPoint = WayPoint(
+                       name: "startStation",
+                       latitude: startStation['lat'],
+                       longitude: startStation['lon']
+                   );
+                   wayPoints.insert(1, startStationWayPoint);
+
+                   WayPoint endStationWayPoint = WayPoint(
+                       name: "endStation",
+                       latitude: endStation['lat'],
+                       longitude: endStation['lon']
+                   );
+                   wayPoints.add(endStationWayPoint);
+
+                   // Start navigating
+                   await _directions.startNavigation(
+                       wayPoints: wayPoints,
+                       options: _options
+                   );
+                 }
+                 //  print("This is an example of map: $startStation");
                  
                  // For debugging -> Prints waypoints & bike station's name, latitude and longitude
                  // for (int i = 0; i < wayPoints.length; i++){print("Waypoint station are: ${wayPoints[i].name}, ${wayPoints[i]}");}
                  // for (int i = 1; i < startStation.length; i++){print("Bike station no.$i is: ${startStation}");}
                  // print("bike station map size: ${startStation.length}");
 
-
-                 // Find closest end station
-                 WayPoint end = wayPoints.last;
-
-                 Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
-                 Map endStation = await futureOfEndStation;
-                 WayPoint endStationWayPoint = WayPoint(
-                   name: "endStation",
-                   latitude: endStation['lat'],
-                   longitude: endStation['lon']
-                 );
-                 wayPoints.add(endStationWayPoint);
-
-                 // Start navigating
-                 await _directions.startNavigation(
-                   wayPoints: wayPoints,
-                   options: _options
-                 );
                 }
               )
             ],
@@ -243,6 +250,34 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Creates alert if there are no available bike stations nearby.
+  Future<void> _showNoStationsAlert(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Oh no...'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Looks like there are no available bike stations nearby.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // Currently this does nothing...I think
   Future<void> _onEmbeddedRouteEvent(e) async {
 
@@ -282,3 +317,4 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 }
+
