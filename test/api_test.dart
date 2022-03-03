@@ -164,7 +164,7 @@ void main() {
       expect(await BikeStationService.getClosestStations(0,0),
           []);
 
-}
+});
 
 
 
@@ -216,6 +216,7 @@ void main() {
 
 
 
-}
+});
 
+}
 
