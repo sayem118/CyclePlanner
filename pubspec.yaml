@@ -42,11 +42,13 @@ dependencies:
   http: ^0.13.4
   provider: ^6.0.2
   permission_handler: ^9.2.0
-
+  mockito: ^5.0.0-nullsafety.7
+  plugin_platform_interface: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
