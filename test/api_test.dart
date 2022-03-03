@@ -172,46 +172,7 @@ void main() {
 
 
 
-  //
-  //
-  //
-  //
-  //
-  //
-  //   };
-  //
-  //
-  // };
-  // BikeStationSevice BikeStationService= BikeStationSevice();
-  // group('getClosestStations', () {
-  //   test('returns closest bike stations to latitude and longitude given)',
-  //           () async {
-  //
-  //         // Mock the API call to return a json response with http status 200 Ok //
-  //         final mockBikeStationService = MockClient((request) async {
-  //
-  //           // Create sample response of the HTTP call //
-  //           final response = {
-  //             'text':
-  //             "Strand, Waterloo"
-  //           };
-  //           return Response(jsonEncode(response), 200);
-  //         });
-  //         // Check whether getAutocomplete function returns
-  //         // a list of PlaceSearch
-  //         expect(await BikeStationService.getClosestStations(60.66,-65.66), isA<List>());
-  //       });
-  //
-  //   test('return error message when http response is unsuccessful and cant give closest bike stations', () async {
-  //
-  //     // Mock the API call to return an
-  //     // empty json response with http status 404
-  //     final mockBikeStationService = MockClient((request) async {
-  //       final response = {};
-  //       return Response(jsonEncode(response), 404);
-  //     });
-  //     expect(await BikeStationService.getClosestStations(0,0),
-  // []);
+
 
 
 
