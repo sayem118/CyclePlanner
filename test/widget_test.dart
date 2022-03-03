@@ -1,9 +1,4 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// This file tests the initially loaded up page for CyclePlanner.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
@@ -12,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/main.dart';
 
 void main() {
-  group('Widget Tests', () {
+  group('Widget Tests for landing page', () {
     testWidgets(
         'Group size page is loaded correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
@@ -22,7 +17,6 @@ void main() {
       expect(find.text('0'), findsNothing);
       expect(find.text('1'), findsOneWidget);
       //Verify the correct texts are displayed
-      expect(find.text('Group size'), findsOneWidget);
       expect(find.text('Start Route'), findsOneWidget);
 
       //Verify the group size will not decrement to 0
@@ -46,17 +40,6 @@ void main() {
       // Verify that our counter has decremented.
       expect(find.text('0'), findsNothing);
       expect(find.text('1'), findsOneWidget);
-    });
-
-    testWidgets(
-        'Route page is loaded correctly', (WidgetTester tester) async {
-      await tester.pumpWidget(const MyApp());
-      await tester.tap(find.byType(ElevatedButton));
-      await tester.pump();
-
-      //Verify navigation is on page.
-      expect(find.byType(MapBoxNavigationView), findsOneWidget);
-
     });
 
   });
