@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/models/groups.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:cycle_planner/services/bike_station_sevice.dart';
+import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'dart:convert' as convert;
@@ -132,7 +132,7 @@ void main() {
         expect(await geoLocator.getCurrentLocation(),'Location permissions are permanently denied, we cannot request permissions');
       });
 
-  BikeStationSevice BikeStationService= BikeStationSevice();
+  BikeStationService BikeStationService= BikeStationService();
   group('getClosestStations', () {
     test('returns closest bike stations to latitude and longitude given)',
             () async {
