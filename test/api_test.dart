@@ -139,6 +139,53 @@ void main() {
       expect(bearing, 42);
     });
   });
+
+  BikeStationService bikeStations= BikeStationService();
+  group('getClosestStations', () {
+    test('returns closest bike stations to latitude and longitude given)',
+            () async {
+
+          // Mock the API call to return a json response with http status 200 Ok //
+          final mockBikeStationService = MockClient((request) async {
+
+            // Create sample response of the HTTP call //
+            final response = {
+              'text':
+              'Strand, Waterloo'
+            };
+            return Response(jsonEncode(response), 200);
+          });
+          // Check whether getClosestStations function returns
+          // a list of closest stations
+          expect(await bikeStations.getClosestStations(60.66,-65.66), isA<List>());
+        });
+
+    test('return error message when http response is unsuccessful and cant give closest bike stations', () async {
+
+      // Mock the API call to return an
+      // empty json response with http status 404
+      final mockBikeStationService = MockClient((request) async {
+        final response = {};
+        return Response(jsonEncode(response), 404);
+      });
+      // Check whether an empty list is given when there is unsuccessful HTTP request
+      expect(await bikeStations.getClosestStations(0,0),
+          []);
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+  });
 }
 
 class MockGeolocatorPlatform extends Mock
