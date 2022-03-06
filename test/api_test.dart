@@ -74,7 +74,7 @@ void main() {
       expect(position, mockPosition);
     });
 
-    // Current postition is given
+    // Current position is given
     test('getCurrentPosition', () async {
       final position = await Geolocator.getCurrentPosition();
 
