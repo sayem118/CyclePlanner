@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
@@ -7,6 +9,7 @@ import 'package:cycle_planner/models/groups.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/views/nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -54,8 +57,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _isMultipleStop = false;
 
-  late MapBoxNavigationViewController _controller;
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
+  final LatLng _center = const LatLng(51.5, 0.12);
+  late MapBoxNavigationViewController _controller;
+  late GoogleMapController mapController;
   Groups groupSize = Groups(groupSize: 1);
 
   BikeStationService bikeStationService = BikeStationService();
@@ -92,6 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
       longPressDestinationEnabled: true,
       language: "en"
     );
+
+
+
   }
   
   @override
@@ -209,14 +220,13 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 color: Colors.pink,
                 height: 300.0,
-                child: MapBoxNavigationView(
-                  options: _options,
-                  onRouteEvent: _onEmbeddedRouteEvent,
-                  onCreated: (MapBoxNavigationViewController controller) async {
-                    _controller = controller;
-                    controller.initialize();
-                  }
-                ),
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
+                  ),
+              ),
               ),
               if (applicationProcesses.searchResults.isNotEmpty)
               Container(
