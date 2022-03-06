@@ -278,7 +278,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Currently this does nothing...I think
+  // This acts as a listener for events during the navigation
+  // so in different cases we can set the code to do different things I.E case mapbox.navigation_cancelled means if route is cancelled
+  //we do whatever
   Future<void> _onEmbeddedRouteEvent(e) async {
 
     switch (e.eventType) {
