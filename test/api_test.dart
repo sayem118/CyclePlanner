@@ -45,18 +45,21 @@ void main() {
       GeolocatorPlatform.instance = MockGeolocatorPlatform();
     });
 
+    // Checks whether permission is enabled
     test('checkPermission', () async {
       final permission = await Geolocator.checkPermission();
 
       expect(permission, LocationPermission.whileInUse);
     });
 
+    // Permission is requested
     test('requestPermission', () async {
       final permission = await Geolocator.requestPermission();
 
       expect(permission, LocationPermission.whileInUse);
     });
 
+    // Check whether location service is enabled
     test('isLocationServiceEnabled', () async {
       final isLocationServiceEnabled =
       await Geolocator.isLocationServiceEnabled();
@@ -64,18 +67,21 @@ void main() {
       expect(isLocationServiceEnabled, true);
     });
 
+    // Last known location is given
     test('getLastKnownPosition', () async {
       final position = await Geolocator.getLastKnownPosition();
 
       expect(position, mockPosition);
     });
 
+    // Current postition is given
     test('getCurrentPosition', () async {
       final position = await Geolocator.getCurrentPosition();
 
       expect(position, mockPosition);
     });
 
+    // Current position given for IOS
     test('getCurrentPosition iOS', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       final position = await Geolocator.getCurrentPosition();
@@ -83,12 +89,14 @@ void main() {
       debugDefaultTargetPlatformOverride = null;
     });
 
+    // Accuracy of location is given
     test('getLocationAccuracy', () async {
       final accuracy = await Geolocator.getLocationAccuracy();
 
       expect(accuracy, LocationAccuracyStatus.reduced);
     });
 
+    // Checks whether full accuracy is asked for
     test('requestTemporaryFullAccuracy', () async {
       final accuracy = await Geolocator.requestTemporaryFullAccuracy(
         purposeKey: "purposeKeyValue",
@@ -97,6 +105,7 @@ void main() {
       expect(accuracy, LocationAccuracyStatus.reduced);
     });
 
+    // Service status is enabled
     test('getServiceStatusStream', () {
       when(GeolocatorPlatform.instance.getServiceStatusStream())
           .thenAnswer((_) => Stream.value(ServiceStatus.enabled));
@@ -119,28 +128,32 @@ void main() {
       expect(position, emitsInOrder([emits(mockPosition), emitsDone]));
     });
 
+    // Check if app settings is opened
     test('openAppSettings', () async {
       final hasOpened = await Geolocator.openAppSettings();
       expect(hasOpened, true);
     });
 
+    // Checks if location settings is open
     test('openLocationSettings', () async {
       final hasOpened = await Geolocator.openLocationSettings();
       expect(hasOpened, true);
     });
 
+    // Distance between the locations given
     test('distanceBetween', () {
       final distance = Geolocator.distanceBetween(0, 0, 0, 0);
       expect(distance, 42);
     });
 
+    // Bearings given between locations
     test('bearingBetween', () {
       final bearing = Geolocator.bearingBetween(0, 0, 0, 0);
       expect(bearing, 42);
     });
   });
 
-  BikeStationService bikeStations= BikeStationService();
+  BikeStationService bikeStations = BikeStationService();
   group('getClosestStations', () {
     test('returns closest bike stations to latitude and longitude given)',
             () async {
@@ -157,7 +170,7 @@ void main() {
           });
           // Check whether getClosestStations function returns
           // a list of closest stations
-          expect(await bikeStations.getClosestStations(60.66,-65.66), isA<List>());
+          expect(await bikeStations.getClosestStations(60.66,-65.66), []);
         });
 
     test('return error message when http response is unsuccessful and cant give closest bike stations', () async {
@@ -173,19 +186,10 @@ void main() {
           []);
 
     });
-
-
-
-
-
-
-
-
-
-
-
-
   });
+
+
+
 }
 
 class MockGeolocatorPlatform extends Mock
