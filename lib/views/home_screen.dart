@@ -109,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              key: const Key("Search Location"),
               decoration: const InputDecoration(
                 hintText: 'Search Location',
                 suffixIcon: Icon(Icons.search),
