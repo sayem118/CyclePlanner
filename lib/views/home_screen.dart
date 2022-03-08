@@ -22,17 +22,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Completer<GoogleMapController> _mapController= Completer();
-  StreamSubscription locationSubscription;
+  late StreamSubscription locationSubscription;
 
   // RAWWWWRRRRRRR
   @override
   void initState() {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context,listen: false);
-    locationSubscription = applicationProcesses.selectedLocation.stream.listen((place){
-      if (place != null){
-        _goToPlace(place);
-    }
-    }
+      locationSubscription = applicationProcesses.selectedLocation.stream.listen((place){
+        if (place != null){
+          _goToPlace(place);
+        }
+      }
     );
     super.initState();
   }
@@ -93,11 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   BikeStationService bikeStationService = BikeStationService();
 
-  @override
-  void initState() {
-    super.initState();
-    initialize();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   initialize();
+  // }
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initialize() async {
@@ -248,11 +248,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GoogleMap(
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
-                    target: _center,
+                    target: LatLng(
+                      applicationProcesses.currentLocation!.latitude,
+                        applicationProcesses.currentLocation!.latitude
+                    ),
                     zoom: 11.0,
+
+                    ),
                   ),
-              ),
-              ),
+                ),
+            ],
+          ),
               if (applicationProcesses.searchResults.isNotEmpty)
               Container(
                 height: 300.0,
@@ -285,9 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ]
           ),
-        ],
-      )
-    );
+      );
   }
 
   // Creates alert if there are no available bike stations nearby.
@@ -358,4 +362,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     setState(() {});
   }
+
+  // RAWWWWWRRRRRRR
+  Future<void> _goToPlace(Place place) async {
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(
+                  place.geometry.location.lat, place.geometry.location.lng
+              ),
+              zoom: 14.0,
+          ),
+        ),
+      );
+    }
 }
