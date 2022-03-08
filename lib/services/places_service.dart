@@ -30,6 +30,7 @@ class PlacesService {
     var results = json['predictions'] as List;
 
     return results.map((place) => PlaceSearch.fromJson(place)).toList();
+
   }
 
   Future<Place> getPlace(String placeId) async {

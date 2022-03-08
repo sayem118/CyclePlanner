@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
-// import 'package:cycle_planner/services/bike_station_sevice.dart';
+import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_spinbox/material.dart';
 import 'package:cycle_planner/models/groups.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cycle_planner/views/nav_bar.dart';
 import '../models/place.dart';
 //import 'package:location/location.dart';
 
@@ -80,12 +82,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _isMultipleStop = false;
 
-  late MapBoxNavigationViewController _controller;
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
+  final LatLng _center = const LatLng(51.5, 0.12);
+  late MapBoxNavigationViewController _controller;
+  late GoogleMapController mapController;
   Groups groupSize = Groups(groupSize: 1);
 
-  // Ammar's refactored code, doesn't work for now
-  // BikeStationSevice bikeStationSevice = BikeStationSevice();
+  BikeStationService bikeStationService = BikeStationService();
 
   @override
   void initState() {
@@ -119,12 +125,19 @@ class _HomeScreenState extends State<HomeScreen> {
       longPressDestinationEnabled: true,
       language: "en"
     );
+
+
+
   }
   
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
     return Scaffold(
+      drawer: const NavBar(),
+      appBar: AppBar(
+        title: const Text("Cycle Planner"),
+      ),
       body: (applicationProcesses.setCurrentLocation() == null) ? const Center(child: CircularProgressIndicator())
       :ListView(
         children: <Widget>[
@@ -178,48 +191,50 @@ class _HomeScreenState extends State<HomeScreen> {
                  wayPoints.add(_stop3);
                  wayPoints.add(_stop4);
 
-                 // Find closest start location
+                 // Find closest start station
                  WayPoint start = wayPoints.first;
-                
-                 // For debugging
-                 // print("The closest start location is: $start"); // Output -> The closest start location is: WayPoint{latitude: 55.1175275, longitude: 0.4839524}
-
-                 // Using Ammar's refactored code, doesn't work for now
-                 // Future<Map> futureOfStartStation = bikeStationSevice.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
-
-                 Future<Map> futureOfStartStation = getStationWithBikes(start.latitude, start.longitude);
+                 // These are random coords in East that don't have any bike stations nearby. So uncomment if you wanna see the 'no available bike stations alert.
+                 // Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
+                 Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
                  Map startStation = await futureOfStartStation;
-                 //  print("This is an example of map: $startStation");
-                 WayPoint startStationWayPoint = WayPoint(
-                   name: "startStation",
-                   latitude: startStation['lat'],
-                   longitude: startStation['lon']
-                 );
-                 // For debugging
-                 // print("The start point way point is:$startStationWayPoint");
-                 wayPoints.insert(1, startStationWayPoint);
-
 
                  // Find closest end station
                  WayPoint end = wayPoints.last;
-
-                 // Using Ammar's refactored code, doesn't work for now.
-                 // Future<Map> futureOfEndStation = bikeStationSevice.getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
-
-                 Future<Map> futureOfEndStation = getStationWithSpaces(end.latitude, end.longitude);
+                 Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
                  Map endStation = await futureOfEndStation;
-                 WayPoint endStationWayPoint = WayPoint(
-                   name: "endStation",
-                   latitude: endStation['lat'],
-                   longitude: endStation['lon']
-                 );
-                 wayPoints.add(endStationWayPoint);
 
-                 // Start navigating
-                 await _directions.startNavigation(
-                   wayPoints: wayPoints,
-                   options: _options
-                 );
+                 // check if there are available bike stations nearby. If not the user is alerted.
+                 if(startStation.isEmpty || endStation.isEmpty) {
+                   _showNoStationsAlert(context);
+                 }
+                 else {
+                   WayPoint startStationWayPoint = WayPoint(
+                       name: "startStation",
+                       latitude: startStation['lat'],
+                       longitude: startStation['lon']
+                   );
+                   wayPoints.insert(1, startStationWayPoint);
+
+                   WayPoint endStationWayPoint = WayPoint(
+                       name: "endStation",
+                       latitude: endStation['lat'],
+                       longitude: endStation['lon']
+                   );
+                   wayPoints.add(endStationWayPoint);
+
+                   // Start navigating
+                   await _directions.startNavigation(
+                       wayPoints: wayPoints,
+                       options: _options
+                   );
+                 }
+                 //  print("This is an example of map: $startStation");
+                 
+                 // For debugging -> Prints waypoints & bike station's name, latitude and longitude
+                 // for (int i = 0; i < wayPoints.length; i++){print("Waypoint station are: ${wayPoints[i].name}, ${wayPoints[i]}");}
+                 // for (int i = 1; i < startStation.length; i++){print("Bike station no.$i is: ${startStation}");}
+                 // print("bike station map size: ${startStation.length}");
+
                 }
               )
             ],
@@ -230,14 +245,13 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 color: Colors.pink,
                 height: 300.0,
-                child: MapBoxNavigationView(
-                  options: _options,
-                  onRouteEvent: _onEmbeddedRouteEvent,
-                  onCreated: (MapBoxNavigationViewController controller) async {
-                    _controller = controller;
-                    controller.initialize();
-                  }
-                ),
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
+                  ),
+              ),
               ),
               if (applicationProcesses.searchResults.isNotEmpty)
               Container(
@@ -276,7 +290,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Currently this does nothing...I think
+  // Creates alert if there are no available bike stations nearby.
+  Future<void> _showNoStationsAlert(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Oh no...'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Looks like there are no available bike stations nearby.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // This acts as a listener for events during the navigation
+  // so in different cases we can set the code to do different things I.E case mapbox.navigation_cancelled means if route is cancelled
+  //we do whatever
   Future<void> _onEmbeddedRouteEvent(e) async {
 
     switch (e.eventType) {
@@ -314,51 +358,4 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     setState(() {});
   }
-
-  // To be refactored later...
-  Future<Map> getStationWithBikes(double ?lat, double ?lon) async {
-    Future<List> futureOfStations = getClosestStations(lat, lon);
-    List stations = await futureOfStations;
-
-    for (int i = 0; i < stations.length; i++) {
-      if (int.parse(stations[i]['additionalProperties'][6]['value']) >= groupSize.getGroupSize()) {
-        return stations[i];
-      }
-    }
-    return{};
-  }
-
-  Future<Map> getStationWithSpaces(double ?lat, double ?lon) async {
-    Future<List> futureOfStations = getClosestStations(lat, lon);
-    List stations = await futureOfStations;
-
-    for (int i = 0; i < stations.length; i++) {
-      if (int.parse(stations[i]['additionalProperties'][7]['value']) >= groupSize.getGroupSize()) {
-        return stations[i];
-      }
-    }
-    return {};
-  }
-
-  Future<List> getClosestStations(double ?lat, double ?lon) async {
-    Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=6000&lat=$lat&lon=$lon'));
-    List stations = jsonDecode(response.body)['places'];
-
-    return stations;
-  }
-
-
-  // RAWWWWWRRRRRRR
-  Future<void> _goToPlace(Place place) async {
-    final GoogleMapController controller = await _mapController.future;
-    controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(
-                  place.geometry.location.lat, place.geometry.location.lng),
-              zoom: 14.0),
-      )
-    ;
-  }
-
 }
