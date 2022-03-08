@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:cycle_planner/models/place_search.dart';
 
+import '../models/place.dart';
+
 /// Class description:
 /// This class sends user typed search input
 /// and sends them as a request.
@@ -28,5 +30,21 @@ class PlacesService {
     var results = json['predictions'] as List;
 
     return results.map((place) => PlaceSearch.fromJson(place)).toList();
+  }
+
+  Future<Place> getPlace(String placeId) async {
+    // Request URL
+    var url = 'https://maps.googleapis.com/maps/api/place/details/json?key=$key&place_id=$placeId';
+
+    // Get URL response
+    var response = await http.get(Uri.parse(url));
+
+    // Convert received JSON String response into JSON Object
+    var json = convert.jsonDecode(response.body);
+
+    // Covert JSON Object to List
+    var results = json['result'] as Map<String,dynamic>;
+
+    return Place.fromJson(results);
   }
 }

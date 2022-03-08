@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 // import 'package:cycle_planner/services/bike_station_sevice.dart';
@@ -7,6 +8,8 @@ import 'package:cycle_planner/models/groups.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+import '../models/place.dart';
+//import 'package:location/location.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -16,6 +19,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Completer<GoogleMapController> _mapController= Completer();
+  StreamSubscription locationSubscription;
+
+  // RAWWWWRRRRRRR
+  @override
+  void initState() {
+    final applicationProcesses = Provider.of<ApplicationProcesses>(context,listen: false);
+    locationSubscription = applicationProcesses.selectedLocation.stream.listen((place){
+      if (place != null){
+        _goToPlace(place);
+    }
+    }
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
+    applicationProcesses.dispose();
+    locationSubscription.cancel();
+    super.dispose();
+  }
+
   // Hard coded waypoints for testing purposes
   final _origin = WayPoint(
     name: "Big Ben",
@@ -233,6 +260,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                         ),
                       ),
+                      onTap: (){
+                        applicationProcesses.setSelectedLocation(
+                            applicationProcesses.searchResults[index].placeId
+                        );
+                      }
                     );
                   },
                 ),
@@ -314,4 +346,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return stations;
   }
+
+
+  // RAWWWWWRRRRRRR
+  Future<void> _goToPlace(Place place) async {
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(
+                  place.geometry.location.lat, place.geometry.location.lng),
+              zoom: 14.0),
+      )
+    ;
+  }
+
 }

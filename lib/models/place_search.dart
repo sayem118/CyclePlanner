@@ -7,7 +7,7 @@ class PlaceSearch {
   
   // Class Variables
   final String description;
-  final String placeId;
+  final String placeId; 
   
   // Class constructor
   PlaceSearch({required this.description, required this.placeId});
