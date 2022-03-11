@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
       zoom: 15.0,
       tilt: 0.0,
       bearing: 0.0,
-      enableRefresh: false,
+      enableRefresh: true,
       alternatives: true,
       voiceInstructionsEnabled: true,
       bannerInstructionsEnabled: true,
@@ -328,10 +328,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void updateClosestStations() async {
     // Find closest start station
     WayPoint start = wayPoints.first;
-    // These are random coords in East that don't have any bike stations nearby. So uncomment if you wanna see the 'no available bike stations alert.
-    // Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
-    Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(
-        start.latitude, start.longitude, groupSize.getGroupSize());
+    // These are random coords in East that don't have any bike stations nearby.
+    //Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
+    Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
     Map startStation = await futureOfStartStation;
 
     // Find closest end station
@@ -342,23 +341,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // check if there are available bike stations nearby. If not the user is alerted.
     if (startStation.isEmpty || endStation.isEmpty) {
-      _showNoStationsAlert(context);
+      // if there are no close available bike stations I was gonna exit the navigation and display an alert,
+      // but a station might free up in the next time interval so not sure what to do here...
     }
     else {
-      WayPoint startStationWayPoint = WayPoint(
-          name: "startStation",
-          latitude: startStation['lat'],
-          longitude: startStation['lon']
-      );
-      wayPoints[1] = startStationWayPoint;
+      // check if stations have changed.
+      if ((startStation['lat'] != wayPoints[1].latitude && startStation['lon'] != wayPoints[1].longitude) || (endStation['lat'] != wayPoints[wayPoints.length - 1].latitude && endStation['lon'] != wayPoints[wayPoints.length - 1].longitude)) {
+        // update stations to new stations.
+        WayPoint startStationWayPoint = WayPoint(
+            name: "startStation",
+            latitude: startStation['lat'],
+            longitude: startStation['lon']
+        );
+        wayPoints[1] = startStationWayPoint;
 
-      WayPoint endStationWayPoint = WayPoint(
-          name: "endStation",
-          latitude: endStation['lat'],
-          longitude: endStation['lon']
-      );
+        WayPoint endStationWayPoint = WayPoint(
+            name: "endStation",
+            latitude: endStation['lat'],
+            longitude: endStation['lon']
+        );
+        wayPoints[wayPoints.length - 1] = endStationWayPoint;
 
-      wayPoints[wayPoints.length - 1] = endStationWayPoint;
+        // exit turn by turn navigation and then start again with new waypoints.
+        _directions.finishNavigation();
+        _directions.startNavigation(wayPoints: wayPoints, options: _options);
+      }
     }
   }
 }
