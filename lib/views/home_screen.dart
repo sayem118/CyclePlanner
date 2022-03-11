@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
@@ -186,12 +188,16 @@ class _HomeScreenState extends State<HomeScreen> {
                    );
                    wayPoints.add(endStationWayPoint);
 
+                   // update stations every 3 minutes.
+                   Timer timer = Timer.periodic(Duration(minutes: 3), (Timer t) => updateClosestStations());
+
                    // Start navigating
                    await _directions.startNavigation(
                        wayPoints: wayPoints,
                        options: _options
                    );
                  }
+
                  //  print("This is an example of map: $startStation");
                  
                  // For debugging -> Prints waypoints & bike station's name, latitude and longitude
@@ -318,5 +324,43 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     setState(() {});
   }
+
+  void updateClosestStations() async {
+    // Find closest start station
+    WayPoint start = wayPoints.first;
+    // These are random coords in East that don't have any bike stations nearby. So uncomment if you wanna see the 'no available bike stations alert.
+    // Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
+    Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(
+        start.latitude, start.longitude, groupSize.getGroupSize());
+    Map startStation = await futureOfStartStation;
+
+    // Find closest end station
+    WayPoint end = wayPoints[wayPoints.length - 2];
+    Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(
+        end.latitude, end.longitude, groupSize.getGroupSize());
+    Map endStation = await futureOfEndStation;
+
+    // check if there are available bike stations nearby. If not the user is alerted.
+    if (startStation.isEmpty || endStation.isEmpty) {
+      _showNoStationsAlert(context);
+    }
+    else {
+      WayPoint startStationWayPoint = WayPoint(
+          name: "startStation",
+          latitude: startStation['lat'],
+          longitude: startStation['lon']
+      );
+      wayPoints[1] = startStationWayPoint;
+
+      WayPoint endStationWayPoint = WayPoint(
+          name: "endStation",
+          latitude: endStation['lat'],
+          longitude: endStation['lon']
+      );
+
+      wayPoints[wayPoints.length - 1] = endStationWayPoint;
+    }
+  }
 }
+
 
