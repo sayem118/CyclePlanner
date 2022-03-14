@@ -1,8 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:cycle_planner/models/place_search.dart';
-
-import '../models/place.dart';
+import 'package:cycle_planner/models/place.dart';
 
 /// Class description:
 /// This class sends user typed search input

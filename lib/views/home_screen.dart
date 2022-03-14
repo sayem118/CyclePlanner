@@ -5,13 +5,10 @@ import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_spinbox/material.dart';
 import 'package:cycle_planner/models/groups.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/views/nav_bar.dart';
-import '../models/place.dart';
-//import 'package:location/location.dart';
+import 'package:cycle_planner/models/place.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -21,20 +18,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Completer<GoogleMapController> _mapController= Completer();
+  final Completer<GoogleMapController> _mapController= Completer();
   late StreamSubscription locationSubscription;
 
-  // RAWWWWRRRRRRR
   @override
   void initState() {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context,listen: false);
-      locationSubscription = applicationProcesses.selectedLocation.stream.listen((place){
-        if (place != null){
-          _goToPlace(place);
-        }
+      locationSubscription = applicationProcesses.selectedLocation.stream.listen((place) {
+        _goToPlace(place);
       }
     );
     super.initState();
+    initialize();
   }
 
   @override
@@ -82,22 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _isMultipleStop = false;
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
-  final LatLng _center = const LatLng(51.5, 0.12);
+  final LatLng _center = const LatLng(53.1424, 7.6921);
   late MapBoxNavigationViewController _controller;
   late GoogleMapController mapController;
   Groups groupSize = Groups(groupSize: 1);
 
   BikeStationService bikeStationService = BikeStationService();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   initialize();
-  // }
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initialize() async {
@@ -125,9 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
       longPressDestinationEnabled: true,
       language: "en"
     );
-
-
-
   }
   
   @override
@@ -138,7 +120,27 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Cycle Planner"),
       ),
-      body: (applicationProcesses.setCurrentLocation() == null) ? const Center(child: CircularProgressIndicator())
+      floatingActionButton: FloatingActionButton( // Set camera to the user's current location
+        onPressed: () {
+          setState(() async {
+            final GoogleMapController controller = await _mapController.future;
+            controller.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: LatLng(
+                    applicationProcesses.currentLocation!.latitude,
+                    applicationProcesses.currentLocation!.longitude
+                  ),
+                  zoom: 14.0,
+                ),
+              ),
+            );
+          });
+        },
+        child: const Icon(Icons.my_location),
+        backgroundColor: Colors.grey[700]
+      ),
+      body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
       :ListView(
         children: <Widget>[
           Padding(
@@ -148,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 hintText: 'Search Location',
                 suffixIcon: Icon(Icons.search),
               ),
-              onChanged: (value) => applicationProcesses.searchPlaces(value),
+              onChanged: (value) => applicationProcesses.searchPlaces(value)
             ),
           ),
           Column(
@@ -177,8 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                  final _currentPosition = WayPoint(
                    name: "Current Position",
-                   latitude: applicationProcesses.currentLocation?.latitude, // Hard coded value: 55.1175275,
-                   longitude: applicationProcesses.currentLocation?.longitude // Hard coded value: 0.4839524
+                   latitude: applicationProcesses.currentLocation!.latitude, // Hard coded value: 55.1175275,
+                   longitude: applicationProcesses.currentLocation!.longitude // Hard coded value: 0.4839524
                  );
 
                  _isMultipleStop = true;
@@ -209,32 +211,25 @@ class _HomeScreenState extends State<HomeScreen> {
                  }
                  else {
                    WayPoint startStationWayPoint = WayPoint(
-                       name: "startStation",
-                       latitude: startStation['lat'],
-                       longitude: startStation['lon']
+                      name: "startStation",
+                      latitude: startStation['lat'],
+                      longitude: startStation['lon']
                    );
                    wayPoints.insert(1, startStationWayPoint);
 
                    WayPoint endStationWayPoint = WayPoint(
-                       name: "endStation",
-                       latitude: endStation['lat'],
-                       longitude: endStation['lon']
+                      name: "endStation",
+                      latitude: endStation['lat'],
+                      longitude: endStation['lon']
                    );
                    wayPoints.add(endStationWayPoint);
 
                    // Start navigating
                    await _directions.startNavigation(
-                       wayPoints: wayPoints,
-                       options: _options
+                      wayPoints: wayPoints,
+                      options: _options
                    );
                  }
-                 //  print("This is an example of map: $startStation");
-                 
-                 // For debugging -> Prints waypoints & bike station's name, latitude and longitude
-                 // for (int i = 0; i < wayPoints.length; i++){print("Waypoint station are: ${wayPoints[i].name}, ${wayPoints[i]}");}
-                 // for (int i = 1; i < startStation.length; i++){print("Bike station no.$i is: ${startStation}");}
-                 // print("bike station map size: ${startStation.length}");
-
                 }
               )
             ],
@@ -246,19 +241,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.pink,
                 height: 300.0,
                 child: GoogleMap(
-                  onMapCreated: _onMapCreated,
+                  onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
                   initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                      applicationProcesses.currentLocation!.latitude,
-                        applicationProcesses.currentLocation!.latitude
-                    ),
-                    zoom: 11.0,
-
-                    ),
+                    target: applicationProcesses.currentLocation != null ? LatLng(
+                      applicationProcesses.currentLocation!.latitude, 
+                      applicationProcesses.currentLocation!.longitude,
+                      // 51.5, 0.12
+                    )
+                    : _center,
+                    zoom: 7.0,
                   ),
                 ),
-            ],
-          ),
+              ),
               if (applicationProcesses.searchResults.isNotEmpty)
               Container(
                 height: 300.0,
@@ -268,8 +262,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundBlendMode: BlendMode.darken
                 ),
               ),
-              SizedBox(
-                height: 300.0,
+              SizedBox( // 
+                height: 10.0,
                 child: ListView.builder(
                   itemCount: applicationProcesses.searchResults.length,
                   itemBuilder: (context, index) {
@@ -280,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      onTap: (){
+                      onTap: () {
                         applicationProcesses.setSelectedLocation(
                             applicationProcesses.searchResults[index].placeId
                         );
@@ -289,9 +283,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-            ]
+            ],
           ),
-      );
+        ]
+      ),
+    );
   }
 
   // Creates alert if there are no available bike stations nearby.
@@ -363,18 +359,17 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  // RAWWWWWRRRRRRR
   Future<void> _goToPlace(Place place) async {
     final GoogleMapController controller = await _mapController.future;
     controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(
-                  place.geometry.location.lat, place.geometry.location.lng
-              ),
-              zoom: 14.0,
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+              place.geometry.location.lat, place.geometry.location.lng
           ),
+          zoom: 14.0,
         ),
-      );
-    }
+      ),
+    );
+  }
 }

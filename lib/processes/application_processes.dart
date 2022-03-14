@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
-
-import '../models/place.dart';
+import 'package:cycle_planner/models/place.dart';
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
@@ -45,11 +43,9 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
-
   @override
   void dispose() {
-   selectedLocation.close();
-
+    selectedLocation.close();
     super.dispose();
   }
 }
