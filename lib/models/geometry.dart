@@ -6,9 +6,7 @@ class Geometry {
 
   Geometry({required this.location});
 
- factory Geometry.fromJson(Map<dynamic,dynamic> parsedJson){
-    return Geometry(
-      location: Location.fromJson(parsedJson['location'])
-    );
-  }
+  Geometry.fromJson(Map<dynamic,dynamic> parsedJson)
+      :location = Location.fromJson(parsedJson['location']);
 }
+
