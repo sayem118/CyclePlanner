@@ -70,6 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
     latitude: 51.50461919293181,
     longitude: -0.11954631306912968
   );
+  final _stop5 = WayPoint(
+      name: "Plaistow",
+      latitude: 51.50461919293181,
+      longitude: 0.03
+  );
 
   var wayPoints = <WayPoint>[];
   late MapBoxNavigation _directions;
@@ -98,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
       zoom: 15.0,
       tilt: 0.0,
       bearing: 0.0,
-      enableRefresh: false,
+      enableRefresh: true,
       alternatives: true,
       voiceInstructionsEnabled: true,
       bannerInstructionsEnabled: true,
@@ -120,26 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Cycle Planner"),
       ),
-      floatingActionButton: FloatingActionButton( // Set camera to the user's current location
-        onPressed: () {
-          setState(() async {
-            final GoogleMapController controller = await _mapController.future;
-            controller.animateCamera(
-              CameraUpdate.newCameraPosition(
-                CameraPosition(
-                  target: LatLng(
-                    applicationProcesses.currentLocation!.latitude,
-                    applicationProcesses.currentLocation!.longitude
-                  ),
-                  zoom: 14.0,
-                ),
-              ),
-            );
-          });
-        },
-        child: const Icon(Icons.my_location),
-        backgroundColor: Colors.grey[700]
-      ),
+
       body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
       :ListView(
         children: <Widget>[
@@ -242,6 +228,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 300.0,
                 child: GoogleMap(
                   onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
                   initialCameraPosition: CameraPosition(
                     target: applicationProcesses.currentLocation != null ? LatLng(
                       applicationProcesses.currentLocation!.latitude, 
