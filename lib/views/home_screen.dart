@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     longitude: -0.11954631306912968
   );
 
+
   var wayPoints = <WayPoint>[];
   late MapBoxNavigation _directions;
   late MapBoxOptions _options;
@@ -189,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                    wayPoints.add(endStationWayPoint);
 
                    // update stations every 3 minutes.
-                   Timer timer = Timer.periodic(Duration(minutes: 3), (Timer t) => updateClosestStations());
+                   Timer timer = Timer.periodic(const Duration(minutes: 3), (Timer t) => updateClosestStations());
 
                    // Start navigating
                    await _directions.startNavigation(
