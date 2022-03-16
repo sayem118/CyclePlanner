@@ -75,12 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
     latitude: 51.50461919293181,
     longitude: -0.11954631306912968
   );
-  final _stop5 = WayPoint(
-      name: "Plaistow",
-      latitude: 51.50461919293181,
-      longitude: 0.03
-  );
-  
+
   final marker1 = const Marker(
     markerId: MarkerId("London eye"),
     position: LatLng(51.50461919293181, -0.11954631306912968)
@@ -123,15 +118,15 @@ class _HomeScreenState extends State<HomeScreen> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
-
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
     _options = MapBoxOptions(
-      initialLatitude: ApplicationProcesses().currentLocation?.latitude, // Hard coded value: 51.509865
-      initialLongitude: ApplicationProcesses().currentLocation?.longitude, // Hard coded value: -0.118092
+      initialLatitude: position.latitude,
+      initialLongitude: position.longitude,
       zoom: 15.0,
-      tilt: 0.0,
-      bearing: 0.0,
+      tilt: 1.0,
+      bearing: 1.0,
       enableRefresh: true,
       alternatives: true,
       voiceInstructionsEnabled: true,
@@ -140,9 +135,9 @@ class _HomeScreenState extends State<HomeScreen> {
       mode: MapBoxNavigationMode.cycling,
       units: VoiceUnits.imperial,
       simulateRoute: false,
-      animateBuildRoute: true,
-      longPressDestinationEnabled: true,
-      language: "en"
+      animateBuildRoute: false,
+      longPressDestinationEnabled: false,
+      language: "en",
     );
   }
   
@@ -249,6 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       wayPoints: wayPoints,
                       options: _options
                    );
+                   setState(() {
+                   });
                  }
                 }
               ),
@@ -338,7 +335,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _markers.add(marker5);
     //will go through list of markers
     for(var i = 1; i < _markers.length; i++){
-      if (i == 1 || i == _markers.length - 1) {
         late PolylinePoints polylinePoints;
         polylinePoints = PolylinePoints();
         final markerS = _markers.elementAt(i - 1);
@@ -358,40 +354,26 @@ class _HomeScreenState extends State<HomeScreen> {
           nPoints.add(LatLng(point.latitude, point.longitude));
           stuff = point.latitude + point.longitude;
         }
-        _polyline.add(Polyline(
+        //adds stuff to polyline
+        //if its a cycle path line is red otherwise line is blue
+        if (i == 1 || i == _markers.length - 1){
+          _polyline.add(Polyline(
             polylineId: PolylineId(stuff.toString()),
             points: nPoints,
             color: Colors.red
         ));
       }
-      else{
-        //drawing route between stops
-        late PolylinePoints polylinePoints;
-        polylinePoints = PolylinePoints();
-        final markerS = _markers.elementAt(i - 1);
-        final markerd = _markers.elementAt(i);
-        final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
-        final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
-        PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
-          marker1,
-          marker2,
-          travelMode: TravelMode.bicycling,);
-        double stuff = 0;
-        late List<LatLng> nPoints = [];
-        for (var point in result.points) {
-          nPoints.add(LatLng(point.latitude, point.longitude));
-          stuff = point.latitude + point.longitude;
+        else{
+          _polyline.add(Polyline(
+              polylineId: PolylineId(stuff.toString()),
+              points: nPoints,
+              color: Colors.blue
+          ));
         }
-        //adds all the stuff we calculated to polyline list
-        _polyline.add(Polyline(
-            polylineId: PolylineId(stuff.toString()),
-            points: nPoints,
-            color: Colors.blue
-        ));
-      }
+
     }
     setState(() {
+
     });
   }
 
