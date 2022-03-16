@@ -154,11 +154,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Cycle Planner"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          drawRouteOverview();
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: (){
+      //     drawRouteOverview();
+      //   },
+      // ),
       body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
       :ListView(
         children: <Widget>[
@@ -251,18 +251,22 @@ class _HomeScreenState extends State<HomeScreen> {
                    );
                  }
                 }
+              ),
+              const SizedBox(width: 10.0,),
+              ElevatedButton(
+                onPressed: () {
+                  drawRouteOverview();
+                },
+                child: const Text("Draw Route")
               )
             ],
           ),
-          const SizedBox(height: 20.0,),
-
+          const SizedBox(height: 10.0,),
           Stack(
             children: [
-
               Container(
-
                 color: Colors.pink,
-                height: 300.0,
+                height: 455.0,
                 child: GoogleMap(
                   onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
                   myLocationButtonEnabled: true,
@@ -273,10 +277,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     target: applicationProcesses.currentLocation != null ? LatLng(
                       applicationProcesses.currentLocation!.latitude, 
                       applicationProcesses.currentLocation!.longitude,
-                      // 51.5, 0.12
                     )
                     : _center,
-                    zoom: 7.0,
+                    zoom: 10.0,
                   ),
                 ),
               ),
@@ -289,8 +292,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundBlendMode: BlendMode.darken
                 ),
               ),
-              SizedBox( // 
-                height: 10.0,
+              if (applicationProcesses.searchResults.isNotEmpty)
+              SizedBox(
+                height: 200.0,
                 child: ListView.builder(
                   itemCount: applicationProcesses.searchResults.length,
                   itemBuilder: (context, index) {
@@ -303,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       onTap: () {
                         applicationProcesses.setSelectedLocation(
-                            applicationProcesses.searchResults[index].placeId
+                          applicationProcesses.searchResults[index].placeId
                         );
                       }
                     );
