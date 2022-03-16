@@ -40,6 +40,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   setSelectedLocation(String placeId) async{
     selectedLocation.add(await placesService.getPlace(placeId));
+    searchResults = [];
     notifyListeners();
   }
 
