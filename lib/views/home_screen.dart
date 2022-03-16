@@ -5,10 +5,12 @@ import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_spinbox/material.dart';
 import 'package:cycle_planner/models/groups.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/views/nav_bar.dart';
 import 'package:cycle_planner/models/place.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -20,6 +22,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _mapController= Completer();
   late StreamSubscription locationSubscription;
+  final Set<Marker> _markers ={};
+  final Set<Polyline> _polyline ={};
+  late List<LatLng> nPoints = [];
 
   @override
   void initState() {
@@ -75,6 +80,28 @@ class _HomeScreenState extends State<HomeScreen> {
       latitude: 51.50461919293181,
       longitude: 0.03
   );
+  
+  final marker1 = const Marker(
+    markerId: MarkerId("London eye"),
+    position: LatLng(51.50461919293181, -0.11954631306912968)
+  );
+
+  final marker2 = const Marker(
+      markerId: MarkerId("Trafalgar Square"),
+      position: LatLng(51.50809338374528, -0.12804891498586773)
+  );
+
+  final marker3 = const Marker(
+      markerId: MarkerId("museum"),
+      position: LatLng(51.50809338374528, -0.126953347081018)
+  );
+
+  final marker5 = const Marker(
+      markerId: MarkerId("knightsbridge"),
+      position: LatLng(51.50809338374528, -0.16162)
+  );
+
+
 
   var wayPoints = <WayPoint>[];
   late MapBoxNavigation _directions;
@@ -95,6 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
+
+
 
     _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
     _options = MapBoxOptions(
@@ -125,7 +154,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Cycle Planner"),
       ),
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          drawRouteOverview();
+        },
+      ),
       body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
       :ListView(
         children: <Widget>[
@@ -146,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Group Size",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
+
               SpinBox(
                 min: 1,
                 max: 8,
@@ -221,15 +255,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 20.0,),
+
           Stack(
             children: [
+
               Container(
+
                 color: Colors.pink,
                 height: 300.0,
                 child: GoogleMap(
                   onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
                   myLocationButtonEnabled: true,
                   myLocationEnabled: true,
+                  polylines: _polyline,
+                  markers: _markers,
                   initialCameraPosition: CameraPosition(
                     target: applicationProcesses.currentLocation != null ? LatLng(
                       applicationProcesses.currentLocation!.latitude, 
@@ -276,6 +315,80 @@ class _HomeScreenState extends State<HomeScreen> {
         ]
       ),
     );
+  }
+
+  //method to draw route overview
+  //will assume the first 2 and last markers are for getting to the bike stations
+  Future<void> drawRouteOverview()  async {
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    //some dummy data
+    final marker4 = Marker(
+        markerId: const MarkerId("current"),
+        position: LatLng(position.latitude, position.longitude)
+    );
+    //adds markers to the list of markers
+    _markers.add(marker4);
+    _markers.add(marker1);
+    _markers.add(marker2);
+    _markers.add(marker3);
+    _markers.add(marker5);
+    //will go through list of markers
+    for(var i = 1; i < _markers.length; i++){
+      if (i == 1 || i == _markers.length - 1) {
+        late PolylinePoints polylinePoints;
+        polylinePoints = PolylinePoints();
+        final markerS = _markers.elementAt(i - 1);
+        final markerd = _markers.elementAt(i);
+        final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
+        final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
+        //gets a set of coordinates between 2 markers
+        PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+            "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+            marker1,
+            marker2,
+            travelMode: TravelMode.bicycling,);
+        //drawing route to bike stations
+        late List<LatLng> nPoints = [];
+        double stuff = 0;
+        for (var point in result.points) {
+          nPoints.add(LatLng(point.latitude, point.longitude));
+          stuff = point.latitude + point.longitude;
+        }
+        _polyline.add(Polyline(
+            polylineId: PolylineId(stuff.toString()),
+            points: nPoints,
+            color: Colors.red
+        ));
+      }
+      else{
+        //drawing route between stops
+        late PolylinePoints polylinePoints;
+        polylinePoints = PolylinePoints();
+        final markerS = _markers.elementAt(i - 1);
+        final markerd = _markers.elementAt(i);
+        final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
+        final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
+        PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          marker1,
+          marker2,
+          travelMode: TravelMode.bicycling,);
+        double stuff = 0;
+        late List<LatLng> nPoints = [];
+        for (var point in result.points) {
+          nPoints.add(LatLng(point.latitude, point.longitude));
+          stuff = point.latitude + point.longitude;
+        }
+        //adds all the stuff we calculated to polyline list
+        _polyline.add(Polyline(
+            polylineId: PolylineId(stuff.toString()),
+            points: nPoints,
+            color: Colors.blue
+        ));
+      }
+    }
+    setState(() {
+    });
   }
 
   // Creates alert if there are no available bike stations nearby.
