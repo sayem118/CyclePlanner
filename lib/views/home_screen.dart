@@ -22,8 +22,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _mapController= Completer();
   late StreamSubscription locationSubscription;
-  final Set<Marker> _markers ={};
-  final Set<Polyline> _polyline ={};
+  final Set<Marker> _markers = {};
+  final Set<Polyline> _polyline = {};
   late List<LatLng> nPoints = [];
 
   @override
@@ -59,10 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   final _stop2 = WayPoint(
-      name: "British Museum",
-      latitude: 51.521285300295474,
-      longitude: -0.126953347081018
-    );
+    name: "British Museum",
+    latitude: 51.521285300295474,
+    longitude: -0.126953347081018
+  );
 
   final _stop3 = WayPoint(
     name: "Trafalgar Square",
@@ -82,18 +82,18 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   final marker2 = const Marker(
-      markerId: MarkerId("Trafalgar Square"),
-      position: LatLng(51.50809338374528, -0.12804891498586773)
+    markerId: MarkerId("Trafalgar Square"),
+    position: LatLng(51.50809338374528, -0.12804891498586773)
   );
 
   final marker3 = const Marker(
-      markerId: MarkerId("museum"),
-      position: LatLng(51.50809338374528, -0.126953347081018)
+    markerId: MarkerId("museum"),
+    position: LatLng(51.50809338374528, -0.126953347081018)
   );
 
   final marker5 = const Marker(
-      markerId: MarkerId("knightsbridge"),
-      position: LatLng(51.50809338374528, -0.16162)
+    markerId: MarkerId("knightsbridge"),
+    position: LatLng(51.50809338374528, -0.16162)
   );
 
 
@@ -145,174 +145,237 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
     return Scaffold(
-      drawer: const NavBar(),
-      appBar: AppBar(
-        title: const Text("Cycle Planner"),
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: (){
-      //     drawRouteOverview();
-      //   },
+      // drawer: const NavBar(),
+      // appBar: AppBar(
+      //   title: const Text("Cycle Planner"),
       // ),
       body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
-      :ListView(
+      :Stack(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Search Location',
-                suffixIcon: Icon(Icons.search),
+          Positioned.fill(
+            child: GoogleMap(
+              onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
+              myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              polylines: _polyline,
+              markers: _markers,
+              initialCameraPosition: CameraPosition(
+                target: applicationProcesses.currentLocation != null ? LatLng(
+                  applicationProcesses.currentLocation!.latitude, 
+                  applicationProcesses.currentLocation!.longitude,
+                )
+                : _center,
+                zoom: 11.0,
               ),
-              onChanged: (value) => applicationProcesses.searchPlaces(value)
             ),
           ),
-          Column(
-            children: <Widget>[
-              const SizedBox(height: 20.0,),
-              const Text(
-                "Group Size",
-                style: TextStyle(fontWeight: FontWeight.bold),
+          Positioned(
+            top: 80.0,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              padding: const EdgeInsets.all(5),
+              margin: const EdgeInsets.only(top: 3, bottom: 3, left: 20, right: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: Offset.zero,
+                  )
+                ]
               ),
-
-              SpinBox(
-                min: 1,
-                max: 8,
-                value: groupSize.getGroupSize().toDouble(),
-                onChanged: (value) => setState(() {
-                  groupSize.setGroupSize(value.toInt());
-                }),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                child: const Text("Start Route"),
-                onPressed: () async {
-
-                 final _currentPosition = WayPoint(
-                   name: "Current Position",
-                   latitude: applicationProcesses.currentLocation!.latitude, // Hard coded value: 55.1175275,
-                   longitude: applicationProcesses.currentLocation!.longitude // Hard coded value: 0.4839524
-                 );
-
-                 _isMultipleStop = true;
-                 
-                 wayPoints.clear();
-                 wayPoints.add(_currentPosition);
-                 wayPoints.add(_origin);
-                 wayPoints.add(_stop1);
-                 wayPoints.add(_stop2);
-                 wayPoints.add(_stop3);
-                 wayPoints.add(_stop4);
-
-                 // Find closest start station
-                 WayPoint start = wayPoints.first;
-                 // These are random coords in East that don't have any bike stations nearby. So uncomment if you wanna see the 'no available bike stations alert.
-                 // Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
-                 Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
-                 Map startStation = await futureOfStartStation;
-
-                 // Find closest end station
-                 WayPoint end = wayPoints.last;
-                 Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
-                 Map endStation = await futureOfEndStation;
-
-                 // check if there are available bike stations nearby. If not the user is alerted.
-                 if(startStation.isEmpty || endStation.isEmpty) {
-                   _showNoStationsAlert(context);
-                 }
-                 else {
-                   WayPoint startStationWayPoint = WayPoint(
-                      name: "startStation",
-                      latitude: startStation['lat'],
-                      longitude: startStation['lon']
-                   );
-                   wayPoints.insert(1, startStationWayPoint);
-
-                   WayPoint endStationWayPoint = WayPoint(
-                      name: "endStation",
-                      latitude: endStation['lat'],
-                      longitude: endStation['lon']
-                   );
-                   wayPoints.add(endStationWayPoint);
-
-                   // Start navigating
-                   await _directions.startNavigation(
-                      wayPoints: wayPoints,
-                      options: _options
-                   );
-                   setState(() {
-                   });
-                 }
-                }
-              ),
-              const SizedBox(width: 10.0,),
-              ElevatedButton(
-                onPressed: () {
-                  drawRouteOverview();
-                },
-                child: const Text("Draw Route")
-              )
-            ],
-          ),
-          const SizedBox(height: 10.0,),
-          Stack(
-            children: [
-              Container(
-                color: Colors.pink,
-                height: 455.0,
-                child: GoogleMap(
-                  onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  polylines: _polyline,
-                  markers: _markers,
-                  initialCameraPosition: CameraPosition(
-                    target: applicationProcesses.currentLocation != null ? LatLng(
-                      applicationProcesses.currentLocation!.latitude, 
-                      applicationProcesses.currentLocation!.longitude,
-                    )
-                    : _center,
-                    zoom: 10.0,
-                  ),
-                ),
-              ),
-              if (applicationProcesses.searchResults.isNotEmpty)
-              Container(
-                height: 300.0,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  backgroundBlendMode: BlendMode.darken
-                ),
-              ),
-              if (applicationProcesses.searchResults.isNotEmpty)
-              SizedBox(
-                height: 200.0,
-                child: ListView.builder(
-                  itemCount: applicationProcesses.searchResults.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                        applicationProcesses.searchResults[index].description,
-                        style: const TextStyle(
-                          color: Colors.white,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: Icon(
+                              Icons.location_pin,
+                              size: 30.0,
+                              color: Colors.blue
+                            ),
+                            hintText: 'Search Location',
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              wordSpacing: 2,
+                              fontSize: 16,
+                              height: 1,
+                            ),
+                            suffixIcon: Icon(Icons.search),
+                          ),
+                          onChanged: (value) => applicationProcesses.searchPlaces(value)
                         ),
-                      ),
-                      onTap: () {
-                        applicationProcesses.setSelectedLocation(
-                          applicationProcesses.searchResults[index].placeId
-                        );
-                      }
-                    );
-                  },
-                ),
+                      ],
+                    )
+                  ),
+                ],
               ),
-            ],
+            )
           ),
+
+
+          // Previous cycle planner app, code commented for reference purposes.
+
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: TextField(
+          //     decoration: const InputDecoration(
+          //       hintText: 'Search Location',
+          //       suffixIcon: Icon(Icons.search),
+          //     ),
+          //     onChanged: (value) => applicationProcesses.searchPlaces(value)
+          //   ),
+          // ),
+          // Column(
+          //   children: <Widget>[
+          //     const SizedBox(height: 20.0,),
+          //     const Text(
+          //       "Group Size",
+          //       style: TextStyle(fontWeight: FontWeight.bold),
+          //     ),
+
+          //     SpinBox(
+          //       min: 1,
+          //       max: 8,
+          //       value: groupSize.getGroupSize().toDouble(),
+          //       onChanged: (value) => setState(() {
+          //         groupSize.setGroupSize(value.toInt());
+          //       }),
+          //     ),
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     ElevatedButton(
+          //       child: const Text("Start Route"),
+          //       onPressed: () async {
+
+          //        final _currentPosition = WayPoint(
+          //          name: "Current Position",
+          //          latitude: applicationProcesses.currentLocation!.latitude, // Hard coded value: 55.1175275,
+          //          longitude: applicationProcesses.currentLocation!.longitude // Hard coded value: 0.4839524
+          //        );
+
+          //        _isMultipleStop = true;
+                 
+          //        wayPoints.clear();
+          //        wayPoints.add(_currentPosition);
+          //        wayPoints.add(_origin);
+          //        wayPoints.add(_stop1);
+          //        wayPoints.add(_stop2);
+          //        wayPoints.add(_stop3);
+          //        wayPoints.add(_stop4);
+
+          //        // Find closest start station
+          //        WayPoint start = wayPoints.first;
+          //        // These are random coords in East that don't have any bike stations nearby. So uncomment if you wanna see the 'no available bike stations alert.
+          //        // Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
+          //        Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
+          //        Map startStation = await futureOfStartStation;
+
+          //        // Find closest end station
+          //        WayPoint end = wayPoints.last;
+          //        Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(end.latitude, end.longitude, groupSize.getGroupSize());
+          //        Map endStation = await futureOfEndStation;
+
+          //        // check if there are available bike stations nearby. If not the user is alerted.
+          //        if(startStation.isEmpty || endStation.isEmpty) {
+          //          _showNoStationsAlert(context);
+          //        }
+          //        else {
+          //          WayPoint startStationWayPoint = WayPoint(
+          //             name: "startStation",
+          //             latitude: startStation['lat'],
+          //             longitude: startStation['lon']
+          //          );
+          //          wayPoints.insert(1, startStationWayPoint);
+
+          //          WayPoint endStationWayPoint = WayPoint(
+          //             name: "endStation",
+          //             latitude: endStation['lat'],
+          //             longitude: endStation['lon']
+          //          );
+          //          wayPoints.add(endStationWayPoint);
+
+          //          // Start navigating
+          //          await _directions.startNavigation(
+          //             wayPoints: wayPoints,
+          //             options: _options
+          //          );
+          //          setState(() {
+          //          });
+          //        }
+          //       }
+          //     ),
+          //     const SizedBox(width: 10.0,),
+          //     ElevatedButton(
+          //       onPressed: () {
+          //         drawRouteOverview();
+          //       },
+          //       child: const Text("Draw Route")
+          //     )
+          //   ],
+          // ),
+          // const SizedBox(height: 10.0,),
+          // Container(
+          //   color: Colors.pink,
+          //   height: 455.0,
+          //   child: GoogleMap(
+          //     onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
+          //     myLocationButtonEnabled: true,
+          //     myLocationEnabled: true,
+          //     polylines: _polyline,
+          //     markers: _markers,
+          //     initialCameraPosition: CameraPosition(
+          //       target: applicationProcesses.currentLocation != null ? LatLng(
+          //         applicationProcesses.currentLocation!.latitude, 
+          //         applicationProcesses.currentLocation!.longitude,
+          //       )
+          //       : _center,
+          //       zoom: 10.0,
+          //     ),
+          //   ),
+          // ),
+          // if (applicationProcesses.searchResults.isNotEmpty)
+          // Container(
+          //   height: 300.0,
+          //   width: double.infinity,
+          //   decoration: BoxDecoration(
+          //     color: Colors.black.withOpacity(0.6),
+          //     backgroundBlendMode: BlendMode.darken
+          //   ),
+          // ),
+          // if (applicationProcesses.searchResults.isNotEmpty)
+          // SizedBox(
+          //   height: 200.0,
+          //   child: ListView.builder(
+          //     itemCount: applicationProcesses.searchResults.length,
+          //     itemBuilder: (context, index) {
+          //       return ListTile(
+          //         title: Text(
+          //           applicationProcesses.searchResults[index].description,
+          //           style: const TextStyle(
+          //             color: Colors.white,
+          //           ),
+          //         ),
+          //         onTap: () {
+          //           applicationProcesses.setSelectedLocation(
+          //             applicationProcesses.searchResults[index].placeId
+          //           );
+          //         }
+          //       );
+          //     },
+          //   ),
+          // ),
         ]
       ),
     );
