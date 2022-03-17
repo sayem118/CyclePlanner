@@ -158,11 +158,12 @@ class _HomeScreenState extends State<HomeScreen> {
       :ListView(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
             child: TextField(
               decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(12.0),
                 hintText: 'Search Location',
-                suffixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.search_rounded),
               ),
               onChanged: (value) => applicationProcesses.searchPlaces(value)
             ),
