@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/views/nav_bar.dart';
 import 'package:cycle_planner/models/place.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:cycle_planner/Widgets/search_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -144,6 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
+    // String? searchLabel;
     return Scaffold(
       // drawer: const NavBar(),
       // appBar: AppBar(
@@ -201,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               size: 30.0,
                               color: Colors.blue
                             ),
-                            hintText: 'Search Location',
+                            hintText: 'Search Location'/*(applicationProcesses.searchResults.isEmpty) ? 'Search location' : searchLabel*/,
                             hintStyle: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.w500,
@@ -211,7 +213,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             suffixIcon: Icon(Icons.search),
                           ),
-                          onChanged: (value) => applicationProcesses.searchPlaces(value)
+                          readOnly: true,
+                          onTap: () {
+                            showSearch(
+                              context: context,
+                              delegate: SearchPage(),
+                            );
+                            // setState(() { // Possible code for setting the hint text
+                            //   var searchLabel = searchResults;
+                            //   print(searchResults);
+                            // });
+                          },
                         ),
                       ],
                     )
@@ -376,7 +388,28 @@ class _HomeScreenState extends State<HomeScreen> {
           //     },
           //   ),
           // ),
-        ]
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: FloatingActionButton( // Set camera to the user's current location , will be removed in the future?
+        onPressed: () async {
+          final GoogleMapController controller = await _mapController.future;
+          setState(() {
+            controller.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: LatLng(
+                    applicationProcesses.currentLocation!.latitude,
+                    applicationProcesses.currentLocation!.longitude
+                  ),
+                  zoom: 14.0,
+                ),
+              ),
+            );
+          });
+        },
+        child: const Icon(Icons.my_location),
+        backgroundColor: Colors.grey[700]
       ),
     );
   }
