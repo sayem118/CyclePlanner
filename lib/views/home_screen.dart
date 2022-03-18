@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cycle_planner/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
@@ -11,7 +12,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/views/nav_bar.dart';
 import 'package:cycle_planner/models/place.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:cycle_planner/Widgets/search_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -173,66 +173,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Positioned(
+            const Positioned(
               top: 50.0,
               left: 0.0,
               right: 0.0,
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.only(top: 3, bottom: 3, left: 20, right: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 10,
-                      offset: Offset.zero,
-                    )
-                  ]
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          TextField(
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.location_pin,
-                                size: 30.0,
-                                color: Colors.blue
-                              ),
-                              hintText: 'Search Location'/*(applicationProcesses.searchResults.isEmpty) ? 'Search location' : searchLabel*/,
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                wordSpacing: 2,
-                                fontSize: 16,
-                                height: 1,
-                              ),
-                              suffixIcon: Icon(Icons.search),
-                            ),
-                            readOnly: true,
-                            onTap: () {
-                              showSearch(
-                                context: context,
-                                delegate: SearchPage(),
-                              );
-                              // setState(() { // Possible code for setting the hint text
-                              //   var searchLabel = searchResults;
-                              //   print(searchResults);
-                              // });
-                            },
-                          ),
-                        ],
-                      )
-                    ),
-                  ],
-                ),
-              )
+              child: SearchBar()
             ),
     
     
