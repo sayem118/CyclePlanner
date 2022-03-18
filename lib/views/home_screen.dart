@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned.fill(
               child: GoogleMap(
                 onMapCreated: (GoogleMapController controller) => _mapController.complete(controller),
-                myLocationButtonEnabled: true,
+                myLocationButtonEnabled: false,
                 myLocationEnabled: true,
                 polylines: _polyline,
                 markers: _markers,
