@@ -46,6 +46,7 @@ dependencies:
   plugin_platform_interface: ^2.0.0
   google_maps_flutter: ^2.1.2
   flutter_polyline_points: ^1.0.0
+  curved_navigation_bar: ^1.0.3
 
 
 dev_dependencies:

@@ -1,15 +1,14 @@
 import 'dart:async';
+import 'package:cycle_planner/widgets/bottom_navbar.dart';
 import 'package:cycle_planner/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
-import 'package:flutter_spinbox/material.dart';
 import 'package:cycle_planner/models/groups.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:cycle_planner/widgets/nav_bar.dart';
 import 'package:cycle_planner/models/place.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
@@ -149,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       bottom: true,
       child: Scaffold(
+        extendBody: true,
         // drawer: const NavBar(),
         // appBar: AppBar(
         //   title: const Text("Cycle Planner"),
@@ -358,6 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Icon(Icons.my_location),
           backgroundColor: Colors.grey[700]
         ),
+        bottomNavigationBar: const BottomNavBar(),
       ),
     );
   }
