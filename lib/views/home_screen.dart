@@ -164,6 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 myLocationEnabled: true,
                 polylines: _polyline,
                 markers: _markers,
+                zoomControlsEnabled: false,
                 initialCameraPosition: CameraPosition(
                   target: applicationProcesses.currentLocation != null ? LatLng(
                     applicationProcesses.currentLocation!.latitude, 
@@ -338,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // ),
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+        // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat, // To change floatingActionButton's location
         floatingActionButton: FloatingActionButton( // Set camera to the user's current location , will be removed in the future?
           onPressed: () async {
             final GoogleMapController controller = await _mapController.future;
@@ -357,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           child: const Icon(Icons.my_location),
-          backgroundColor: Colors.grey[700]
+          backgroundColor: Colors.redAccent,
         ),
         bottomNavigationBar: const BottomNavBar(),
       ),
