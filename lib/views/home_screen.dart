@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:cycle_planner/widgets/bottom_navbar.dart';
-import 'package:cycle_planner/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:cycle_planner/widgets/bottom_navbar.dart';
+import 'package:cycle_planner/widgets/nav_bar.dart';
+import 'package:cycle_planner/widgets/search_bar.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
@@ -149,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottom: true,
       child: Scaffold(
         extendBody: true,
-        // drawer: const NavBar(),
+        drawer: const NavBar(),
         // appBar: AppBar(
         //   title: const Text("Cycle Planner"),
         // ),

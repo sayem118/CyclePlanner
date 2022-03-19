@@ -34,7 +34,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         color: (Colors.cyan[300])!,
         buttonBackgroundColor: Colors.orange[400],
         backgroundColor: Colors.transparent,
-        animationDuration: const Duration(milliseconds: 400),
+        index: 3,
+        animationDuration: const Duration(milliseconds: 330),
         onTap: (index) => setState(() => this.index = index),
       ),
     );
