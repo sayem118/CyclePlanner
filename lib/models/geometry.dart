@@ -1,4 +1,3 @@
-//import 'package:google_maps_webservice/directions.dart';
 import 'package:cycle_planner/models/location.dart';
 
 class Geometry {
@@ -6,7 +5,6 @@ class Geometry {
 
   Geometry({required this.location});
 
-  Geometry.fromJson(Map<dynamic,dynamic> parsedJson)
-      :location = Location.fromJson(parsedJson['location']);
+  Geometry.fromJson(Map<dynamic,dynamic> parsedJson) : location = Location.fromJson(parsedJson['location']);
 }
 
