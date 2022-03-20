@@ -536,9 +536,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-}
-
-
 
   Future<void> _goToPlace(Place place) async {
     final GoogleMapController controller = await _mapController.future;

@@ -1,4 +1,3 @@
-
 import 'package:cycle_planner/models/geometry.dart';
 
 class Place{
@@ -15,5 +14,4 @@ class Place{
       vicinity: parsedJson['vicinity']
     );
   }
-
 }
