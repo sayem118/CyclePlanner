@@ -44,6 +44,8 @@ class _MapPageState extends State<MapPage> {
 
   @override
   void dispose() {
+    final applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
+    applicationProcesses.dispose();
     locationSubscription.cancel();
     super.dispose();
   }

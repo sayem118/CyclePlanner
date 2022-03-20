@@ -10,8 +10,6 @@ import 'package:cycle_planner/models/groups.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:cycle_planner/models/place.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -22,18 +20,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _mapController= Completer();
-  // late StreamSubscription locationSubscription;
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyline = {};
-  // late List<LatLng> nPoints = [];
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    // final applicationProcesses = Provider.of<ApplicationProcesses>(context,listen: false);
-    //   locationSubscription = applicationProcesses.selectedLocation.stream.listen((place) {
-    //     _goToPlace(place);
-    //   }
-    // );
     super.initState();
     initialize();
   }
@@ -42,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
     applicationProcesses.dispose();
-    // locationSubscription.cancel();
     super.dispose();
   }
 
@@ -145,19 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
-    // String? searchLabel;
     return SafeArea(
       bottom: true,
       child: Scaffold(
+        key: scaffoldKey,
         extendBody: true,
         drawer: const NavBar(),
-        // appBar: AppBar(
-        //   title: const Text("Cycle Planner"),
-        // ),
         body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
         :MapPage(mapController: _mapController, polyline: _polyline, markers: _markers, applicationProcesses: applicationProcesses, center: _center),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat, // To change floatingActionButton's location
-        floatingActionButton: FloatingActionButton( // Set camera to the user's current location , will be removed in the future?
+        floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final GoogleMapController controller = await _mapController.future;
             setState(() {
@@ -177,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Icon(Icons.my_location),
           backgroundColor: Colors.redAccent,
         ),
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar:  BottomNavBar(scaffoldKey: scaffoldKey),
       ),
     );
   }
