@@ -45,10 +45,15 @@ dependencies:
   mockito: ^5.0.0-nullsafety.7
   plugin_platform_interface: ^2.0.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  test:
+  integration_test:
+
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
