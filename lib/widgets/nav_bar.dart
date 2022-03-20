@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'iconic_places.dart';
+import 'package:cycle_planner/widgets/iconic_places.dart';
 import 'package:app_settings/app_settings.dart';
 
 

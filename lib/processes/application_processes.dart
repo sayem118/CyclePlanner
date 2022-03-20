@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
+import 'package:cycle_planner/models/place.dart';
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
@@ -17,6 +19,7 @@ class ApplicationProcesses with ChangeNotifier {
   // Class variables
   Position? currentLocation;
   List<PlaceSearch> searchResults = [];
+  StreamController<Place> selectedLocation = StreamController<Place>();
 
   // Class Initializer
   ApplicationProcesses() {
@@ -33,5 +36,17 @@ class ApplicationProcesses with ChangeNotifier {
   searchPlaces(String userInput) async {
     searchResults = await placesService.getAutocomplete(userInput);
     notifyListeners();
+  }
+
+  setSelectedLocation(String placeId) async{
+    selectedLocation.add(await placesService.getPlace(placeId));
+    searchResults = [];
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    selectedLocation.close();
+    super.dispose();
   }
 }
