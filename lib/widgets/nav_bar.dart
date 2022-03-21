@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'iconic_places.dart';
+import 'package:cycle_planner/widgets/iconic_places.dart';
 import 'package:app_settings/app_settings.dart';
 
 
@@ -11,7 +11,6 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        // Remove padding
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
@@ -41,18 +40,14 @@ class NavBar extends StatelessWidget {
             title: const Text('Iconic places'),
             onTap: () => {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return const IconicScreen();
+                return const IconicScreen(
+                );
               },),)
             },
           ),
           ListTile(
             leading: const Icon(Icons.place_sharp),
             title: const Text('Saved places'),
-            onTap: () => {null},
-          ),
-          ListTile(
-            leading: const Icon(Icons.share),
-            title: const Text('Share'),
             onTap: () => {null},
           ),
           const Divider(),
@@ -62,8 +57,8 @@ class NavBar extends StatelessWidget {
             onTap: () => AppSettings.openLocationSettings,
           ),
           ListTile(
-            leading:const Icon(Icons.description),
-            title: const Text('App Policies'),
+            leading:const Icon(Icons.info),
+            title: const Text('Info'),
             onTap: () => {null},
           ),
           const Divider(),

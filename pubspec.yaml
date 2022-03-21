@@ -44,12 +44,22 @@ dependencies:
   permission_handler: ^9.2.0
   mockito: ^5.0.0-nullsafety.7
   plugin_platform_interface: ^2.0.0
-  permission_handler_platform_interface: ^3.7.0
+  google_maps_flutter: ^2.1.2
+  flutter_polyline_points: ^1.0.0
+  curved_navigation_bar: ^1.0.3
+  firebase_core: ^1.13.1
+  firebase_storage: ^10.2.9
+  cloud_firestore: ^3.1.10
+  favorite_button: ^0.0.4
+  numberpicker: ^2.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   test:
+  integration_test:
+    sdk: flutter
+
 
 
 
@@ -101,3 +111,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  
