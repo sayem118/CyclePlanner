@@ -10,50 +10,67 @@ class GroupSize extends StatefulWidget {
 
 class _GroupSizeState extends State<GroupSize> {
   int _currentValue = 1;
+  final List<String> _products = [];
+
+  @override
+  void initState(){
+    for(int i = 0; i<20; i++){
+      _products.add("location " + i.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        title: const Text('My Journey'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                decoration: BoxDecoration( // Comment decoration for transluscent effect
-                  border: Border.all(color: Colors.black)
-                ),
-                child: NumberPicker(
-                  value: _currentValue,
-                  minValue: 1,
-                  maxValue: 8,
-                  onChanged: (value) => setState(() => _currentValue = value),
-                  haptics: true,
-                  itemHeight: 90.0,
-                  itemWidth: 150.0,
-                  textStyle: const TextStyle(fontSize: 25.0),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                'Current value: $_currentValue',
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),
-          ],
+      body: ReorderableListView(
+          children: _getListItems(),
+          // The reorder function
+          onReorder: (oldIndex, newIndex) {
+            setState(() {
+              if (newIndex > oldIndex) {
+                newIndex = newIndex - 1;
+              }
+              final element = _products.removeAt(oldIndex);
+              _products.removeAt(oldIndex);
+              _products.insert(newIndex, element);
+            });
+          }),
+
+    );
+
+  }
+  List<Widget> _getListItems() => _products
+      .asMap()
+      .map((i, item) => MapEntry(i, _buildTenableListTile(i)))
+      .values
+      .toList();
+
+  Widget _buildTenableListTile(int index) {
+    return Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction) {
+        setState(() {
+          _products.removeAt(index);
+        });
+      },
+      background: Container(color: Colors.red),
+      child: ListTile(
+        key: ValueKey(index),
+        title: Text(
+          'location ' + index.toString(),
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        onTap: () {},
       ),
     );
   }
+
 }
+
+
