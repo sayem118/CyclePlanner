@@ -34,7 +34,7 @@ class _GroupSizeState extends State<GroupSize> {
                 newIndex = newIndex - 1;
               }
               final element = _products.removeAt(oldIndex);
-              _products.removeAt(oldIndex);
+
               _products.insert(newIndex, element);
             });
           }),
@@ -60,7 +60,7 @@ class _GroupSizeState extends State<GroupSize> {
       child: ListTile(
         key: ValueKey(index),
         title: Text(
-          'location ' + index.toString(),
+          _products[index],
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
