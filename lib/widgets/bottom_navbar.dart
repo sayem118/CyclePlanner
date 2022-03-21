@@ -35,7 +35,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-
     return Theme(
       data: Theme.of(context).copyWith(
         iconTheme: const IconThemeData(color: Colors.white)
@@ -58,22 +57,33 @@ class _BottomNavBarState extends State<BottomNavBar> {
         animationDuration: const Duration(milliseconds: 330),
         onTap: (screenindex) {
           setState(() {
-            screenindex == 0 ? widget.scaffoldKey.currentState!.openDrawer()
-            : _selectedIndex = screens.indexOf(screens.elementAt(screenindex));
-
             switch (screenindex) {
               case 0: {
+                _selectedIndex = screenindex;
                 widget.scaffoldKey.currentState!.openDrawer();
-                _selectedIndex = screens.indexOf(screens.elementAt(screenindex));
               }
               break;
+              case 1: {
+                _selectedIndex = screenindex;
+                break;
+              }
+              case 2: {
+                _selectedIndex = screenindex;
+                break;
+              }
               case 3: {
-                // print("open mapbox");
+                _selectedIndex = screenindex;
                 MapboxNavigationService().mapboxBegin();
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => screens[screenindex]));
-                _selectedIndex = screens.indexOf(screens.elementAt(screenindex));
               }
               break;
+              case 4: {
+                _selectedIndex = screenindex;
+                break;
+              }
+              case 5: {
+                _selectedIndex = screenindex;
+                break;
+              }
             }
           });
         },
