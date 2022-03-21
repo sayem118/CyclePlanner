@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _mapController= Completer();
-  final Set<Marker> _markers = {};
+
   final Set<Polyline> _polyline = {};
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         extendBody: true,
         drawer: const NavBar(),
         body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
-        :GoogleMapPage(mapController: _mapController, polyline: _polyline, markers: _markers, applicationProcesses: applicationProcesses, center: _center),
+        :GoogleMapPage(mapController: _mapController, polyline: _polyline, applicationProcesses: applicationProcesses, center: _center),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final GoogleMapController controller = await _mapController.future;
