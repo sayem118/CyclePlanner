@@ -11,7 +11,6 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        // Remove padding
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
@@ -42,7 +41,6 @@ class NavBar extends StatelessWidget {
             onTap: () => {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                 return const IconicScreen(
-
                 );
               },),)
             },

@@ -34,34 +34,30 @@ class PlacesService {
 
   Future<Place> getPlace(String placeId) async {
     // Request URL
-    var url = 'https://maps.googleapis.com/maps/api/place/details/json?key=$key&place_id=$placeId';
+    String url = 'https://maps.googleapis.com/maps/api/place/details/json?key=$key&place_id=$placeId';
 
-    // Get URL response
-    var response = await http.get(Uri.parse(url));
-
-    // Convert received JSON String response into JSON Object
-    var json = convert.jsonDecode(response.body);
-
-    // Covert JSON Object to List
-    var results = json['result'] as Map<String,dynamic>;
-
-    return Place.fromJson(results);
+    // Get URL Response
+    return await getResponse(url, 'result');
   }
 
   Future<Place> getPlaceMarkers(double? lat, double? lng, String placeId) async {
     // Request URL
-
     var url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&location=$lat,$lng&key=$key';
 
     // Get URL response
-    var response = await http.get(Uri.parse(url));
+    return await getResponse(url, 'result');
+  }
 
+  Future<Place> getResponse(String url, String requestParam) async {
+    // Get URL response
+    http.Response response = await http.get(Uri.parse(url));
+    
     // Convert received JSON String response into JSON Object
     var json = convert.jsonDecode(response.body);
-
+    
     // Covert JSON Object to List
-    var results = json['result'] as Map<String,dynamic>;
-
+    Map<String, dynamic> results = json[requestParam] as Map<String,dynamic>;
+    
     return Place.fromJson(results);
   }
 }

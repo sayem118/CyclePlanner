@@ -1,7 +1,6 @@
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:cycle_planner/processes/application_processes.dart';
-import '../models/place.dart';
+import 'package:cycle_planner/models/place.dart';
 
 class MarkerService{
   LatLngBounds? bounds(Set<Marker> markers){
@@ -16,8 +15,8 @@ class MarkerService{
     final northeastLat = positions.map((p) => p.latitude).reduce((value, element) => value > element ? value : element); // biggest
     final northeastLon = positions.map((p) => p.longitude).reduce((value, element) => value > element ? value : element);
     return LatLngBounds(
-        southwest: LatLng(southwestLat, southwestLon),
-        northeast: LatLng(northeastLat, northeastLon)
+      southwest: LatLng(southwestLat, southwestLon),
+      northeast: LatLng(northeastLat, northeastLon)
     );
   }
 
@@ -25,14 +24,16 @@ class MarkerService{
     String markerId = place.name;
 
     return Marker(
-        markerId: MarkerId(markerId),
-        draggable: false,
-        visible: true,
-        infoWindow: InfoWindow(
-            title: place.name, snippet: place.vicinity
-        ),
-        position: LatLng(place.geometry.location.lat,
-            place.geometry.location.lng)
+      markerId: MarkerId(markerId),
+      draggable: false,
+      visible: true,
+      infoWindow: InfoWindow(
+        title: place.name, snippet: place.vicinity
+      ),
+      position: LatLng(
+        place.geometry.location.lat,
+        place.geometry.location.lng
+      )
     );
   }
 }

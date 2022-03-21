@@ -20,7 +20,6 @@ class GoogleMapPage extends StatefulWidget {
 
   final Completer<GoogleMapController> _mapController;
   final Set<Polyline> _polyline;
- // final Set<Marker> _markers;
   final ApplicationProcesses applicationProcesses;
   final LatLng _center;
   
@@ -32,7 +31,6 @@ class GoogleMapPage extends StatefulWidget {
 class _MapPageState extends State<GoogleMapPage> {
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
-  //List<Marker> myMarker = [];
 
   @override
   void initState() {
@@ -47,8 +45,6 @@ class _MapPageState extends State<GoogleMapPage> {
     });
     super.initState();
   }
-
-
 
   @override
   void dispose() {
@@ -69,7 +65,6 @@ class _MapPageState extends State<GoogleMapPage> {
             myLocationButtonEnabled: false,
             myLocationEnabled: true,
             polylines: widget._polyline,
-           // markers: widget._markers,
             zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(
               target: widget.applicationProcesses.currentLocation != null ? LatLng(
@@ -90,7 +85,6 @@ class _MapPageState extends State<GoogleMapPage> {
           right: 0.0,
           child: SearchBar()
         ),
-
       ],
     );
 
@@ -213,13 +207,13 @@ class _MapPageState extends State<GoogleMapPage> {
   //   });
   // }
 
-    Future<void> _goToPlace(Place place) async {
+  Future<void> _goToPlace(Place place) async {
     final GoogleMapController controller = await widget._mapController.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(
-              place.geometry.location.lat, place.geometry.location.lng
+            place.geometry.location.lat, place.geometry.location.lng
           ),
           zoom: 14.0,
         ),

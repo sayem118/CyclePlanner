@@ -1,8 +1,9 @@
 import 'package:cycle_planner/services/mapbox_navigation_service.dart';
+import 'package:cycle_planner/widgets/group_size.dart';
 // import 'package:cycle_planner/widgets/mapbox_navigation-COMMENTED.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:cycle_planner/Widgets/nav_bar.dart';
+// import 'package:cycle_planner/Widgets/nav_bar.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -21,17 +22,6 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
 
   int _selectedIndex = 3;
-
-  // Templates
-  final screens = [
-    const NavBar(),
-    const Text("Bike stations"),
-    const Text("Add stop"),
-    MapboxNavigationService(),
-    const Text("Directions"),
-    const Text("Groups"),
-    const Text("Info"),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +72,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
               case 5: {
                 _selectedIndex = screenindex;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const GroupSize()),
+                );
                 break;
               }
             }
+            print(_selectedIndex);
           });
         },
       ),

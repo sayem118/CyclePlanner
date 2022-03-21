@@ -38,9 +38,16 @@ class ApplicationProcesses with ChangeNotifier {
   // Update the user's current location
   setCurrentLocation() async {
     currentLocation = await geoLocatorService.getCurrentLocation();
-    selectedLocationStatic = Place(name: '',
-      geometry: Geometry(location: Location(
-          lat: currentLocation!.latitude, lng: currentLocation!.longitude),), vicinity: '',);
+    selectedLocationStatic = Place(
+      name: '',
+      geometry: Geometry(
+        location: Location(
+          lat: currentLocation!.latitude,
+          lng: currentLocation!.longitude
+        ),
+      ), 
+      vicinity: '',
+    );
     notifyListeners();
   }
 
@@ -50,7 +57,7 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
-  setSelectedLocation(String placeId) async{
+  setSelectedLocation(String placeId) async {
     var sLocation = await placesService.getPlace(placeId);
     selectedLocation.add(sLocation);
     selectedLocationStatic = sLocation;
@@ -59,26 +66,21 @@ class ApplicationProcesses with ChangeNotifier {
   }
 
   togglePlaceType(String value) async {
-
     placeName = value;
 
-    if (placeName != null) {
-      Place place = await placesService.getPlaceMarkers(
-          selectedLocationStatic.geometry.location.lat,
-          selectedLocationStatic.geometry.location.lng,
-          placeName
-      );
-      markers= [];
+    Place place = await placesService.getPlaceMarkers(
+      selectedLocationStatic.geometry.location.lat,
+      selectedLocationStatic.geometry.location.lng,
+      placeName
+    );
+    markers= [];
 
-      var newMarker = markerService.createMarkerFromPlace(place);
-      markers.add(newMarker);
+    var newMarker = markerService.createMarkerFromPlace(place);
+    markers.add(newMarker);
 
-
-      var _bounds = markerService.bounds(Set<Marker>.of(markers));
-      bounds.add(_bounds!);
-    }
+    var _bounds = markerService.bounds(Set<Marker>.of(markers));
+    bounds.add(_bounds!);
     notifyListeners();
-
   }
 
   @override
