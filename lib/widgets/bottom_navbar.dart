@@ -48,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Icon(Icons.navigation_rounded, size: 27.0,),
           Icon(Icons.directions, size: 27.0,),
           Icon(Icons.group, size: 27.0,),
-          Icon(Icons.info, size: 27.0,),
+         // Icon(Icons.info, size: 27.0,),
         ],
         height: 60.0,
         color: (Colors.cyan[300])!,

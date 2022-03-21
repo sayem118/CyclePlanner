@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "24221914313",
-    "project_id": "cycleplannerfinal",
-    "storage_bucket": "cycleplannerfinal.appspot.com"
+    "project_number": "341050433977",
+    "project_id": "cycleplanner-c70a6",
+    "storage_bucket": "cycleplanner-c70a6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:24221914313:android:8125d9fbb00c9d4edfa918",
+        "mobilesdk_app_id": "1:341050433977:android:769b42824057c55cc01668",
         "android_client_info": {
           "package_name": "com.example.cycle_planner"
         }
       },
       "oauth_client": [
         {
-          "client_id": "24221914313-dsot8171j9dcurd3mt4lo9m2dt05gjk7.apps.googleusercontent.com",
+          "client_id": "341050433977-bqj6uauia8k24aic4us23b117d2v198b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB7Slm0L8zjeHn4Gti3vCsenKhezO6qJgk"
+          "current_key": "AIzaSyBYq11otDn3lcyBALq4YpuaIouYIRGB2fg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "24221914313-dsot8171j9dcurd3mt4lo9m2dt05gjk7.apps.googleusercontent.com",
+              "client_id": "341050433977-bqj6uauia8k24aic4us23b117d2v198b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
