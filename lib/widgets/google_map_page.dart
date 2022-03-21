@@ -9,8 +9,8 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
 
 
-class MapPage extends StatefulWidget {
-  const MapPage({
+class GoogleMapPage extends StatefulWidget {
+  const GoogleMapPage({
     Key? key,
     required Completer<GoogleMapController> mapController,
     required Set<Polyline> polyline,
@@ -27,10 +27,10 @@ class MapPage extends StatefulWidget {
   
 
   @override
-  State<MapPage> createState() => _MapPageState();
+  State<GoogleMapPage> createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends State<GoogleMapPage> {
   late StreamSubscription locationSubscription;
   List<Marker> myMarker = [];
 

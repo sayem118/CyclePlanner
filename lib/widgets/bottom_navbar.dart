@@ -1,3 +1,5 @@
+import 'package:cycle_planner/services/mapbox_navigation_service.dart';
+// import 'package:cycle_planner/widgets/mapbox_navigation-COMMENTED.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:cycle_planner/Widgets/nav_bar.dart';
@@ -18,37 +20,18 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
 
-
   int _selectedIndex = 3;
 
   // Templates
-  final List<Widget> screens = [
+  final screens = [
     const NavBar(),
     const Text("Bike stations"),
     const Text("Add stop"),
-    const Text("Start naviagtion"),
+    MapboxNavigationService(),
     const Text("Directions"),
     const Text("Groups"),
     const Text("Info"),
   ];
-
-  // void _onItemTapped(int index) {
-  //   if (widget.selectedIndex == 0) {
-  //     _selectedIndex == 0 ? widget.scaffoldKey.currentState!.openDrawer()
-  //     : _selectedIndex = screens.indexOf(screens.elementAt(index));
-
-  //   }
-  //   setState(() {
-  //     widget.selectedIndex = index;
-  //     _selectedIndex = widget.selectedIndex;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   _onItemTapped(widget.selectedIndex);
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +60,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
           setState(() {
             screenindex == 0 ? widget.scaffoldKey.currentState!.openDrawer()
             : _selectedIndex = screens.indexOf(screens.elementAt(screenindex));
+
+            switch (screenindex) {
+              case 0: {
+                widget.scaffoldKey.currentState!.openDrawer();
+                _selectedIndex = screens.indexOf(screens.elementAt(screenindex));
+              }
+              break;
+              case 3: {
+                // print("open mapbox");
+                MapboxNavigationService().mapboxBegin();
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => screens[screenindex]));
+                _selectedIndex = screens.indexOf(screens.elementAt(screenindex));
+              }
+              break;
+            }
           });
         },
       ),

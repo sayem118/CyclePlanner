@@ -1,131 +1,67 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:cycle_planner/widgets/google_map_page.dart';
-import 'package:cycle_planner/widgets/bottom_navbar.dart';
-import 'package:cycle_planner/widgets/nav_bar.dart';
-import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:provider/provider.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:flutter_mapbox_navigation/library.dart';
+// import 'package:cycle_planner/processes/application_processes.dart';
+// import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({ Key? key }) : super(key: key);
+class MapboxNavigationService {
+  static var routeEventHandler;
 
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
+  // MapboxNavigationService({required Future<void> Function(dynamic e) embedded/*, required ApplicationProcesses bloc*/});
 
-class _HomeScreenState extends State<HomeScreen> {
-  final Completer<GoogleMapController> _mapController= Completer();
-  final Set<Marker> _markers = {};
-  final Set<Polyline> _polyline = {};
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  var wayPoints = <WayPoint>[];
 
-  @override
-  void initState() {
-    super.initState();
+  final _directions = MapBoxNavigation(/*onRouteEvent: routeEventHandler*/);
+  final _options = MapBoxOptions(
+    initialLatitude: 53.1424,
+    initialLongitude: 7.6921,
+    zoom: 7.0,
+    tilt: 0.0,
+    bearing: 0.0,
+    enableRefresh: true,
+    alternatives: true,
+    voiceInstructionsEnabled: true,
+    bannerInstructionsEnabled: true,
+    allowsUTurnAtWayPoints: true,
+    mode: MapBoxNavigationMode.cycling,
+    units: VoiceUnits.imperial,
+    simulateRoute: false,
+    animateBuildRoute: true,
+    longPressDestinationEnabled: false,
+    language: "en",
+  );
+
+  // Hard coded waypoints, to be removed
+  final _origin = WayPoint(
+    name: "Big Ben",
+    latitude: 51.500863,
+    longitude: -0.124593
+  );
+
+  final _stop1 = WayPoint(
+    name: "Buckingham Palace",
+    latitude: 51.50204176039292,
+    longitude: -0.14188788458748477
+  );
+
+  void addStop(WayPoint waypoint) {
+    wayPoints.add(waypoint);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  MapBoxOptions getOptions() {
+    return _options;
   }
 
-  final LatLng _center = const LatLng(53.1424, 7.6921);
-  late GoogleMapController mapController;
-
-  @override
-  Widget build(BuildContext context) {
-    final applicationProcesses = Provider.of<ApplicationProcesses>(context);
-    return SafeArea(
-      bottom: true,
-      child: Scaffold(
-        key: scaffoldKey,
-        extendBody: true,
-        drawer: const NavBar(),
-        body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
-        :GoogleMapPage(mapController: _mapController, polyline: _polyline, markers: _markers, applicationProcesses: applicationProcesses, center: _center),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            final GoogleMapController controller = await _mapController.future;
-            setState(() {
-              controller.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    target: LatLng(
-                      applicationProcesses.currentLocation!.latitude,
-                      applicationProcesses.currentLocation!.longitude
-                    ),
-                    zoom: 14.0,
-                  ),
-                ),
-              );
-            });
-          },
-          child: const Icon(Icons.my_location),
-          backgroundColor: Colors.redAccent,
-        ),
-        bottomNavigationBar:  BottomNavBar(scaffoldKey: scaffoldKey),
-      ),
-    );
+  MapBoxNavigation getDirections() {
+    return _directions;
   }
-}
 
+  void mapboxBegin() async {
+    addStop(_origin);
+    addStop(_stop1);
+    await _directions.startNavigation(wayPoints: wayPoints, options: _options);
+  }
 
-
-
-
-  // // Hard coded waypoints for testing purposes
-  // final _origin = WayPoint(
-  //   name: "Big Ben",
-  //   latitude: 51.500863,
-  //   longitude: -0.124593
-  // );
-
-  // final _stop1 = WayPoint(
-  //   name: "Buckingham Palace",
-  //   latitude: 51.50204176039292,
-  //   longitude: -0.14188788458748477
-  // );
-
-  // final _stop2 = WayPoint(
-  //   name: "British Museum",
-  //   latitude: 51.521285300295474,
-  //   longitude: -0.126953347081018
-  // );
-
-  // final _stop3 = WayPoint(
-  //   name: "Trafalgar Square",
-  //   latitude: 51.50809338374528,
-  //   longitude: -0.12804891498586773
-  // );
-
-  // final _stop4 = WayPoint(
-  //   name: "London Eye",
-  //   latitude: 51.50461919293181,
-  //   longitude: -0.11954631306912968
-  // );
-
-  // final marker1 = const Marker(
-  //   markerId: MarkerId("London eye"),
-  //   position: LatLng(51.50461919293181, -0.11954631306912968)
-  // );
-
-  // final marker2 = const Marker(
-  //   markerId: MarkerId("Trafalgar Square"),
-  //   position: LatLng(51.50809338374528, -0.12804891498586773)
-  // );
-
-  // final marker3 = const Marker(
-  //   markerId: MarkerId("museum"),
-  //   position: LatLng(51.50809338374528, -0.126953347081018)
-  // );
-
-  // final marker5 = const Marker(
-  //   markerId: MarkerId("knightsbridge"),
-  //   position: LatLng(51.50809338374528, -0.16162)
-  // );
-
- // //method to draw route overview
+   // //method to draw route overview
   // //will assume the first 2 and last markers are for getting to the bike stations
   // Future<void> drawRouteOverview()  async {
   //   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -255,3 +191,4 @@ class _HomeScreenState extends State<HomeScreen> {
   //     }
   //   }
   // }
+}
