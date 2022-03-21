@@ -73,7 +73,6 @@ class ApplicationProcesses with ChangeNotifier {
       selectedLocationStatic.geometry.location.lng,
       placeName
     );
-    markers= [];
 
     var newMarker = markerService.createMarkerFromPlace(place);
     markers.add(newMarker);
