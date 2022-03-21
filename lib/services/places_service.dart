@@ -47,4 +47,23 @@ class PlacesService {
 
     return Place.fromJson(results);
   }
+
+  Future<Place> getPlaceMarkers(double? lat, double? lng, String placeId) async {
+    // Request URL
+
+    var url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&location=$lat,$lng&key=$key';
+
+    // Get URL response
+    var response = await http.get(Uri.parse(url));
+
+    // Convert received JSON String response into JSON Object
+    var json = convert.jsonDecode(response.body);
+
+    // Covert JSON Object to List
+    var results = json['result'] as Map<String,dynamic>;
+
+    return Place.fromJson(results);
+  }
 }
+
+

@@ -14,7 +14,6 @@ class GoogleMapPage extends StatefulWidget {
     Key? key,
     required Completer<GoogleMapController> mapController,
     required Set<Polyline> polyline,
-    required Set<Marker> markers,
     required this.applicationProcesses,
     required LatLng center, 
   }) : _mapController = mapController, _polyline = polyline,  _center = center, super(key: key);
@@ -32,7 +31,8 @@ class GoogleMapPage extends StatefulWidget {
 
 class _MapPageState extends State<GoogleMapPage> {
   late StreamSubscription locationSubscription;
-  List<Marker> myMarker = [];
+  late StreamSubscription boundsSubscription;
+  //List<Marker> myMarker = [];
 
   @override
   void initState() {
@@ -41,14 +41,21 @@ class _MapPageState extends State<GoogleMapPage> {
         _goToPlace(place);
       }
     );
+    applicationProcesses.bounds.stream.listen((bounds) async {
+      final GoogleMapController controller = await widget._mapController.future;
+      controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+    });
     super.initState();
   }
+
+
 
   @override
   void dispose() {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
     applicationProcesses.dispose();
     locationSubscription.cancel();
+    boundsSubscription.cancel();
     super.dispose();
   }
 
@@ -72,8 +79,8 @@ class _MapPageState extends State<GoogleMapPage> {
               : widget._center,
               zoom: 11.0,
             ),
-            markers: Set.from(myMarker),
-            onTap: _handleTap,
+            markers: Set<Marker>.of(widget.applicationProcesses.markers),
+            //onTap: _handleTap,
           ),
 
         ),
@@ -89,35 +96,36 @@ class _MapPageState extends State<GoogleMapPage> {
 
   }
 
-  _handleTap(LatLng tappedPoint){
-    print(tappedPoint);
-    setState(() {
-      myMarker = [];
-      myMarker.add(
-          Marker(
-            markerId: MarkerId(tappedPoint.toString()),
-            position: tappedPoint,
-            draggable: true,
-            onDragEnd: (dragEndPosition){
-              print(dragEndPosition);
-            }
-          )
-      );
-    });
-  }
+  // _handleTap(LatLng tappedPoint){
+  //   print(tappedPoint);
+  //   setState(() {
+  //     myMarker = [];
+  //     myMarker.add(
+  //         Marker(
+  //           markerId: MarkerId(tappedPoint.toString()),
+  //           position: tappedPoint,
+  //           draggable: true,
+  //           onDragEnd: (dragEndPosition){
+  //             print(dragEndPosition);
+  //           }
+  //         )
+  //     );
+  //   });
+  // }
 
-  _handleSearch(Place searchedPoint){
-    print(searchedPoint);
-    setState(() {
-      myMarker = [];
-      myMarker.add(
-          Marker(
-              markerId: MarkerId(searchedPoint.toString()),
-              position: LatLng(searchedPoint.geometry.location.lat, searchedPoint.geometry.location.lng),
-          )
-      );
-    });
-  }
+  // _handleSearch(Place searchedPoint){
+  //   print(searchedPoint);
+  //   setState(() {
+  //     myMarker = [];
+  //     myMarker.add(
+  //         Marker(
+  //             markerId: MarkerId(searchedPoint.toString()),
+  //             position: LatLng(searchedPoint.geometry.location.lat, searchedPoint.geometry.location.lng),
+  //         )
+  //     );
+  //   });
+  // }
+
   //
   // Future<void> drawRouteOverview() async {
   //   const marker1 = Marker(
