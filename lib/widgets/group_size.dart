@@ -17,6 +17,7 @@ class _GroupSizeState extends State<GroupSize> {
     for(int i = 0; i<20; i++){
       _products.add("location " + i.toString());
     }
+    super.initState();
   }
 
   @override
