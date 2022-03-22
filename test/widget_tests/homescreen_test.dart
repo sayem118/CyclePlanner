@@ -26,6 +26,53 @@ void main() {
     expect(find.byWidget(childWidget), findsOneWidget);
   });
 
+  testWidgets('Menu icon', (WidgetTester tester) async {
+  //   // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+    // Search for the childWidget in the tree and verify it exists.
+    await tester.tap(find.byIcon(Icons.menu));
+
+  });
+
+  testWidgets('Directions Bike icon', (WidgetTester tester) async {
+    //   // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+    // Search for the childWidget in the tree and verify it exists.
+    await tester.tap(find.byIcon(Icons.directions_bike));
+
+  });
+
+  testWidgets('Add icon', (WidgetTester tester) async {
+    //   // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+    // Search for the childWidget in the tree and verify it exists.
+    await tester.tap(find.byIcon(Icons.add));
+
+  });
+
+  // testWidgets('Navigation Rounded icon', (WidgetTester tester) async {
+  //   //   // Build our app and trigger a frame.
+  //   await tester.pumpWidget(const MyApp());
+  //   // Search for the childWidget in the tree and verify it exists.
+  //   await tester.tap(find.byIcon(Icons.navigation_rounded));
+  //
+  // });
+
+  testWidgets('Directions icon', (WidgetTester tester) async {
+    //   // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+    // Search for the childWidget in the tree and verify it exists.
+    await tester.tap(find.byIcon(Icons.directions));
+
+  });
+
+  testWidgets('Group icon', (WidgetTester tester) async {
+    //   // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+    // Search for the childWidget in the tree and verify it exists.
+    await tester.tap(find.byIcon(Icons.group));
+
+  });
 
   // testWidgets(
   //
@@ -33,7 +80,7 @@ void main() {
   //   // Build our app and trigger a frame.
   //    await tester.pumpWidget(const MyApp());
   //
-  //   // // Verify that our counter starts at 1.
+  //   // Verify that our counter starts at 1.
   //   expect(find.byWidget(const NavBar()), findsOneWidget);
   //   expect(find.text('1'), findsOneWidget);
   //   //Verify the correct texts are displayed
