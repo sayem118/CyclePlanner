@@ -6,16 +6,14 @@ import 'package:cycle_planner/models/groups.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
-import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 // import 'package:permission_handler/permission_handler.dart';
@@ -188,39 +186,6 @@ void main() {
     });
   });
 
-  PlacesService place = PlacesService();
-  group('getAutocomplete', () {
-    test('returns if autocomplete search works',
-            () async {
-
-          // Mock the API call to return a json response with http status 200 Ok //
-          final mockHTTPClient = MockClient((request) async {
-
-            // Create sample response of the HTTP call //
-            final response = {
-              'text':
-              "22834 is the feet above sea level of the highest mountain"
-            };
-            return Response(jsonEncode(response), 200);
-          });
-          // Check whether getAutocomplete function returns
-          // a list of PlaceSearch
-          expect(await place.getAutocomplete("poplar"), isA<List<PlaceSearch>>());
-        });
-
-    test('return error message when http response is unsuccessful', () async {
-
-      // Mock the API call to return an
-      // empty json response with http status 404
-      final mockHTTPClient = MockClient((request) async {
-        final response = {};
-        return Response(jsonEncode(response), 404);
-      });
-      expect(await place.getAutocomplete(""),
-          []);
-    });
-  });
-
 
 
 }
@@ -317,127 +282,3 @@ class MockGeolocatorPlatform extends Mock
       ) =>
       42;
 }
-
-// void main() {
-//   group('PermissionHandler', () {
-//     setUp(() {
-//       PermissionHandlerPlatform.instance = MockPermissionHandlerPlatform();
-//     });
-//
-//     test('openAppSettings', () async {
-//       final hasOpened = await openAppSettings();
-//
-//       expect(hasOpened, true);
-//     });
-//
-//     test('PermissionActions on Permission: get status', () async {
-//       final permissionStatus = await Permission.calendar.status;
-//
-//       expect(permissionStatus, PermissionStatus.granted);
-//     });
-//
-//     test(
-//       // ignore: lines_longer_than_80_chars
-//         'PermissionActions on Permission: get shouldShowRequestRationale should return true when on android',
-//             () async {
-//           final mockPermissionHandlerPlatform = PermissionHandlerPlatform.instance;
-//
-//           when(mockPermissionHandlerPlatform
-//               .shouldShowRequestPermissionRationale(Permission.calendar))
-//               .thenAnswer((_) => Future.value(true));
-//
-//           await Permission.calendar.shouldShowRequestRationale;
-//
-//           verify(mockPermissionHandlerPlatform
-//               .shouldShowRequestPermissionRationale(Permission.calendar))
-//               .called(1);
-//         });
-//
-//     test('PermissionActions on Permission: request()', () async {
-//       final permissionRequest = Permission.calendar.request();
-//
-//       expect(permissionRequest, isA<Future<PermissionStatus>>());
-//     });
-//
-//     test('PermissionCheckShortcuts on Permission: get isGranted', () async {
-//       final isGranted = await Permission.calendar.isGranted;
-//       expect(isGranted, true);
-//     });
-//
-//     test('PermissionCheckShortcuts on Permission: get isDenied', () async {
-//       final isDenied = await Permission.calendar.isDenied;
-//       expect(isDenied, false);
-//     });
-//
-//     test('PermissionCheckShortcuts on Permission: get isRestricted', () async {
-//       final isRestricted = await Permission.calendar.isRestricted;
-//       expect(isRestricted, false);
-//     });
-//
-//     test('PermissionCheckShortcuts on Permission: get isLimited', () async {
-//       final isLimited = await Permission.calendar.isLimited;
-//       expect(isLimited, false);
-//     });
-//
-//     test('PermissionCheckShortcuts on Permission: get isPermanentlyDenied',
-//             () async {
-//           final isPermanentlyDenied = await Permission.calendar.isPermanentlyDenied;
-//           expect(isPermanentlyDenied, false);
-//         });
-//
-//     test(
-//       // ignore: lines_longer_than_80_chars
-//         'ServicePermissionActions on PermissionWithService: get ServiceStatus returns the right service status',
-//             () async {
-//           var serviceStatus = await Permission.phone.serviceStatus;
-//
-//           expect(serviceStatus, ServiceStatus.enabled);
-//         });
-//
-//     test(
-//       // ignore: lines_longer_than_80_chars
-//         'PermissionListActions on List<Permission>: request() on  a list returns a Map<Permission, PermissionStatus>',
-//             () async {
-//           var permissionList = <Permission>[];
-//           final permissionMap = await permissionList.request();
-//
-//           expect(permissionMap, isA<Map<Permission, PermissionStatus>>());
-//         });
-//   });
-// }
-//
-// class MockPermissionHandlerPlatform extends Mock
-//     with
-//     // ignore: prefer_mixin
-//         MockPlatformInterfaceMixin
-//     implements
-//         PermissionHandlerPlatform {
-//   @override
-//   Future<PermissionStatus> checkPermissionStatus(Permission permission) =>
-//       Future.value(PermissionStatus.granted);
-//
-//   @override
-//   Future<ServiceStatus> checkServiceStatus(Permission permission) =>
-//       Future.value(ServiceStatus.enabled);
-//
-//   @override
-//   Future<bool> openAppSettings() => Future.value(true);
-//
-//   @override
-//   Future<Map<Permission, PermissionStatus>> requestPermissions(
-//       List<Permission> permissions) {
-//     var permissionsMap = <Permission, PermissionStatus>{};
-//     return Future.value(permissionsMap);
-//   }
-//
-//   @override
-//   Future<bool> shouldShowRequestPermissionRationale(Permission? permission) {
-//     return super.noSuchMethod(
-//       Invocation.method(
-//         #shouldShowPermissionRationale,
-//         [permission],
-//       ),
-//       returnValue: Future.value(true),
-//     );
-//   }
-// }

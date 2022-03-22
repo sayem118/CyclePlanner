@@ -3,7 +3,6 @@ import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/services/marker_service.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
@@ -17,7 +16,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ApplicationProcesses with ChangeNotifier {
   
-  final geoLocatorService = GeolocatorService();
+  final geoLocatorService = Geolocator();
   final placesService = PlacesService();
   final markerService = MarkerService();
 
@@ -37,7 +36,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   // Update the user's current location
   setCurrentLocation() async {
-    currentLocation = await geoLocatorService.getCurrentLocation();
+    currentLocation = await Geolocator.getCurrentPosition();
     selectedLocationStatic = Place(
       name: '',
       geometry: Geometry(
