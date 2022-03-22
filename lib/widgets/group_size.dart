@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
 
@@ -27,27 +25,27 @@ class _GroupSizeState extends State<GroupSize> {
         title: const Text('My Journey'),
       ),
       body: ReorderableListView(
-              children: _getListItems(),
-              // The reorder function
-              onReorder: (oldIndex, newIndex) {
-                setState(() {
-                  if (newIndex > oldIndex) {
-                    newIndex = newIndex - 1;
-                  }
-                  final element = applicationProcesses.markers.removeAt(oldIndex);
+        children: _getListItems(),
+        // The reorder function
+        onReorder: (oldIndex, newIndex) {
+          setState(() {
+            if (newIndex > oldIndex) {
+              newIndex = newIndex - 1;
+            }
+            final element = applicationProcesses.markers.removeAt(oldIndex);
 
-                  applicationProcesses.markers.insert(newIndex, element);
-                });
-              }
-              ),
-          );
+            applicationProcesses.markers.insert(newIndex, element);
+          });
+        }
+      ),
+    );
   }
 
   List<Widget> _getListItems() => applicationProcesses.markers
-      .asMap()
-      .map((i, item) => MapEntry(i, _buildTenableListTile(i)))
-      .values
-      .toList();
+    .asMap()
+    .map((i, item) => MapEntry(i, _buildTenableListTile(i)))
+    .values
+    .toList();
 
   Widget _buildTenableListTile(int index) {
     return Dismissible(
@@ -71,7 +69,4 @@ class _GroupSizeState extends State<GroupSize> {
       ),
     );
   }
-
 }
-
-

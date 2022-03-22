@@ -17,16 +17,16 @@ class PlacesService {
   // Return autocompleted user typed search results
   Future<List<PlaceSearch>> getAutocomplete(String search) async {
     // Request URL
-    var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=geocode|establishment&location=51.509865,-0.118092&radius=500&key=$key';
+    String url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=geocode|establishment&location=51.509865,-0.118092&radius=500&key=$key';
     
     // Get URL response
-    var response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url));
 
     // Convert received JSON String response into JSON Object
-    var json = convert.jsonDecode(response.body);
+    dynamic json = convert.jsonDecode(response.body);
 
     // Covert JSON Object to List
-    var results = json['predictions'] as List;
+    List<dynamic> results = json['predictions'] as List;
 
     return results.map((place) => PlaceSearch.fromJson(place)).toList();
 
@@ -42,7 +42,7 @@ class PlacesService {
 
   Future<Place> getPlaceMarkers(double? lat, double? lng, String placeId) async {
     // Request URL
-    var url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&location=$lat,$lng&key=$key';
+    String url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&location=$lat,$lng&key=$key';
 
     // Get URL response
     return await getResponse(url, 'result');
@@ -53,9 +53,9 @@ class PlacesService {
     http.Response response = await http.get(Uri.parse(url));
     
     // Convert received JSON String response into JSON Object
-    var json = convert.jsonDecode(response.body);
+    dynamic json = convert.jsonDecode(response.body);
     
-    // Covert JSON Object to List
+    // Covert JSON Object to Map
     Map<String, dynamic> results = json[requestParam] as Map<String,dynamic>;
     
     return Place.fromJson(results);

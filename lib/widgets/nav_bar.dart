@@ -29,9 +29,10 @@ class NavBar extends StatelessWidget {
             decoration: const BoxDecoration(
               color: Colors.blue,
               image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(
-                      'https://media1.giphy.com/media/2Ozjbk786Umdy/giphy.gif?cid=ecf05e47vihcftxs1yzhnt85rsxcs9xhjkka9yalmlet95jd&rid=giphy.gif&ct=g')
+                fit: BoxFit.fill,
+                image: NetworkImage(
+                  'https://media1.giphy.com/media/2Ozjbk786Umdy/giphy.gif?cid=ecf05e47vihcftxs1yzhnt85rsxcs9xhjkka9yalmlet95jd&rid=giphy.gif&ct=g'
+                ),
               ),
             ),
           ),
@@ -40,8 +41,7 @@ class NavBar extends StatelessWidget {
             title: const Text('Iconic places'),
             onTap: () => {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return const IconicScreen(
-                );
+                return const IconicScreen();
               },),)
             },
           ),
