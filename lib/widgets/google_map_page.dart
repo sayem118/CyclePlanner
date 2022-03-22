@@ -1,7 +1,7 @@
 import 'package:cycle_planner/models/place.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geolocator/geolocator.dart'; // probably should be removed
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:cycle_planner/widgets/search_bar.dart';
@@ -119,6 +119,10 @@ class _MapPageState extends State<GoogleMapPage> {
   //     );
   //   });
   // }
+
+  Future<void> _drawRouteOverview()async{
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
 
   //
   // Future<void> drawRouteOverview() async {
