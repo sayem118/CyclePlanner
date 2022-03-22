@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:cycle_planner/main.dart';
 
 void main() {
