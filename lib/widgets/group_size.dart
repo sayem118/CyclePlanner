@@ -24,19 +24,36 @@ class _GroupSizeState extends State<GroupSize> {
       appBar: AppBar(
         title: const Text('My Journey'),
       ),
-      body: ReorderableListView(
-        children: _getListItems(),
-        // The reorder function
-        onReorder: (oldIndex, newIndex) {
-          setState(() {
-            if (newIndex > oldIndex) {
-              newIndex = newIndex - 1;
-            }
-            final element = applicationProcesses.markers.removeAt(oldIndex);
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+                'My stops',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 200,
+            child: ReorderableListView(
+              children: _getListItems(),
+              // The reorder function
+              onReorder: (oldIndex, newIndex) {
+                setState(() {
+                  if (newIndex > oldIndex) {
+                    newIndex = newIndex - 1;
+                  }
+                  final element = applicationProcesses.markers.removeAt(oldIndex);
 
-            applicationProcesses.markers.insert(newIndex, element);
-          });
-        }
+                  applicationProcesses.markers.insert(newIndex, element);
+                });
+              }
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -62,10 +79,11 @@ class _GroupSizeState extends State<GroupSize> {
           applicationProcesses.markers[index].markerId.value,
           style: const TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold,
           ),
         ),
         onTap: () {},
+        leading: Icon(Icons.location_pin),
+        trailing: Icon(Icons.menu),
       ),
     );
   }
