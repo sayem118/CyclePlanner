@@ -1,11 +1,10 @@
-import 'package:cycle_planner/Widgets/nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/main.dart';
 
 void main() {
-  testWidgets('finds a widget using a Key', (WidgetTester tester) async {
+  testWidgets(
+      'Testing for widgets created using key', (WidgetTester tester) async {
     // Define the test key.
     const testKey = Key('K');
 
@@ -16,7 +15,7 @@ void main() {
     expect(find.byKey(testKey), findsOneWidget);
   });
 
-  testWidgets('finds a specific instance', (WidgetTester tester) async {
+  testWidgets('Check child widgets are placed', (WidgetTester tester) async {
     const childWidget = Padding(padding: EdgeInsets.zero);
 
     // Provide the childWidget to the Container.
@@ -27,85 +26,39 @@ void main() {
   });
 
   testWidgets('Menu icon', (WidgetTester tester) async {
-  //   // Build our app and trigger a frame.
+    //   // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
-    // Search for the childWidget in the tree and verify it exists.
+    // Search for the menu icon in the tree and verify it exists.
     await tester.tap(find.byIcon(Icons.menu));
-
   });
 
   testWidgets('Directions Bike icon', (WidgetTester tester) async {
     //   // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
-    // Search for the childWidget in the tree and verify it exists.
+    // Search for the directions bike icon in the tree and verify it exists.
     await tester.tap(find.byIcon(Icons.directions_bike));
-
   });
 
   testWidgets('Add icon', (WidgetTester tester) async {
     //   // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
-    // Search for the childWidget in the tree and verify it exists.
+    // Search for the add icon in the tree and verify it exists.
     await tester.tap(find.byIcon(Icons.add));
-
   });
 
-  // testWidgets('Navigation Rounded icon', (WidgetTester tester) async {
-  //   //   // Build our app and trigger a frame.
-  //   await tester.pumpWidget(const MyApp());
-  //   // Search for the childWidget in the tree and verify it exists.
-  //   await tester.tap(find.byIcon(Icons.navigation_rounded));
-  //
-  // });
+  //Navigation Rounded Icon is manually tested
 
   testWidgets('Directions icon', (WidgetTester tester) async {
     //   // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
-    // Search for the childWidget in the tree and verify it exists.
+    // Search for the directions icon in the tree and verify it exists.
     await tester.tap(find.byIcon(Icons.directions));
-
   });
 
   testWidgets('Group icon', (WidgetTester tester) async {
     //   // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
-    // Search for the childWidget in the tree and verify it exists.
+    // Search for the group icon in the tree and verify it exists.
     await tester.tap(find.byIcon(Icons.group));
-
   });
-
-  // testWidgets(
-  //
-  //     'Group size page is loaded correctly', (WidgetTester tester) async {
-  //   // Build our app and trigger a frame.
-  //    await tester.pumpWidget(const MyApp());
-  //
-  //   // Verify that our counter starts at 1.
-  //   expect(find.byWidget(const NavBar()), findsOneWidget);
-  //   expect(find.text('1'), findsOneWidget);
-  //   //Verify the correct texts are displayed
-  //   expect(find.text('Start Route'), findsOneWidget);
-  //
-  //   //Verify the group size will not decrement to 0
-  //   await tester.tap(find.byIcon(Icons.remove));
-  //   await tester.pump();
-  //   expect(find.text('0'), findsNothing);
-  //   expect(find.text('1'), findsOneWidget);
-  //
-  //   // Tap the '+' icon and trigger a frame.
-  //   await tester.tap(find.byIcon(Icons.add));
-  //   await tester.pump();
-  //
-  //   // Verify that our counter has incremented.
-  //   expect(find.text('1'), findsNothing);
-  //   expect(find.text('2'), findsOneWidget);
-  //
-  //   // Tap the '-' icon and trigger a frame.
-  //   await tester.tap(find.byIcon(Icons.remove));
-  //   await tester.pump();
-  //
-  //   // Verify that our counter has decremented.
-  //   expect(find.text('0'), findsNothing);
-  //   expect(find.text('1'), findsOneWidget);
-  // });
 }
