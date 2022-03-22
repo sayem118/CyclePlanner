@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:cycle_planner/models/groups.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class GroupSize extends StatefulWidget {
-  const GroupSize({Key? key}) : super(key: key);
+class JourneyPlanner extends StatefulWidget {
+  const JourneyPlanner({Key? key}) : super(key: key);
 
   @override
-  _GroupSizeState createState() => _GroupSizeState();
+  _JourneyPlannerState createState() => _JourneyPlannerState();
 }
 
-class _GroupSizeState extends State<GroupSize> {
+class _JourneyPlannerState extends State<JourneyPlanner> {
   late final ApplicationProcesses applicationProcesses;
-  int _currentValue = 1;
   PanelController _pc1 = PanelController();
+  int _currentValue = 1;
 
   @override
   void initState(){
@@ -37,10 +38,9 @@ class _GroupSizeState extends State<GroupSize> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0,0,0,20),
                 child: Text(
-                  'Group size',
+                  'Select a group size',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                   ),
                 ),
               ),
@@ -49,6 +49,35 @@ class _GroupSizeState extends State<GroupSize> {
                 minValue: 1,
                 maxValue: 10,
                 onChanged: (value) => setState(() => _currentValue = value),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8,0,4,0),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              _pc1.close();
+                            },
+                            child: Text('Cancel')),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(4,0,8,0),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              // set group size
+                              _pc1.close();
+                            },
+                            child: Text('Apply')),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -66,11 +95,11 @@ class _GroupSizeState extends State<GroupSize> {
                 children: [
                   ElevatedButton.icon(
                     icon: Icon(Icons.group_add),
-                      onPressed: () {
-                        _pc1.open();
-                      },
+                    onPressed: () {
+                      _pc1.open();
+                    },
                     label: Text('Group size: $_currentValue'),
-                      ),
+                  ),
                 ],
               ),
             ),

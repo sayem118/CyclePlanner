@@ -1,8 +1,9 @@
 import 'package:cycle_planner/services/mapbox_navigation_service.dart';
-import 'package:cycle_planner/widgets/group_size.dart';
 // import 'package:cycle_planner/widgets/mapbox_navigation-COMMENTED.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
+import 'journey_planner.dart';
 // import 'package:cycle_planner/Widgets/nav_bar.dart';
 
 
@@ -74,7 +75,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 _selectedIndex = screenindex;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GroupSize()),
+                  MaterialPageRoute(builder: (context) => const JourneyPlanner()),
                 );
                 break;
               }
