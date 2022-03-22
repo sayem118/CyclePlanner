@@ -11,12 +11,14 @@ class GroupSize extends StatefulWidget {
 class _GroupSizeState extends State<GroupSize> {
   int _currentValue = 1;
   final List<String> _products = [];
+  late List<Widget> _test =[];
 
   @override
   void initState(){
     for(int i = 0; i<20; i++){
       _products.add("location " + i.toString());
     }
+    _test = _getListItems();
     super.initState();
   }
 
@@ -41,37 +43,34 @@ class _GroupSizeState extends State<GroupSize> {
           }),
 
     );
-
   }
-  List<Widget> _getListItems() => _products
-      .asMap()
-      .map((i, item) => MapEntry(i, _buildTenableListTile(i)))
-      .values
-      .toList();
+  List<Widget> _getListItems() => _products.asMap().map((i, item) => MapEntry(i, _buildTenableListTile(i))).values.toList();
+
+
 
   Widget _buildTenableListTile(int index) {
-    return Dismissible(
-      key: UniqueKey(),
-      onDismissed: (direction) {
-        setState(() {
-          _products.removeAt(index);
-        });
-      },
-      background: Container(color: Colors.red),
-      child: ListTile(
-        key: ValueKey(index),
-        title: Text(
-          _products[index],
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+      return Dismissible(
+        key: UniqueKey(),
+        onDismissed: (direction) {
+          setState(() {
+            _products.removeAt(index);
+          });
+        },
+        background: Container(color: Colors.red),
+        child: ListTile(
+          key: ValueKey(index),
+          title: Text(
+            _products[index],
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          onTap: () {},
         ),
-        onTap: () {},
-      ),
-    );
+      );
+    }
   }
 
-}
 
 
