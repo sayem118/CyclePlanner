@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">40</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">Tue Mar 22 16:45:37 2022</td>
+            <td class="headerValue">Tue Mar 22 17:49:13 2022</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -63,7 +63,7 @@
 <a name="1"><span class="lineNum">       1 </span>            : import 'package:cycle_planner/models/place.dart';</a>
 <a name="2"><span class="lineNum">       2 </span>            : import 'package:flutter/material.dart';</a>
 <a name="3"><span class="lineNum">       3 </span>            : import 'package:flutter_polyline_points/flutter_polyline_points.dart';</a>
-<a name="4"><span class="lineNum">       4 </span>            : import 'package:geolocator/geolocator.dart'; // probably should be removed</a>
+<a name="4"><span class="lineNum">       4 </span>            : import 'package:geolocator/geolocator.dart';</a>
 <a name="5"><span class="lineNum">       5 </span>            : import 'package:google_maps_flutter/google_maps_flutter.dart';</a>
 <a name="6"><span class="lineNum">       6 </span>            : import 'dart:async';</a>
 <a name="7"><span class="lineNum">       7 </span>            : import 'package:cycle_planner/widgets/search_bar.dart';</a>
@@ -182,107 +182,111 @@
 <a name="120"><span class="lineNum">     120 </span>            :   //   });</a>
 <a name="121"><span class="lineNum">     121 </span>            :   // }</a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
-<a name="123"><span class="lineNum">     123 </span>            :   //</a>
-<a name="124"><span class="lineNum">     124 </span>            :   // Future&lt;void&gt; drawRouteOverview() async {</a>
-<a name="125"><span class="lineNum">     125 </span>            :   //   const marker1 = Marker(</a>
-<a name="126"><span class="lineNum">     126 </span>            :   //     markerId: MarkerId(&quot;London eye&quot;),</a>
-<a name="127"><span class="lineNum">     127 </span>            :   //     position: LatLng(51.50461919293181, -0.11954631306912968)</a>
-<a name="128"><span class="lineNum">     128 </span>            :   //   );</a>
-<a name="129"><span class="lineNum">     129 </span>            :   //</a>
-<a name="130"><span class="lineNum">     130 </span>            :   //   const marker2 = Marker(</a>
-<a name="131"><span class="lineNum">     131 </span>            :   //     markerId: MarkerId(&quot;Trafalgar Square&quot;),</a>
-<a name="132"><span class="lineNum">     132 </span>            :   //     position: LatLng(51.50809338374528, -0.12804891498586773)</a>
-<a name="133"><span class="lineNum">     133 </span>            :   //   );</a>
-<a name="134"><span class="lineNum">     134 </span>            :   //</a>
-<a name="135"><span class="lineNum">     135 </span>            :   //   const marker3 = Marker(</a>
-<a name="136"><span class="lineNum">     136 </span>            :   //     markerId: MarkerId(&quot;museum&quot;),</a>
-<a name="137"><span class="lineNum">     137 </span>            :   //     position: LatLng(51.50809338374528, -0.126953347081018)</a>
-<a name="138"><span class="lineNum">     138 </span>            :   //   );</a>
-<a name="139"><span class="lineNum">     139 </span>            :   //</a>
-<a name="140"><span class="lineNum">     140 </span>            :   //   const marker5 = Marker(</a>
-<a name="141"><span class="lineNum">     141 </span>            :   //     markerId: MarkerId(&quot;knightsbridge&quot;),</a>
-<a name="142"><span class="lineNum">     142 </span>            :   //     position: LatLng(51.50809338374528, -0.16162)</a>
-<a name="143"><span class="lineNum">     143 </span>            :   //   );</a>
-<a name="144"><span class="lineNum">     144 </span>            :   //</a>
-<a name="145"><span class="lineNum">     145 </span>            :   //   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);</a>
-<a name="146"><span class="lineNum">     146 </span>            :   //</a>
-<a name="147"><span class="lineNum">     147 </span>            :   //   //some dummy data</a>
-<a name="148"><span class="lineNum">     148 </span>            :   //   final marker4 = Marker(</a>
-<a name="149"><span class="lineNum">     149 </span>            :   //     markerId: const MarkerId(&quot;current&quot;),</a>
-<a name="150"><span class="lineNum">     150 </span>            :   //     position: LatLng(position.latitude, position.longitude)</a>
-<a name="151"><span class="lineNum">     151 </span>            :   //   );</a>
-<a name="152"><span class="lineNum">     152 </span>            : </a>
-<a name="153"><span class="lineNum">     153 </span>            :     // //adds markers to the list of markers</a>
-<a name="154"><span class="lineNum">     154 </span>            :     // widget._markers.add(marker4);</a>
-<a name="155"><span class="lineNum">     155 </span>            :     // widget._markers.add(marker1);</a>
-<a name="156"><span class="lineNum">     156 </span>            :     // widget._markers.add(marker2);</a>
-<a name="157"><span class="lineNum">     157 </span>            :     // widget._markers.add(marker3);</a>
-<a name="158"><span class="lineNum">     158 </span>            :     // widget._markers.add(marker5);</a>
-<a name="159"><span class="lineNum">     159 </span>            : </a>
-<a name="160"><span class="lineNum">     160 </span>            :     // will go through list of markers</a>
-<a name="161"><span class="lineNum">     161 </span>            :     // for(var i = 1; i &lt; widget._markers.length; i++) {</a>
-<a name="162"><span class="lineNum">     162 </span>            :     //   late PolylinePoints polylinePoints;</a>
-<a name="163"><span class="lineNum">     163 </span>            :     //   polylinePoints = PolylinePoints();</a>
-<a name="164"><span class="lineNum">     164 </span>            :     //   final markerS = widget._markers.elementAt(i - 1);</a>
-<a name="165"><span class="lineNum">     165 </span>            :     //   final markerd = widget._markers.elementAt(i);</a>
-<a name="166"><span class="lineNum">     166 </span>            :     //   final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);</a>
-<a name="167"><span class="lineNum">     167 </span>            :     //   final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);</a>
-<a name="168"><span class="lineNum">     168 </span>            :     //</a>
-<a name="169"><span class="lineNum">     169 </span>            :     //   //gets a set of coordinates between 2 markers</a>
-<a name="170"><span class="lineNum">     170 </span>            :     //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(</a>
-<a name="171"><span class="lineNum">     171 </span>            :     //     &quot;AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY&quot;,</a>
-<a name="172"><span class="lineNum">     172 </span>            :     //     marker1,</a>
-<a name="173"><span class="lineNum">     173 </span>            :     //     marker2,</a>
-<a name="174"><span class="lineNum">     174 </span>            :     //     travelMode: TravelMode.bicycling,</a>
-<a name="175"><span class="lineNum">     175 </span>            :     //   );</a>
-<a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span>            :   //     //drawing route to bike stations</a>
-<a name="178"><span class="lineNum">     178 </span>            :   //     late List&lt;LatLng&gt; nPoints = [];</a>
-<a name="179"><span class="lineNum">     179 </span>            :   //     double stuff = 0;</a>
-<a name="180"><span class="lineNum">     180 </span>            :   //     for (var point in result.points) {</a>
-<a name="181"><span class="lineNum">     181 </span>            :   //       nPoints.add(LatLng(point.latitude, point.longitude));</a>
-<a name="182"><span class="lineNum">     182 </span>            :   //       stuff = point.latitude + point.longitude;</a>
-<a name="183"><span class="lineNum">     183 </span>            :   //     }</a>
-<a name="184"><span class="lineNum">     184 </span>            :   //</a>
-<a name="185"><span class="lineNum">     185 </span>            :   //     //adds stuff to polyline</a>
-<a name="186"><span class="lineNum">     186 </span>            :   //     //if its a cycle path line is red otherwise line is blue</a>
-<a name="187"><span class="lineNum">     187 </span>            :   //     if (i == 1 || i == widget._markers.length - 1){</a>
-<a name="188"><span class="lineNum">     188 </span>            :   //       widget._polyline.add(</a>
-<a name="189"><span class="lineNum">     189 </span>            :   //         Polyline(</a>
-<a name="190"><span class="lineNum">     190 </span>            :   //           polylineId: PolylineId(stuff.toString()),</a>
-<a name="191"><span class="lineNum">     191 </span>            :   //           points: nPoints,</a>
-<a name="192"><span class="lineNum">     192 </span>            :   //           color: Colors.red</a>
-<a name="193"><span class="lineNum">     193 </span>            :   //         )</a>
-<a name="194"><span class="lineNum">     194 </span>            :   //       );</a>
-<a name="195"><span class="lineNum">     195 </span>            :   //     }</a>
-<a name="196"><span class="lineNum">     196 </span>            :   //     else{</a>
-<a name="197"><span class="lineNum">     197 </span>            :   //       widget._polyline.add(</a>
-<a name="198"><span class="lineNum">     198 </span>            :   //         Polyline(</a>
-<a name="199"><span class="lineNum">     199 </span>            :   //           polylineId: PolylineId(stuff.toString()),</a>
-<a name="200"><span class="lineNum">     200 </span>            :   //           points: nPoints,</a>
-<a name="201"><span class="lineNum">     201 </span>            :   //           color: Colors.blue</a>
-<a name="202"><span class="lineNum">     202 </span>            :   //         )</a>
-<a name="203"><span class="lineNum">     203 </span>            :   //       );</a>
-<a name="204"><span class="lineNum">     204 </span>            :   //     }</a>
-<a name="205"><span class="lineNum">     205 </span>            :   //   }</a>
-<a name="206"><span class="lineNum">     206 </span>            :   //   setState(() {</a>
-<a name="207"><span class="lineNum">     207 </span>            :   //   });</a>
-<a name="208"><span class="lineNum">     208 </span>            :   // }</a>
-<a name="209"><span class="lineNum">     209 </span>            : </a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :   Future&lt;void&gt; _goToPlace(Place place) async {</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :     final GoogleMapController controller = await widget._mapController.future;</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :     controller.animateCamera(</span></a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :       CameraUpdate.newCameraPosition(</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :         CameraPosition(</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :           target: LatLng(</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :             place.geometry.location.lat, place.geometry.location.lng</span></a>
-<a name="217"><span class="lineNum">     217 </span>            :           ),</a>
-<a name="218"><span class="lineNum">     218 </span>            :           zoom: 14.0,</a>
-<a name="219"><span class="lineNum">     219 </span>            :         ),</a>
-<a name="220"><span class="lineNum">     220 </span>            :       ),</a>
-<a name="221"><span class="lineNum">     221 </span>            :     );</a>
-<a name="222"><span class="lineNum">     222 </span>            :   }</a>
-<a name="223"><span class="lineNum">     223 </span>            : }</a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :   Future&lt;void&gt; _drawRouteOverview()async{</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);</span></a>
+<a name="125"><span class="lineNum">     125 </span>            :   }</a>
+<a name="126"><span class="lineNum">     126 </span>            : </a>
+<a name="127"><span class="lineNum">     127 </span>            :   //</a>
+<a name="128"><span class="lineNum">     128 </span>            :   // Future&lt;void&gt; drawRouteOverview() async {</a>
+<a name="129"><span class="lineNum">     129 </span>            :   //   const marker1 = Marker(</a>
+<a name="130"><span class="lineNum">     130 </span>            :   //     markerId: MarkerId(&quot;London eye&quot;),</a>
+<a name="131"><span class="lineNum">     131 </span>            :   //     position: LatLng(51.50461919293181, -0.11954631306912968)</a>
+<a name="132"><span class="lineNum">     132 </span>            :   //   );</a>
+<a name="133"><span class="lineNum">     133 </span>            :   //</a>
+<a name="134"><span class="lineNum">     134 </span>            :   //   const marker2 = Marker(</a>
+<a name="135"><span class="lineNum">     135 </span>            :   //     markerId: MarkerId(&quot;Trafalgar Square&quot;),</a>
+<a name="136"><span class="lineNum">     136 </span>            :   //     position: LatLng(51.50809338374528, -0.12804891498586773)</a>
+<a name="137"><span class="lineNum">     137 </span>            :   //   );</a>
+<a name="138"><span class="lineNum">     138 </span>            :   //</a>
+<a name="139"><span class="lineNum">     139 </span>            :   //   const marker3 = Marker(</a>
+<a name="140"><span class="lineNum">     140 </span>            :   //     markerId: MarkerId(&quot;museum&quot;),</a>
+<a name="141"><span class="lineNum">     141 </span>            :   //     position: LatLng(51.50809338374528, -0.126953347081018)</a>
+<a name="142"><span class="lineNum">     142 </span>            :   //   );</a>
+<a name="143"><span class="lineNum">     143 </span>            :   //</a>
+<a name="144"><span class="lineNum">     144 </span>            :   //   const marker5 = Marker(</a>
+<a name="145"><span class="lineNum">     145 </span>            :   //     markerId: MarkerId(&quot;knightsbridge&quot;),</a>
+<a name="146"><span class="lineNum">     146 </span>            :   //     position: LatLng(51.50809338374528, -0.16162)</a>
+<a name="147"><span class="lineNum">     147 </span>            :   //   );</a>
+<a name="148"><span class="lineNum">     148 </span>            :   //</a>
+<a name="149"><span class="lineNum">     149 </span>            :   //   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);</a>
+<a name="150"><span class="lineNum">     150 </span>            :   //</a>
+<a name="151"><span class="lineNum">     151 </span>            :   //   //some dummy data</a>
+<a name="152"><span class="lineNum">     152 </span>            :   //   final marker4 = Marker(</a>
+<a name="153"><span class="lineNum">     153 </span>            :   //     markerId: const MarkerId(&quot;current&quot;),</a>
+<a name="154"><span class="lineNum">     154 </span>            :   //     position: LatLng(position.latitude, position.longitude)</a>
+<a name="155"><span class="lineNum">     155 </span>            :   //   );</a>
+<a name="156"><span class="lineNum">     156 </span>            : </a>
+<a name="157"><span class="lineNum">     157 </span>            :     // //adds markers to the list of markers</a>
+<a name="158"><span class="lineNum">     158 </span>            :     // widget._markers.add(marker4);</a>
+<a name="159"><span class="lineNum">     159 </span>            :     // widget._markers.add(marker1);</a>
+<a name="160"><span class="lineNum">     160 </span>            :     // widget._markers.add(marker2);</a>
+<a name="161"><span class="lineNum">     161 </span>            :     // widget._markers.add(marker3);</a>
+<a name="162"><span class="lineNum">     162 </span>            :     // widget._markers.add(marker5);</a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span>            :     // will go through list of markers</a>
+<a name="165"><span class="lineNum">     165 </span>            :     // for(var i = 1; i &lt; widget._markers.length; i++) {</a>
+<a name="166"><span class="lineNum">     166 </span>            :     //   late PolylinePoints polylinePoints;</a>
+<a name="167"><span class="lineNum">     167 </span>            :     //   polylinePoints = PolylinePoints();</a>
+<a name="168"><span class="lineNum">     168 </span>            :     //   final markerS = widget._markers.elementAt(i - 1);</a>
+<a name="169"><span class="lineNum">     169 </span>            :     //   final markerd = widget._markers.elementAt(i);</a>
+<a name="170"><span class="lineNum">     170 </span>            :     //   final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);</a>
+<a name="171"><span class="lineNum">     171 </span>            :     //   final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);</a>
+<a name="172"><span class="lineNum">     172 </span>            :     //</a>
+<a name="173"><span class="lineNum">     173 </span>            :     //   //gets a set of coordinates between 2 markers</a>
+<a name="174"><span class="lineNum">     174 </span>            :     //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(</a>
+<a name="175"><span class="lineNum">     175 </span>            :     //     &quot;AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY&quot;,</a>
+<a name="176"><span class="lineNum">     176 </span>            :     //     marker1,</a>
+<a name="177"><span class="lineNum">     177 </span>            :     //     marker2,</a>
+<a name="178"><span class="lineNum">     178 </span>            :     //     travelMode: TravelMode.bicycling,</a>
+<a name="179"><span class="lineNum">     179 </span>            :     //   );</a>
+<a name="180"><span class="lineNum">     180 </span>            : </a>
+<a name="181"><span class="lineNum">     181 </span>            :   //     //drawing route to bike stations</a>
+<a name="182"><span class="lineNum">     182 </span>            :   //     late List&lt;LatLng&gt; nPoints = [];</a>
+<a name="183"><span class="lineNum">     183 </span>            :   //     double stuff = 0;</a>
+<a name="184"><span class="lineNum">     184 </span>            :   //     for (var point in result.points) {</a>
+<a name="185"><span class="lineNum">     185 </span>            :   //       nPoints.add(LatLng(point.latitude, point.longitude));</a>
+<a name="186"><span class="lineNum">     186 </span>            :   //       stuff = point.latitude + point.longitude;</a>
+<a name="187"><span class="lineNum">     187 </span>            :   //     }</a>
+<a name="188"><span class="lineNum">     188 </span>            :   //</a>
+<a name="189"><span class="lineNum">     189 </span>            :   //     //adds stuff to polyline</a>
+<a name="190"><span class="lineNum">     190 </span>            :   //     //if its a cycle path line is red otherwise line is blue</a>
+<a name="191"><span class="lineNum">     191 </span>            :   //     if (i == 1 || i == widget._markers.length - 1){</a>
+<a name="192"><span class="lineNum">     192 </span>            :   //       widget._polyline.add(</a>
+<a name="193"><span class="lineNum">     193 </span>            :   //         Polyline(</a>
+<a name="194"><span class="lineNum">     194 </span>            :   //           polylineId: PolylineId(stuff.toString()),</a>
+<a name="195"><span class="lineNum">     195 </span>            :   //           points: nPoints,</a>
+<a name="196"><span class="lineNum">     196 </span>            :   //           color: Colors.red</a>
+<a name="197"><span class="lineNum">     197 </span>            :   //         )</a>
+<a name="198"><span class="lineNum">     198 </span>            :   //       );</a>
+<a name="199"><span class="lineNum">     199 </span>            :   //     }</a>
+<a name="200"><span class="lineNum">     200 </span>            :   //     else{</a>
+<a name="201"><span class="lineNum">     201 </span>            :   //       widget._polyline.add(</a>
+<a name="202"><span class="lineNum">     202 </span>            :   //         Polyline(</a>
+<a name="203"><span class="lineNum">     203 </span>            :   //           polylineId: PolylineId(stuff.toString()),</a>
+<a name="204"><span class="lineNum">     204 </span>            :   //           points: nPoints,</a>
+<a name="205"><span class="lineNum">     205 </span>            :   //           color: Colors.blue</a>
+<a name="206"><span class="lineNum">     206 </span>            :   //         )</a>
+<a name="207"><span class="lineNum">     207 </span>            :   //       );</a>
+<a name="208"><span class="lineNum">     208 </span>            :   //     }</a>
+<a name="209"><span class="lineNum">     209 </span>            :   //   }</a>
+<a name="210"><span class="lineNum">     210 </span>            :   //   setState(() {</a>
+<a name="211"><span class="lineNum">     211 </span>            :   //   });</a>
+<a name="212"><span class="lineNum">     212 </span>            :   // }</a>
+<a name="213"><span class="lineNum">     213 </span>            : </a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :   Future&lt;void&gt; _goToPlace(Place place) async {</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :     final GoogleMapController controller = await widget._mapController.future;</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :     controller.animateCamera(</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :       CameraUpdate.newCameraPosition(</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :         CameraPosition(</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :           target: LatLng(</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :             place.geometry.location.lat, place.geometry.location.lng</span></a>
+<a name="221"><span class="lineNum">     221 </span>            :           ),</a>
+<a name="222"><span class="lineNum">     222 </span>            :           zoom: 14.0,</a>
+<a name="223"><span class="lineNum">     223 </span>            :         ),</a>
+<a name="224"><span class="lineNum">     224 </span>            :       ),</a>
+<a name="225"><span class="lineNum">     225 </span>            :     );</a>
+<a name="226"><span class="lineNum">     226 </span>            :   }</a>
+<a name="227"><span class="lineNum">     227 </span>            : }</a>
 </pre>
       </td>
     </tr>

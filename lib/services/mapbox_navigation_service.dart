@@ -14,7 +14,7 @@ class MapboxNavigationService {
   final _options = MapBoxOptions(
     initialLatitude: 53.1424,
     initialLongitude: 7.6921,
-    zoom: 7.0,
+    zoom: 15.0,
     tilt: 0.0,
     bearing: 0.0,
     enableRefresh: true,
