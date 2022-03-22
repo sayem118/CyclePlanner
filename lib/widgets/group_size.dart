@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:provider/provider.dart';
 
 class GroupSize extends StatefulWidget {
   const GroupSize({Key? key}) : super(key: key);
@@ -9,14 +12,11 @@ class GroupSize extends StatefulWidget {
 }
 
 class _GroupSizeState extends State<GroupSize> {
-  int _currentValue = 1;
-  final List<String> _products = [];
+  late final ApplicationProcesses applicationProcesses;
 
   @override
   void initState(){
-    for(int i = 0; i<20; i++){
-      _products.add("location " + i.toString());
-    }
+    applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
     super.initState();
   }
 
@@ -27,23 +27,23 @@ class _GroupSizeState extends State<GroupSize> {
         title: const Text('My Journey'),
       ),
       body: ReorderableListView(
-          children: _getListItems(),
-          // The reorder function
-          onReorder: (oldIndex, newIndex) {
-            setState(() {
-              if (newIndex > oldIndex) {
-                newIndex = newIndex - 1;
+              children: _getListItems(),
+              // The reorder function
+              onReorder: (oldIndex, newIndex) {
+                setState(() {
+                  if (newIndex > oldIndex) {
+                    newIndex = newIndex - 1;
+                  }
+                  final element = applicationProcesses.markers.removeAt(oldIndex);
+
+                  applicationProcesses.markers.insert(newIndex, element);
+                });
               }
-              final element = _products.removeAt(oldIndex);
-
-              _products.insert(newIndex, element);
-            });
-          }),
-
-    );
-
+              ),
+          );
   }
-  List<Widget> _getListItems() => _products
+
+  List<Widget> _getListItems() => applicationProcesses.markers
       .asMap()
       .map((i, item) => MapEntry(i, _buildTenableListTile(i)))
       .values
@@ -54,14 +54,14 @@ class _GroupSizeState extends State<GroupSize> {
       key: UniqueKey(),
       onDismissed: (direction) {
         setState(() {
-          _products.removeAt(index);
+          applicationProcesses.removeMarker(index);
         });
       },
       background: Container(color: Colors.red),
       child: ListTile(
         key: ValueKey(index),
         title: Text(
-          _products[index],
+          applicationProcesses.markers[index].markerId.value,
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

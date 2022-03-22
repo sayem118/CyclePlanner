@@ -75,7 +75,9 @@ class ApplicationProcesses with ChangeNotifier {
     );
 
     var newMarker = markerService.createMarkerFromPlace(place);
-    markers.add(newMarker);
+    if (!markers.contains(newMarker)) {
+      markers.add(newMarker);
+    }
 
     var _bounds = markerService.bounds(Set<Marker>.of(markers));
     bounds.add(_bounds!);
@@ -87,5 +89,10 @@ class ApplicationProcesses with ChangeNotifier {
     selectedLocation.close();
     bounds.close();
     super.dispose();
+  }
+
+  void removeMarker(index) {
+    markers.removeAt(index);
+    notifyListeners();
   }
 }
