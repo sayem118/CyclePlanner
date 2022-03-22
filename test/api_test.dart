@@ -6,7 +6,6 @@ import 'package:cycle_planner/models/groups.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
-import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;

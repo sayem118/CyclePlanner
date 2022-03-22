@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
+
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
@@ -11,7 +11,7 @@ import 'package:cycle_planner/models/place_search.dart';
 
 class ApplicationProcesses with ChangeNotifier {
   
-  final geoLocatorService = GeolocatorService();
+  final geoLocatorService = Geolocator();
   final placesService = PlacesService();
 
   // Class variables
@@ -25,7 +25,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   // Update the user's current location
   setCurrentLocation() async {
-    currentLocation = await geoLocatorService.getCurrentLocation();
+    currentLocation = await Geolocator.getCurrentPosition();
     notifyListeners();
   }
 
