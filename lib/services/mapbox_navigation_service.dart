@@ -61,65 +61,6 @@ class MapboxNavigationService {
     await _directions.startNavigation(wayPoints: wayPoints, options: _options);
   }
 
-   // //method to draw route overview
-  // //will assume the first 2 and last markers are for getting to the bike stations
-  // Future<void> drawRouteOverview()  async {
-  //   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  //   //some dummy data
-  //   final marker4 = Marker(
-  //       markerId: const MarkerId("current"),
-  //       position: LatLng(position.latitude, position.longitude)
-  //   );
-  //   //adds markers to the list of markers
-  //   _markers.add(marker4);
-  //   _markers.add(marker1);
-  //   _markers.add(marker2);
-  //   _markers.add(marker3);
-  //   _markers.add(marker5);
-  //   //will go through list of markers
-  //   for(var i = 1; i < _markers.length; i++){
-  //       late PolylinePoints polylinePoints;
-  //       polylinePoints = PolylinePoints();
-  //       final markerS = _markers.elementAt(i - 1);
-  //       final markerd = _markers.elementAt(i);
-  //       final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
-  //       final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
-  //       //gets a set of coordinates between 2 markers
-  //       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //           "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
-  //           marker1,
-  //           marker2,
-  //           travelMode: TravelMode.bicycling,);
-  //       //drawing route to bike stations
-  //       late List<LatLng> nPoints = [];
-  //       double stuff = 0;
-  //       for (var point in result.points) {
-  //         nPoints.add(LatLng(point.latitude, point.longitude));
-  //         stuff = point.latitude + point.longitude;
-  //       }
-  //       //adds stuff to polyline
-  //       //if its a cycle path line is red otherwise line is blue
-  //       if (i == 1 || i == _markers.length - 1){
-  //         _polyline.add(Polyline(
-  //           polylineId: PolylineId(stuff.toString()),
-  //           points: nPoints,
-  //           color: Colors.red
-  //       ));
-  //     }
-  //       else{
-  //         _polyline.add(Polyline(
-  //             polylineId: PolylineId(stuff.toString()),
-  //             points: nPoints,
-  //             color: Colors.blue
-  //         ));
-  //       }
-
-  //   }
-  //   setState(() {
-
-  //   });
-  // }
-
   // // Creates alert if there are no available bike stations nearby.
   // Future<void> _showNoStationsAlert(context) async {
   //   return showDialog<void>(

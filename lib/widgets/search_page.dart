@@ -56,7 +56,7 @@ class SearchPage extends SearchDelegate<String> {
               applicationProcesses.searchResults[index].placeId
             );
             var markerResult = applicationProcesses.searchResults[index].placeId;
-            applicationProcesses.togglePlaceType(markerResult);
+            applicationProcesses.toggleMarker(markerResult);
             showResults(context);
             close(context, query);
           },

@@ -52,6 +52,7 @@ class _GroupSizeState extends State<GroupSize> {
       key: UniqueKey(),
       onDismissed: (direction) {
         setState(() {
+          applicationProcesses.removePolyline();
           applicationProcesses.removeMarker(index);
         });
       },
