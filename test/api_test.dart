@@ -12,10 +12,8 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 // import 'package:permission_handler/permission_handler.dart';
@@ -185,6 +183,39 @@ void main() {
       expect(await bikeStations.getClosestStations(0,0),
           []);
 
+    });
+  });
+
+  PlacesService place = PlacesService();
+  group('getAutocomplete', () {
+    test('returns if autocomplete search works',
+            () async {
+
+          // Mock the API call to return a json response with http status 200 Ok //
+          final mockHTTPClient = MockClient((request) async {
+
+            // Create sample response of the HTTP call //
+            final response = {
+              'text':
+              "22834 is the feet above sea level of the highest mountain"
+            };
+            return Response(jsonEncode(response), 200);
+          });
+          // Check whether getAutocomplete function returns
+          // a list of PlaceSearch
+          expect(await place.getAutocomplete("poplar"), isA<List<PlaceSearch>>());
+        });
+
+    test('return error message when http response is unsuccessful', () async {
+
+      // Mock the API call to return an
+      // empty json response with http status 404
+      final mockHTTPClient = MockClient((request) async {
+        final response = {};
+        return Response(jsonEncode(response), 404);
+      });
+      expect(await place.getAutocomplete(""),
+          []);
     });
   });
 

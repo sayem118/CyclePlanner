@@ -36,7 +36,7 @@ class SearchBar extends StatelessWidget {
                       size: 30.0,
                       color: Colors.blue
                     ),
-                    hintText: 'Search Location'/*(applicationProcesses.searchResults.isEmpty) ? 'Search location' : searchLabel*/,
+                    hintText: 'Search Location',
                     hintStyle: TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.w500,
@@ -52,10 +52,6 @@ class SearchBar extends StatelessWidget {
                       context: context,
                       delegate: SearchPage(),
                     );
-                    // setState(() { // Possible code for setting the hint text
-                    //   var searchLabel = searchResults;
-                    //   print(searchResults);
-                    // });
                   },
                 ),
               ],

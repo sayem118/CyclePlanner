@@ -1,13 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:cycle_planner/widgets/map_page.dart';
+import 'package:cycle_planner/widgets/google_map_page.dart';
 import 'package:cycle_planner/widgets/bottom_navbar.dart';
 import 'package:cycle_planner/widgets/nav_bar.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:cycle_planner/services/bike_station_service.dart';
-import 'package:flutter_mapbox_navigation/library.dart';
-import 'package:cycle_planner/models/groups.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -19,120 +15,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Completer<GoogleMapController> _mapController= Completer();
-  final Set<Marker> _markers = {};
-  final Set<Polyline> _polyline = {};
+  final Completer<GoogleMapController> _mapController = Completer();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    initialize();
   }
 
   @override
   void dispose() {
-    final applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
-    applicationProcesses.dispose();
     super.dispose();
   }
 
-  // Hard coded waypoints for testing purposes
-  final _origin = WayPoint(
-    name: "Big Ben",
-    latitude: 51.500863,
-    longitude: -0.124593
-  );
-
-  final _stop1 = WayPoint(
-    name: "Buckingham Palace",
-    latitude: 51.50204176039292,
-    longitude: -0.14188788458748477
-  );
-
-  final _stop2 = WayPoint(
-    name: "British Museum",
-    latitude: 51.521285300295474,
-    longitude: -0.126953347081018
-  );
-
-  final _stop3 = WayPoint(
-    name: "Trafalgar Square",
-    latitude: 51.50809338374528,
-    longitude: -0.12804891498586773
-  );
-
-  final _stop4 = WayPoint(
-    name: "London Eye",
-    latitude: 51.50461919293181,
-    longitude: -0.11954631306912968
-  );
-
-  final marker1 = const Marker(
-    markerId: MarkerId("London eye"),
-    position: LatLng(51.50461919293181, -0.11954631306912968)
-  );
-
-  final marker2 = const Marker(
-    markerId: MarkerId("Trafalgar Square"),
-    position: LatLng(51.50809338374528, -0.12804891498586773)
-  );
-
-  final marker3 = const Marker(
-    markerId: MarkerId("museum"),
-    position: LatLng(51.50809338374528, -0.126953347081018)
-  );
-
-  final marker5 = const Marker(
-    markerId: MarkerId("knightsbridge"),
-    position: LatLng(51.50809338374528, -0.16162)
-  );
-
-
-
-  var wayPoints = <WayPoint>[];
-  late MapBoxNavigation _directions;
-  late MapBoxOptions _options;
-
-  bool _isMultipleStop = false;
-
-  final LatLng _center = const LatLng(53.1424, 7.6921);
-  late MapBoxNavigationViewController _controller;
   late GoogleMapController mapController;
-  Groups groupSize = Groups(groupSize: 1);
 
-  BikeStationService bikeStationService = BikeStationService();
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initialize() async {
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-    _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
-    _options = MapBoxOptions(
-      initialLatitude: position.latitude,
-      initialLongitude: position.longitude,
-      zoom: 15.0,
-      tilt: 1.0,
-      bearing: 1.0,
-      enableRefresh: true,
-      alternatives: true,
-      voiceInstructionsEnabled: true,
-      bannerInstructionsEnabled: true,
-      allowsUTurnAtWayPoints: true,
-      mode: MapBoxNavigationMode.cycling,
-      units: VoiceUnits.imperial,
-      simulateRoute: false,
-      animateBuildRoute: false,
-      longPressDestinationEnabled: false,
-      language: "en",
-    );
-  }
-  
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
@@ -143,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         extendBody: true,
         drawer: const NavBar(),
         body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
-        :MapPage(mapController: _mapController, polyline: _polyline, markers: _markers, applicationProcesses: applicationProcesses, center: _center),
+        :GoogleMapPage(mapController: _mapController, applicationProcesses: applicationProcesses),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final GoogleMapController controller = await _mapController.future;
@@ -164,12 +61,68 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Icon(Icons.my_location),
           backgroundColor: Colors.redAccent,
         ),
-        bottomNavigationBar:  BottomNavBar(scaffoldKey: scaffoldKey),
+        bottomNavigationBar: BottomNavBar(scaffoldKey: scaffoldKey),
       ),
     );
   }
+}
 
-  // //method to draw route overview
+
+
+
+
+  // // Hard coded waypoints for testing purposes
+  // final _origin = WayPoint(
+  //   name: "Big Ben",
+  //   latitude: 51.500863,
+  //   longitude: -0.124593
+  // );
+
+  // final _stop1 = WayPoint(
+  //   name: "Buckingham Palace",
+  //   latitude: 51.50204176039292,
+  //   longitude: -0.14188788458748477
+  // );
+
+  // final _stop2 = WayPoint(
+  //   name: "British Museum",
+  //   latitude: 51.521285300295474,
+  //   longitude: -0.126953347081018
+  // );
+
+  // final _stop3 = WayPoint(
+  //   name: "Trafalgar Square",
+  //   latitude: 51.50809338374528,
+  //   longitude: -0.12804891498586773
+  // );
+
+  // final _stop4 = WayPoint(
+  //   name: "London Eye",
+  //   latitude: 51.50461919293181,
+  //   longitude: -0.11954631306912968
+  // );
+
+  // final marker1 = const Marker(
+  //   markerId: MarkerId("London eye"),
+  //   position: LatLng(51.50461919293181, -0.11954631306912968)
+  // );
+
+  // final marker2 = const Marker(
+  //   markerId: MarkerId("Trafalgar Square"),
+  //   position: LatLng(51.50809338374528, -0.12804891498586773)
+  // );
+
+  // final marker3 = const Marker(
+  //   markerId: MarkerId("museum"),
+  //   position: LatLng(51.50809338374528, -0.126953347081018)
+  // );
+
+  // final marker5 = const Marker(
+  //   markerId: MarkerId("knightsbridge"),
+  //   position: LatLng(51.50809338374528, -0.16162)
+  // );
+
+ // //method to draw route overview
   // //will assume the first 2 and last markers are for getting to the bike stations
   // Future<void> drawRouteOverview()  async {
   //   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -256,102 +209,46 @@ class _HomeScreenState extends State<HomeScreen> {
   //   );
   // }
 
-  // This acts as a listener for events during the navigation
-  // so in different cases we can set the code to do different things I.E case mapbox.navigation_cancelled means if route is cancelled
-  //we do whatever
-  Future<void> _onEmbeddedRouteEvent(e) async {
+  // void updateClosestStations() async {
+  //   // Find closest start station
+  //   WayPoint start = wayPoints.first;
+  //   // These are random coords in East that don't have any bike stations nearby.
+  //   //Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
+  //   Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
+  //   Map startStation = await futureOfStartStation;
 
-    switch (e.eventType) {
-      case MapBoxEvent.progress_change:
-        var progressEvent = e.data as RouteProgressEvent;
-        if (progressEvent.currentStepInstruction != null) {
-        }
-        break;
-      case MapBoxEvent.route_building:
-      case MapBoxEvent.route_built:
-        setState(() {
-        });
-        break;
-      case MapBoxEvent.route_build_failed:
-        setState(() {
-        });
-        break;
-      case MapBoxEvent.navigation_running:
-        setState(() {
-        });
-        break;
-      case MapBoxEvent.on_arrival:
-        if (!_isMultipleStop) {
-          await Future.delayed(const Duration(seconds: 3));
-          await _controller.finishNavigation();
-        } else {}
-        break;
-      case MapBoxEvent.navigation_finished:
-      case MapBoxEvent.navigation_cancelled:
-        setState(() {
-        });
-        break;
-      default:
-        break;
-    }
-    setState(() {});
-  }
+  //   // Find closest end station
+  //   WayPoint end = wayPoints[wayPoints.length - 2];
+  //   Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(
+  //       end.latitude, end.longitude, groupSize.getGroupSize());
+  //   Map endStation = await futureOfEndStation;
 
-  void updateClosestStations() async {
-    // Find closest start station
-    WayPoint start = wayPoints.first;
-    // These are random coords in East that don't have any bike stations nearby.
-    //Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(51.54735235426037, 0.08849463623212586, groupSize.getGroupSize());
-    Future<Map> futureOfStartStation = bikeStationService.getStationWithBikes(start.latitude, start.longitude, groupSize.getGroupSize());
-    Map startStation = await futureOfStartStation;
+  //   // check if there are available bike stations nearby. If not the user is alerted.
+  //   if (startStation.isEmpty || endStation.isEmpty) {
+  //     // if there are no close available bike stations I was gonna exit the navigation and display an alert,
+  //     // but a station might free up in the next time interval so not sure what to do here...
+  //   }
+  //   else {
+  //     // check if stations have changed.
+  //     if ((startStation['lat'] != wayPoints[1].latitude && startStation['lon'] != wayPoints[1].longitude) || (endStation['lat'] != wayPoints[wayPoints.length - 1].latitude && endStation['lon'] != wayPoints[wayPoints.length - 1].longitude)) {
+  //       // update stations to new stations.
+  //       WayPoint startStationWayPoint = WayPoint(
+  //           name: "startStation",
+  //           latitude: startStation['lat'],
+  //           longitude: startStation['lon']
+  //       );
+  //       wayPoints[1] = startStationWayPoint;
 
-    // Find closest end station
-    WayPoint end = wayPoints[wayPoints.length - 2];
-    Future<Map> futureOfEndStation = BikeStationService().getStationWithSpaces(
-        end.latitude, end.longitude, groupSize.getGroupSize());
-    Map endStation = await futureOfEndStation;
+  //       WayPoint endStationWayPoint = WayPoint(
+  //           name: "endStation",
+  //           latitude: endStation['lat'],
+  //           longitude: endStation['lon']
+  //       );
+  //       wayPoints[wayPoints.length - 1] = endStationWayPoint;
 
-    // check if there are available bike stations nearby. If not the user is alerted.
-    if (startStation.isEmpty || endStation.isEmpty) {
-      // if there are no close available bike stations I was gonna exit the navigation and display an alert,
-      // but a station might free up in the next time interval so not sure what to do here...
-    }
-    else {
-      // check if stations have changed.
-      if ((startStation['lat'] != wayPoints[1].latitude && startStation['lon'] != wayPoints[1].longitude) || (endStation['lat'] != wayPoints[wayPoints.length - 1].latitude && endStation['lon'] != wayPoints[wayPoints.length - 1].longitude)) {
-        // update stations to new stations.
-        WayPoint startStationWayPoint = WayPoint(
-            name: "startStation",
-            latitude: startStation['lat'],
-            longitude: startStation['lon']
-        );
-        wayPoints[1] = startStationWayPoint;
-
-        WayPoint endStationWayPoint = WayPoint(
-            name: "endStation",
-            latitude: endStation['lat'],
-            longitude: endStation['lon']
-        );
-        wayPoints[wayPoints.length - 1] = endStationWayPoint;
-
-        // exit turn by turn navigation and then start again with new waypoints.
-        _directions.finishNavigation();
-        _directions.startNavigation(wayPoints: wayPoints, options: _options);
-      }
-    }
-  }
-
-  // Future<void> _goToPlace(Place place) async {
-  //   final GoogleMapController controller = await _mapController.future;
-  //   controller.animateCamera(
-  //     CameraUpdate.newCameraPosition(
-  //       CameraPosition(
-  //         target: LatLng(
-  //             place.geometry.location.lat, place.geometry.location.lng
-  //         ),
-  //         zoom: 14.0,
-  //       ),
-  //     ),
-  //   );
+  //       // exit turn by turn navigation and then start again with new waypoints.
+  //       _directions.finishNavigation();
+  //       _directions.startNavigation(wayPoints: wayPoints, options: _options);
+  //     }
+  //   }
   // }
-}
