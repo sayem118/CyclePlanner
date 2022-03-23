@@ -164,7 +164,6 @@ class ApplicationProcesses with ChangeNotifier {
       }
 
     }
-
     notifyListeners();
   }
   /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
