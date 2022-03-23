@@ -15,7 +15,7 @@ class NavBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text('Welcome to Cycle Planner!'),
+            accountName: const Text(''),
             accountEmail: const Text(''),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
@@ -37,7 +37,7 @@ class NavBar extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.favorite),
+            leading: const Icon(Icons.place_sharp),
             title: const Text('Iconic places'),
             onTap: () => {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
@@ -48,7 +48,7 @@ class NavBar extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.place_sharp),
+            leading: const Icon(Icons.favorite),
             title: const Text('Saved places'),
             onTap: () => {null},
           ),
