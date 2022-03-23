@@ -117,8 +117,7 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
 
                       applicationProcesses.markers.insert(newIndex, element);
                       applicationProcesses.drawRoute();
-                      setState(() {
-                      });
+
                     });
                   }
               ),
@@ -142,9 +141,8 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
         setState(() {
           applicationProcesses.removePolyline();
           applicationProcesses.removeMarker(index);
+
           applicationProcesses.drawRoute();
-          setState(() {
-          });
         });
       },
       background: Container(color: Colors.red),

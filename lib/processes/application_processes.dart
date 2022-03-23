@@ -97,13 +97,11 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
+
   void drawRoute() async{
-    removePolyline();
-    if(bikeStations.length > 1) {
-      bikeStations.removeLast();
-      bikeStations.removeAt(1);
-    }
-    bikeStations = markers;
+    bikeStations.clear();
+    polylines = {};
+    bikeStations = List<Marker>.from(markers);
     var position = await Geolocator.getCurrentPosition();
     Marker currentLocation =
       Marker(markerId: const MarkerId("current location"),
@@ -134,11 +132,7 @@ class ApplicationProcesses with ChangeNotifier {
       final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
       final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
       //gets a set of coordinates between 2 markers
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
-        marker1,
-        marker2,
-        travelMode: TravelMode.bicycling,);
+      PolylineResult result = await polylineService.getMarkerPoints(marker1, marker2);
       //drawing route to bike stations
       late List<LatLng> nPoints = [];
       double stuff = 0;
@@ -165,6 +159,7 @@ class ApplicationProcesses with ChangeNotifier {
 
     }
     notifyListeners();
+
   }
   /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
   /// [Polyline] are drawn between [Marker] coordinates.
