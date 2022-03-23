@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expansion_card/expansion_card.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 
 class IconicScreen extends StatefulWidget {
@@ -66,8 +66,8 @@ class _CardItemState extends State<CardItem> {
 
     return  Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ExpansionCard(
-        background: Image.network(widget.imageInfo),
+      child: ExpansionTileCard(
+        //background: Image.network(widget.imageInfo),
         title: Text(widget.itemTitle,
           style: TextStyle(
             fontSize: 30,

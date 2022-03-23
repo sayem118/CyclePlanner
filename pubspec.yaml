@@ -51,7 +51,7 @@ dependencies:
   firebase_storage: ^10.2.9
   cloud_firestore: ^3.1.10
   favorite_button: ^0.0.4
-  expansion_card: ^0.1.0
+  expansion_tile_card: ^2.0.0
   numberpicker: ^2.1.1
   sliding_up_panel: ^2.0.0+1
 
