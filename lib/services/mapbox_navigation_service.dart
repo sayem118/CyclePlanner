@@ -1,10 +1,13 @@
 // import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
-// import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 // import 'package:flutter/material.dart';
 
 class MapboxNavigationService {
   static var routeEventHandler;
+  late final ApplicationProcesses applicationProcesses;
 
   // MapboxNavigationService({required Future<void> Function(dynamic e) embedded/*, required ApplicationProcesses bloc*/});
 
@@ -30,18 +33,9 @@ class MapboxNavigationService {
     language: "en",
   );
 
-  // Hard coded waypoints, to be removed
-  final _origin = WayPoint(
-    name: "Big Ben",
-    latitude: 51.500863,
-    longitude: -0.124593
-  );
-
-  final _stop1 = WayPoint(
-    name: "Buckingham Palace",
-    latitude: 51.50204176039292,
-    longitude: -0.14188788458748477
-  );
+  MapboxNavigationService(ApplicationProcesses applicationProcesses) {
+    this.applicationProcesses = applicationProcesses;
+  }
 
   void addStop(WayPoint waypoint) {
     wayPoints.add(waypoint);
@@ -56,8 +50,12 @@ class MapboxNavigationService {
   }
 
   void mapboxBegin() async {
-    addStop(_origin);
-    addStop(_stop1);
+    for (Marker marker in applicationProcesses.markers) {
+      WayPoint waypoint = WayPoint(name: marker.markerId.toString(),
+          latitude: marker.position.latitude,
+          longitude: marker.position.longitude);
+      addStop(waypoint);
+    }
     await _directions.startNavigation(wayPoints: wayPoints, options: _options);
   }
 
