@@ -14,7 +14,7 @@ class JourneyPlanner extends StatefulWidget {
 
 class _JourneyPlannerState extends State<JourneyPlanner> {
   late final ApplicationProcesses applicationProcesses;
-  PanelController _pc1 = PanelController();
+  final PanelController _pc1 = PanelController();
   int _currentValue = 1;
 
   @override
@@ -35,8 +35,8 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,20),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0,0,0,20),
                 child: Text(
                   'Select a group size',
                   style: TextStyle(
@@ -62,7 +62,7 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
                             onPressed: () {
                               _pc1.close();
                             },
-                            child: Text('Cancel')),
+                            child: const Text('Cancel')),
                       ),
                     ),
                     Expanded(
@@ -73,7 +73,7 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
                               // set group size
                               _pc1.close();
                             },
-                            child: Text('Apply')),
+                            child: const Text('Apply')),
                       ),
                     ),
                   ],
@@ -94,7 +94,7 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton.icon(
-                    icon: Icon(Icons.group_add),
+                    icon: const Icon(Icons.group_add),
                     onPressed: () {
                       _pc1.open();
                     },
@@ -137,7 +137,9 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
       key: UniqueKey(),
       onDismissed: (direction) {
         setState(() {
+          applicationProcesses.removePolyline();
           applicationProcesses.removeMarker(index);
+          applicationProcesses.drawPolyline(applicationProcesses.currentLocation);
         });
       },
       background: Container(color: Colors.red),
@@ -150,8 +152,8 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
           ),
         ),
         onTap: () {},
-        leading: Icon(Icons.location_pin),
-        trailing: Icon(Icons.menu),
+        leading: const Icon(Icons.location_pin),
+        trailing: const Icon(Icons.menu),
       ),
     );
   }
