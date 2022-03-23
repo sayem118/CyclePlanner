@@ -72,14 +72,14 @@ void main() {
       expect(position, mockPosition);
     });
 
-    // Current position is given
+    // Check current position is given
     test('getCurrentPosition', () async {
       final position = await Geolocator.getCurrentPosition();
 
       expect(position, mockPosition);
     });
 
-    // Current position given for IOS
+    // Check current position given for IOS
     test('getCurrentPosition iOS', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       final position = await Geolocator.getCurrentPosition();
@@ -87,7 +87,7 @@ void main() {
       debugDefaultTargetPlatformOverride = null;
     });
 
-    // Accuracy of location is given
+    // Check accuracy of location is given
     test('getLocationAccuracy', () async {
       final accuracy = await Geolocator.getLocationAccuracy();
 
@@ -103,7 +103,7 @@ void main() {
       expect(accuracy, LocationAccuracyStatus.reduced);
     });
 
-    // Service status is enabled
+    // Checks service status is enabled
     test('getServiceStatusStream', () {
       when(GeolocatorPlatform.instance.getServiceStatusStream())
           .thenAnswer((_) => Stream.value(ServiceStatus.enabled));
@@ -138,13 +138,13 @@ void main() {
       expect(hasOpened, true);
     });
 
-    // Distance between the locations given
+    // Check distance between the locations given
     test('distanceBetween', () {
       final distance = Geolocator.distanceBetween(0, 0, 0, 0);
       expect(distance, 42);
     });
 
-    // Bearings given between locations
+    // Check bearings given between locations
     test('bearingBetween', () {
       final bearing = Geolocator.bearingBetween(0, 0, 0, 0);
       expect(bearing, 42);
