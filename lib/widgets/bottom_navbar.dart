@@ -61,7 +61,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 break;
               }
               case 3: {
-                MapboxNavigationService().mapboxBegin();
+                MapboxNavigationService().mapboxBegin(applicationProcesses.bikeStations);
               }
               break;
               case 4: {
