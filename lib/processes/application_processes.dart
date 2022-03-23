@@ -10,6 +10,7 @@ import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/models/place.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cycle_planner/services/bike_station_service.dart';
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
@@ -23,6 +24,7 @@ class ApplicationProcesses with ChangeNotifier {
   final markerService = MarkerService();
   final polylineService = PolylineService();
   final polylinePoints = PolylinePoints();
+  final bikeService = BikeStationService();
 
   // Class variables
   Position? currentLocation;
@@ -32,6 +34,9 @@ class ApplicationProcesses with ChangeNotifier {
   Place? selectedLocationStatic;
   String? placeName;
   List<Marker> markers = [];
+  //hidden set of markers to be used behind the scenes
+  List<Marker> bikeStations = [];
+  //station1 has initial bike station and station 2 has last one
   Set<Polyline> polylines = {};
   List<LatLng> polyCoords = [];
 
@@ -84,6 +89,7 @@ class ApplicationProcesses with ChangeNotifier {
     var newMarker = markerService.createMarkerFromPlace(place);
     if (!markers.contains(newMarker)) {
       markers.add(newMarker);
+      drawRoute();
     }
 
     var _bounds = markerService.bounds(Set<Marker>.of(markers));
@@ -91,8 +97,79 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
+  void drawRoute() async{
+    removePolyline();
+    if(bikeStations.length > 1) {
+      bikeStations.removeLast();
+      bikeStations.removeAt(1);
+    }
+    bikeStations = markers;
+    var position = await Geolocator.getCurrentPosition();
+    Marker currentLocation =
+      Marker(markerId: const MarkerId("current location"),
+      position: LatLng(position.latitude, position.longitude)
+    );
+    //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
+    Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(position.latitude, position.longitude, 1);
+    Map startStation = await futureBikeStation1;
+    Marker temp = markers.last;
+    Future<Map> futureBikeStation2 = bikeService.getStationWithBikes(temp.position.latitude, temp.position.longitude, 1);
+    Map endStation = await futureBikeStation2;
+    Marker station1 = Marker(
+      markerId: const MarkerId("start station"),
+      position: LatLng(startStation['lat'], startStation['lon'])
+    );
+    Marker station2 = Marker(
+        markerId: const MarkerId("end station"),
+        position: LatLng(endStation['lat'], endStation['lon'])
+    );
+    bikeStations.insert(0, station1);
+    bikeStations.insert(0, currentLocation);
+    bikeStations.add(station2);
+    for(int i = 1; i < bikeStations.length; i++) {
+      late PolylinePoints polylinePoints;
+      polylinePoints = PolylinePoints();
+      final markerS = bikeStations.elementAt(i - 1);
+      final markerd = bikeStations.elementAt(i);
+      final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
+      final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
+      //gets a set of coordinates between 2 markers
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+        marker1,
+        marker2,
+        travelMode: TravelMode.bicycling,);
+      //drawing route to bike stations
+      late List<LatLng> nPoints = [];
+      double stuff = 0;
+      for (var point in result.points) {
+        nPoints.add(LatLng(point.latitude, point.longitude));
+        stuff = point.latitude + point.longitude;
+      }
+      //adds stuff to polyline
+      //if its a cycle path line is red otherwise line is blue
+      if (i == 1 || i == bikeStations.length - 1){
+        polylines.add(Polyline(
+            polylineId: PolylineId(stuff.toString()),
+            points: nPoints,
+            color: Colors.red
+        ));
+      }
+      else{
+        polylines.add(Polyline(
+            polylineId: PolylineId(stuff.toString()),
+            points: nPoints,
+            color: Colors.blue
+        ));
+      }
+
+    }
+
+    notifyListeners();
+  }
   /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
   /// [Polyline] are drawn between [Marker] coordinates.
+  /*
   drawPolyline(Position? currentLoc) async {
 
     // // Hard coded for quick testing purposes.
@@ -138,7 +215,7 @@ class ApplicationProcesses with ChangeNotifier {
     }
     notifyListeners();
   }
-
+*/
   /// Remove a [Marker] from a selected [index]
   void removeMarker(index) {
     markers.removeAt(index);

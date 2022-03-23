@@ -65,7 +65,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
               break;
               case 4: {
-                applicationProcesses.drawPolyline(applicationProcesses.currentLocation!);
+                applicationProcesses.drawRoute();
                 setState(() {});
                 break;
               }

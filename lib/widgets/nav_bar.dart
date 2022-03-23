@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:cycle_planner/widgets/iconic_places.dart';
-import 'package:app_settings/app_settings.dart';
+
 
 
 class NavBar extends StatelessWidget {
@@ -51,11 +51,6 @@ class NavBar extends StatelessWidget {
             onTap: () => {null},
           ),
           const Divider(),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () => AppSettings.openLocationSettings,
-          ),
           ListTile(
             leading:const Icon(Icons.info),
             title: const Text('Info'),
