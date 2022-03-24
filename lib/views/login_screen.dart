@@ -1,6 +1,8 @@
 import 'package:cycle_planner/views/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'home_screen.dart';
+
 class LoginScreen extends StatefulWidget{
 
   const LoginScreen({Key? key}) : super(key: key);
@@ -75,7 +77,10 @@ class _LoginScreenState extends State<LoginScreen>{
           minWidth: MediaQuery.of(context).size.width,
 
 
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          },
           child: Text(
             "Login",
             textAlign: TextAlign.center,
@@ -135,7 +140,9 @@ class _LoginScreenState extends State<LoginScreen>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(" Sign in as "),
-                        GestureDetector(onTap: (){},
+                        GestureDetector(onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                        },
                           child: Text(
                             "Guest",
                             style: TextStyle(

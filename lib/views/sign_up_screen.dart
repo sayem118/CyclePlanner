@@ -31,7 +31,7 @@ class _SignupScreenState extends State<SignupScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.mail),
+        prefixIcon: Icon(Icons.account_circle),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "First name",
         border: OutlineInputBorder(
@@ -52,7 +52,7 @@ class _SignupScreenState extends State<SignupScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.mail),
+        prefixIcon: Icon(Icons.account_circle),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Second name",
         border: OutlineInputBorder(
@@ -83,7 +83,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
 
 
-    //first name field
+    //password field
     final passwordField = TextFormField(
       autofocus: false,
       controller: passwordEditingController,
@@ -95,9 +95,9 @@ class _SignupScreenState extends State<SignupScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.mail),
+        prefixIcon: Icon(Icons.vpn_key),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "First name",
+        hintText: "Password",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -105,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
 
 
-    //first name field
+    //confirm password field
     final confirmPasswordField = TextFormField(
       autofocus: false,
       controller: confirmPasswordEditingController,
@@ -117,7 +117,7 @@ class _SignupScreenState extends State<SignupScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.mail),
+        prefixIcon: Icon(Icons.vpn_key),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Confirm password",
         border: OutlineInputBorder(
@@ -126,10 +126,38 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
 
+// signup button
+    final signUpButton = Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(30),
+      color: Colors.blueGrey,
+      child: MaterialButton(
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          minWidth: MediaQuery.of(context).size.width,
 
+
+          onPressed: () {},
+          child: Text(
+            "SignUp",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          )),
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.red),
+          onPressed: (){
+            // passing back to last page
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -144,21 +172,24 @@ class _SignupScreenState extends State<SignupScreen> {
                   children: <Widget>[
 
                     SizedBox(
-                        height: 200,
+                        height: 180,
                         child: Image.asset("assets/cyclebaylogo.png",
                           fit: BoxFit.contain,
                         )),
                     SizedBox(height: 45),
                     firstNameField,
-                    SizedBox(height: 45),
+                    SizedBox(height: 20),
                     secondNameField,
-                    SizedBox(height: 45),
+                    SizedBox(height: 20),
                     emailField,
-                    SizedBox(height: 25),
+                    SizedBox(height: 20),
                     passwordField,
-                    SizedBox(height: 45),
+                    SizedBox(height: 20),
                     confirmPasswordField,
-                    SizedBox(height: 45),
+                    SizedBox(height: 20),
+                    signUpButton,
+                    SizedBox(height: 15),
+
 
                   ],
                 ),
