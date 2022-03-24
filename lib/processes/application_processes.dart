@@ -11,6 +11,7 @@ import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/models/place.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
+import 'package:cycle_planner/widgets/journey_planner.dart';
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
@@ -18,7 +19,6 @@ import 'package:cycle_planner/services/bike_station_service.dart';
 /// and processing user typed search locations.
 
 class ApplicationProcesses with ChangeNotifier {
-  
   final geoLocatorService = Geolocator();
   final placesService = PlacesService();
   final markerService = MarkerService();
@@ -39,6 +39,7 @@ class ApplicationProcesses with ChangeNotifier {
   //station1 has initial bike station and station 2 has last one
   Set<Polyline> polylines = {};
   List<LatLng> polyCoords = [];
+  int groupSize = 1;
 
   // Class Initializer
   ApplicationProcesses() {
@@ -59,6 +60,10 @@ class ApplicationProcesses with ChangeNotifier {
       vicinity: '',
     );
     notifyListeners();
+  }
+
+  void setGroupSize(int group){
+    groupSize = group;
   }
 
   /// Receive [userInput] to proccess for autocompletion
@@ -108,10 +113,10 @@ class ApplicationProcesses with ChangeNotifier {
       position: LatLng(position.latitude, position.longitude)
     );
     //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
-    Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(position.latitude, position.longitude, 1);
+    Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(position.latitude, position.longitude, groupSize);
     Map startStation = await futureBikeStation1;
     Marker temp = markers.last;
-    Future<Map> futureBikeStation2 = bikeService.getStationWithBikes(temp.position.latitude, temp.position.longitude, 1);
+    Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(temp.position.latitude, temp.position.longitude, groupSize);
     Map endStation = await futureBikeStation2;
     Marker station1 = Marker(
       markerId: const MarkerId("start station"),
@@ -132,7 +137,20 @@ class ApplicationProcesses with ChangeNotifier {
       final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
       final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
       //gets a set of coordinates between 2 markers
-      PolylineResult result = await polylineService.getMarkerPoints(marker1, marker2);
+      late PolylineResult result;
+      if (i == 1){result = await polylinePoints.getRouteBetweenCoordinates(
+        "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+        marker1,
+        marker2,
+        travelMode: TravelMode.walking,);
+      }
+      else {
+        result = await polylinePoints.getRouteBetweenCoordinates(
+          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          marker1,
+          marker2,
+          travelMode: TravelMode.bicycling,);
+      }
       //drawing route to bike stations
       late List<LatLng> nPoints = [];
       double stuff = 0;

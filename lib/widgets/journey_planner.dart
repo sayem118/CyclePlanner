@@ -15,13 +15,15 @@ class JourneyPlanner extends StatefulWidget {
 class _JourneyPlannerState extends State<JourneyPlanner> {
   late final ApplicationProcesses applicationProcesses;
   final PanelController _pc1 = PanelController();
-  int _currentValue = 1;
+  static int _currentValue = 1;
 
   @override
   void initState(){
     applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,8 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
                         padding: const EdgeInsets.fromLTRB(4,0,8,0),
                         child: ElevatedButton(
                             onPressed: () {
+                              applicationProcesses.setGroupSize(_currentValue);
+                              applicationProcesses.drawRoute();
                               // set group size
                               _pc1.close();
                             },
