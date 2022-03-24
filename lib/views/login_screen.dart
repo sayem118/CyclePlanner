@@ -1,3 +1,4 @@
+import 'package:cycle_planner/views/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget{
@@ -28,9 +29,9 @@ class _LoginScreenState extends State<LoginScreen>{
       keyboardType:TextInputType.emailAddress,
       //vaildator
       onSaved: (value)
-        {
-          emailController.text = value!;
-        },
+      {
+        emailController.text = value!;
+      },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.mail),
@@ -70,18 +71,18 @@ class _LoginScreenState extends State<LoginScreen>{
       borderRadius: BorderRadius.circular(30),
       color: Colors.blueGrey,
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          minWidth: MediaQuery.of(context).size.width,
 
 
-        onPressed: () {},
-        child: Text(
+          onPressed: () {},
+          child: Text(
             "Login",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-            )),
-      );
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          )),
+    );
 
 
 
@@ -101,10 +102,10 @@ class _LoginScreenState extends State<LoginScreen>{
                   children: <Widget>[
 
                     SizedBox(
-                      height: 200,
-                      child: Image.asset("assets/cyclebaylogo.png",
-                      fit: BoxFit.contain,
-                )),
+                        height: 200,
+                        child: Image.asset("assets/cyclebaylogo.png",
+                          fit: BoxFit.contain,
+                        )),
                     SizedBox(height: 45),
                     emailField,
                     SizedBox(height: 25),
@@ -116,16 +117,18 @@ class _LoginScreenState extends State<LoginScreen>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text("Don't have an account? "),
-                        GestureDetector(onTap: (){},
-                        child: Text(
-                          "SignUp",
-                          style: TextStyle(
-                          color: Colors.redAccent,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15),
-                    ),
+                        GestureDetector(onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
+                        },
+                          child: Text(
+                            "SignUp",
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 15),
+                          ),
 
-                    )],
+                        )],
 
                     ),
                     Row(
