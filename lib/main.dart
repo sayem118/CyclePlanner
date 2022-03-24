@@ -1,3 +1,4 @@
+import 'package:cycle_planner/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/views/home_screen.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomeScreen(),
+        home: const LoginScreen(),
       ),
     );
   }
