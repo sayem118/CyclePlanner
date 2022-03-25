@@ -111,6 +111,13 @@ class _CardItemState extends State<CardItem> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      subtitle: Container(
+                          padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                          child: Text(
+                            widget.itemInfo,
+                            textAlign: TextAlign.left ,
+                          )
+                      ),
                     )
                   )
                 ],
