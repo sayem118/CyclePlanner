@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cycle_planner/models/place.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/models/groups.dart';
@@ -218,8 +219,29 @@ void main() {
     });
   });
 
+  group('getPlace', () {
+    test('returns if getPlace search works',
+            () async {
+
+          // Mock the API call to return a json response with http status 200 Ok //
+
+          final test =((await place.getPlace("temple")));
+
+          // Check whether getAutocomplete function returns
+          // a list of PlaceSearch
+          expect(test, null);
+        });
 
 
+
+
+
+
+
+
+
+
+});
 }
 
 class MockGeolocatorPlatform extends Mock
