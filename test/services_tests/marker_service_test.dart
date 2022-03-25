@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cycle_planner/services/marker_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/models/groups.dart';
@@ -24,7 +25,7 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
-  MapboxNavigationService navigation = MapboxNavigationService();
+  MarkerService serviceMarker = MarkerService();
   // var routeEventHandler;
   // late final ApplicationProcesses applicationProcesses;
   // var wayPoints = <WayPoint>[];
@@ -49,35 +50,38 @@ void main() {
   //   language: "en",
   // );
 
-  group('NavigationService', () {
-    test('returns options present)',
+  group('MarkerService', () {
+    test('Null value given when bound is empty',
             () async {
-          final optionsGiven = navigation.options;
+          // final boundsGiven = serviceMarker.bounds(<Marker>{});
 
-          expect(navigation.getOptions(), optionsGiven);
+          expect(serviceMarker.bounds(<Marker>{}), null);
 
 
 
-          });
-
-    test('returns directions present',
-        () async {
-      final directionsGiven = navigation.directions;
-
-      expect(navigation.getDirections(), directionsGiven);
         });
 
-    test('add Wapoints',
-        () async {
-      // final wayPointsGiven = navigation.wayPoints;
-      final mockWaypoints = WayPoint(name: "westminster", latitude: 51.4974948, longitude: -0.1356583);
-
-      expect(navigation.addStop (name:"Westminster", latitude: 51.497498, longitude: -0.1356583), < )
-
-        });
-        });
+    test
 
 
 
-  }
+    // test('returns directions present',
+    //         () async {
+    //       final directionsGiven = navigation.directions;
+    //
+    //       expect(navigation.getDirections(), directionsGiven);
+    //     });
+    //
+    // test('add Wapoints',
+    //         () async {
+    //       // final wayPointsGiven = navigation.wayPoints;
+    //       final mockWaypoints = WayPoint(name: "westminster", latitude: 51.4974948, longitude: -0.1356583);
+    //
+    //       expect(navigation.addStop (name:"Westminster", latitude: 51.497498, longitude: -0.1356583), < )
+    //
+    //     });
+  });
 
+
+
+}
