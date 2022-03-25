@@ -1,9 +1,10 @@
+import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/mapbox_navigation_service.dart';
-import 'package:cycle_planner/widgets/group_size.dart';
-// import 'package:cycle_planner/widgets/mapbox_navigation-COMMENTED.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-// import 'package:cycle_planner/Widgets/nav_bar.dart';
+import 'package:provider/provider.dart';
+import 'journey_planner.dart';
+import 'package:cycle_planner/widgets/journey_planner.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -25,6 +26,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    var applicationProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
     return Theme(
       data: Theme.of(context).copyWith(
         iconTheme: const IconThemeData(color: Colors.white)
@@ -49,37 +51,33 @@ class _BottomNavBarState extends State<BottomNavBar> {
           setState(() {
             switch (screenindex) {
               case 0: {
-                _selectedIndex = screenindex;
                 widget.scaffoldKey.currentState!.openDrawer();
               }
               break;
               case 1: {
-                _selectedIndex = screenindex;
                 break;
               }
               case 2: {
-                _selectedIndex = screenindex;
                 break;
               }
               case 3: {
-                _selectedIndex = screenindex;
-                MapboxNavigationService().mapboxBegin();
+                MapboxNavigationService().mapboxBegin(applicationProcesses.bikeStations);
               }
               break;
               case 4: {
-                _selectedIndex = screenindex;
+                applicationProcesses.drawRoute();
+                setState(() {});
                 break;
               }
               case 5: {
-                _selectedIndex = screenindex;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GroupSize()),
+                  MaterialPageRoute(builder: (context) => const JourneyPlanner()),
                 );
                 break;
               }
             }
-            print(_selectedIndex);
+            // print(_selectedIndex);
           });
         },
       ),

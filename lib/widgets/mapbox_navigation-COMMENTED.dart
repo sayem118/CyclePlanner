@@ -164,28 +164,31 @@
 //   @override
 //   void initState() {
 //     super.initState();
+//     WidgetsBinding.instance
+//         !.addPostFrameCallback((_) => MapboxNavigationService().mapboxBegin());
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back),
-//           onPressed: () => Navigator.of(context).pop(),
-//         ),
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () async {
-//             setState(() {
-//               MapboxNavigationService(embedded: _onEmbeddedRouteEvent).mapboxBegin();
-//             });
-//           }, child: const Text("Start Navigation"),
-//         ),
-//       )
-//     );
+//     return const SizedBox.shrink();
+//     // return Scaffold(
+//     //   appBar: AppBar(
+//     //     leading: IconButton(
+//     //       icon: const Icon(Icons.arrow_back),
+//     //       onPressed: () => Navigator.of(context).pop(),
+//     //     ),
+//     //   ),
+//     //   body: Center(
+//     //     child: ElevatedButton(
+//     //       onPressed: () async {
+//     //         setState(() {
+//     //           MapboxNavigationService(embedded: _onEmbeddedRouteEvent).mapboxBegin();
+//     //         });
+//     //       }, child: const Text("Start Navigation"),
+//     //     ),
+//     //   )
+//     // );
 //   }
 
 //   Future<void> _onEmbeddedRouteEvent(e) async {

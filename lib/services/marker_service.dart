@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/place.dart';
 
 class MarkerService{
-  LatLngBounds? bounds(Set<Marker> markers){
+  LatLngBounds? bounds(Set<Marker> markers) {
     if (markers.isEmpty) return null;
     return createBounds(markers.map((m) => m.position).toList());
   }

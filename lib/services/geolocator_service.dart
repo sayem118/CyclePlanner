@@ -5,6 +5,7 @@ import 'package:geolocator_android/geolocator_android.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart';
 
+
 export 'package:geolocator_android/geolocator_android.dart'
     show AndroidSettings, ForegroundNotificationConfig;
 export 'package:geolocator_apple/geolocator_apple.dart'
@@ -201,10 +202,10 @@ class Geolocator {
         endLongitude,
       );
 
-  /// Calculates the initial bearing between two points
+  /// Compares and calculates the initial bearing between two points
   ///
   /// The initial bearing will most of the time be different than the end
-  /// bearing, see https://www.movable-type.co.uk/scripts/latlong.html#bearing.
+  /// bearing and is subject to change, see https://www.movable-type.co.uk/scripts/latlong.html#bearing.
   /// The supplied coordinates [startLatitude], [startLongitude], [endLatitude]
   /// and [endLongitude] should be supplied in degrees.
   static double bearingBetween(
@@ -220,4 +221,5 @@ class Geolocator {
         endLongitude,
       );
 }
+
 
