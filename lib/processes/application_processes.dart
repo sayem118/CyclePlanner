@@ -94,7 +94,6 @@ class ApplicationProcesses with ChangeNotifier {
     var newMarker = markerService.createMarkerFromPlace(place);
     if (!markers.contains(newMarker)) {
       markers.add(newMarker);
-      drawRoute();
     }
 
     var _bounds = markerService.bounds(Set<Marker>.of(markers));
