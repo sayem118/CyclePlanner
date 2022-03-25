@@ -59,6 +59,13 @@ void main() {
 
 
           });
+
+    test('returns directions present)',
+        () async {
+      final directionsGiven = navigation.directions;
+
+      expect(navigation.getDirections(), directionsGiven);
+        });
         });
 
 
