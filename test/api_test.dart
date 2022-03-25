@@ -8,6 +8,7 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
+import 'package:cycle_planner/services/mapbox_navigation_service.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -16,6 +17,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:flutter_mapbox_navigation/library.dart';
+import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:permission_handler/permission_handler.dart';
 // import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
 
@@ -186,6 +190,8 @@ void main() {
     });
   });
 
+
+
   PlacesService place = PlacesService();
   group('getAutocomplete', () {
     test('returns if autocomplete search works',
@@ -221,7 +227,14 @@ void main() {
 
 
 
+
+
+
+
+
+
 }
+
 
 class MockGeolocatorPlatform extends Mock
     with
