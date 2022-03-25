@@ -26,7 +26,7 @@ class _CardItemState extends State<CardItem> {
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(10),
       child: Card(
           elevation: 20,
