@@ -115,6 +115,9 @@ class _CardItemState extends State<CardItem> {
                           padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
                           child: Text(
                             widget.itemInfo,
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
                             textAlign: TextAlign.left ,
                           )
                       ),
