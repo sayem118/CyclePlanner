@@ -14,7 +14,7 @@ import 'package:cycle_planner/services/bike_station_service.dart';
 
 void main() {
 
-  groupApplicationProcesses
+
 
 
 }
