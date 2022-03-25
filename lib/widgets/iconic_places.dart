@@ -121,6 +121,14 @@ class _CardItemState extends State<CardItem> {
                             textAlign: TextAlign.left ,
                           )
                       ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.add_location_alt),
+                        onPressed: () {
+                          applicationProcesses.toggleMarker(widget.placeId);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                      ),
                     )
                   )
                 ],
