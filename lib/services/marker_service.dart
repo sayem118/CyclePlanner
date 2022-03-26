@@ -37,3 +37,16 @@ class MarkerService{
     );
   }
 }
+
+// return Marker(
+// markerId: MarkerId(markerId),
+// draggable: false,
+// visible: true,
+// infoWindow: InfoWindow(
+// title: mockPlace.name, snippet: mockPlace.vicinity
+// ),
+// position: LatLng(
+// mockPlace.geometry.location.lat,
+// mockPlace.geometry.location.lng
+// )
+// );

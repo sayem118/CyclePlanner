@@ -23,6 +23,10 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cycle_planner/models/location.dart';
+import 'package:cycle_planner/models/geometry.dart';
+import 'package:cycle_planner/models/place.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
   MarkerService serviceMarker = MarkerService();
@@ -63,8 +67,28 @@ void main() {
 
     test('Create Marker from Place given', ()
         async {
-      final mockGeometry =
-        })
+          final mockLocation = Location(lat: 50.1109, lng: 8.6821);
+          final mockGeometry = Geometry(location: mockLocation);
+          final mockPlace = Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          final MarkerID = mockPlace.name;
+          final createMarker = serviceMarker.createMarkerFromPlace(mockPlace);
+          expect(createMarker, Marker(
+              markerId: MarkerId(MarkerID),
+          draggable: false,
+          visible: true,
+          infoWindow: InfoWindow(
+          title: mockPlace.name, snippet: mockPlace.vicinity
+          ),
+          position: LatLng(
+          mockPlace.geometry.location.lat,
+          mockPlace.geometry.location.lng
+          )
+          ));
+
+
+
+
+        });
 
 
 
