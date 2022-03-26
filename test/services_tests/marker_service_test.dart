@@ -61,6 +61,11 @@ void main() {
 
         });
 
+    test('Create Marker from Place given', ()
+        async {
+      final mockGeometry =
+        })
+
 
 
 
