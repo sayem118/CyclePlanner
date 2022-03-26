@@ -1,7 +1,5 @@
 //import test package and groups model
-import 'package:flutter/services.dart';
 import 'package:test/test.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:cycle_planner/models/location.dart';
 
 void main() {
@@ -13,13 +11,14 @@ void main() {
     expect(mockLocation.lng, 8.6821);
   });
 
-  test('test 2', () {
+  test('Testing Location factory method', () {
 
-    Map file = {'lat': 50.1109, 'lng': 8.6821};
+    //creating a test JSON and feeding it in
+    Map mockLocationJSON = {'lat': 50.1109, 'lng': 8.6821};
+    final mockLocation = Location.fromJson(mockLocationJSON);
 
-    final user = Location.fromJson(file);
-
-    expect(user.lat, 50.1109);
-    expect(user.lng, 8.6821);
+    //ensure the attributes are set
+    expect(mockLocation.lat, 50.1109);
+    expect(mockLocation.lng, 8.6821);
   });
 }
