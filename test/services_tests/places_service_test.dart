@@ -24,7 +24,7 @@ void main() {
           const double lng = -0.1356583;
           final response = await place.getResponse('https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&location=$lat,$lng&key=$key', '1');
           String url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&location=$lat,$lng&key=$key';
-
+//https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI&location=51.5033,0.1196&key=AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY
           await untilCalled(place.getPlace("test") as Map<String, dynamic>);
 
 // Check whether getAutocomplete function returns
