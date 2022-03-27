@@ -16,8 +16,8 @@ class MapboxNavigationService {
 
   var wayPoints = <WayPoint>[];
 
-  final _directions = MapBoxNavigation(onRouteEvent: routeEventHandler);
-  final _options = MapBoxOptions(
+  final directions = MapBoxNavigation(onRouteEvent: routeEventHandler);
+  final options = MapBoxOptions(
     initialLatitude: 53.1424,
     initialLongitude: 7.6921,
     zoom: 15,
@@ -42,18 +42,18 @@ class MapboxNavigationService {
   }
 
   MapBoxOptions getOptions() {
-    return _options;
+    return options;
   }
 
   MapBoxNavigation getDirections() {
-    return _directions;
+    return directions;
   }
 
   void mapboxBegin(List<Marker> markers) async {
     for (var stop in markers) {
       wayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
     }
-    await _directions.startNavigation(wayPoints: wayPoints, options: _options);
+    await directions.startNavigation(wayPoints: wayPoints, options: options);
   }
 
   // // Creates alert if there are no available bike stations nearby.
