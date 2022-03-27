@@ -69,18 +69,22 @@ void main() {
 
 
 
-    test('add Waypoints',
-        () async {
-      // final wayPointsGiven = navigation.wayPoints;
-      final mockWaypoints = WayPoint(name: "westminster", latitude: 51.4974948, longitude: -0.1356583);
-
-      expect(navigation.addStop (name:"Westminster", latitude: 51.497498, longitude: -0.1356583), < )
-
+    // test('add Waypoints',
+    //     () async {
+    //   // final wayPointsGiven = navigation.wayPoints;
+    //   final mockWayPoint = WayPoint(name: "westminster", latitude: 51.4974948, longitude: -0.1356583);
+    //   final mockAddWayPoints = navigation.addStop(mockWayPoint);
+    //   final
+    //
+    //
+    //
+    //
+    //   expect(mockAddWayPoints, mockWayPoint);
+    //
+    //     });
         });
-        });
 
 
 
-  });
-}
+  }
 
