@@ -1,11 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:cycle_planner/widgets/iconic_places.dart';
+import 'package:cycle_planner/models/user_model.dart';
 
+import '../views/login_screen.dart';
 
-
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
+
+  @override
+  _NavBarState createState() => _NavBarState();
+}
+  class _NavBarState extends State<NavBar> {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+  @override
+  void initState() {
+  FirebaseFirestore.instance
+      .collection("users")
+      .doc(user!.uid)
+      .get()
+      .then((value)
+  {
+  this.loggedInUser = UserModel.fromMap(value.data());
+  setState(() {});
+
+  });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +38,12 @@ class NavBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text(''),
-            accountEmail: const Text(''),
+            accountName: Text("${loggedInUser.firstName} ${loggedInUser.secondName}"),
+            // style: TextStyle(
+            //  color: Colors.black,
+            //  fontWeight: FontWeight.bold,)
+            //)
+            accountEmail: Text("${loggedInUser.email}"),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -35,6 +63,15 @@ class NavBar extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text('Profile'),
+            onTap: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                return const IconicScreen();
+              },),)
+            },
           ),
           ListTile(
             leading: const Icon(Icons.place_sharp),
@@ -58,13 +95,22 @@ class NavBar extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            title: const Text('Exit'),
+            title: const Text('Logout'),
             leading: const Icon(Icons.exit_to_app),
-            onTap: () => exit(0),
+              onTap: () {
+                logout(context);
+              },
           ),
         ],
       ),
 
     );
+  }
+
+  // the logout function
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }
