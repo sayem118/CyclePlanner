@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/services/marker_service.dart';
-import 'package:cycle_planner/services/polyline_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
@@ -17,12 +16,10 @@ import 'package:cycle_planner/widgets/journey_planner.dart';
 /// This class handles features that requires constant proccessing.
 /// For example Updating the user's location
 /// and processing user typed search locations.
-
 class ApplicationProcesses with ChangeNotifier {
   final geoLocatorService = Geolocator();
   final placesService = PlacesService();
   final markerService = MarkerService();
-  final polylineService = PolylineService();
   final polylinePoints = PolylinePoints();
   final bikeService = BikeStationService();
 
@@ -53,10 +50,10 @@ class ApplicationProcesses with ChangeNotifier {
       name: '',
       geometry: Geometry(
         location: Location(
-          lat: currentLocation!.latitude,
-          lng: currentLocation!.longitude
+            lat: currentLocation!.latitude,
+            lng: currentLocation!.longitude
         ),
-      ), 
+      ),
       vicinity: '',
     );
     notifyListeners();
@@ -86,15 +83,14 @@ class ApplicationProcesses with ChangeNotifier {
     placeName = value;
 
     Place place = await placesService.getPlaceMarkers(
-      selectedLocationStatic!.geometry.location.lat,
-      selectedLocationStatic!.geometry.location.lng,
-      placeName!
+        selectedLocationStatic!.geometry.location.lat,
+        selectedLocationStatic!.geometry.location.lng,
+        placeName!
     );
 
     var newMarker = markerService.createMarkerFromPlace(place);
     if (!markers.contains(newMarker)) {
       markers.add(newMarker);
-      drawRoute();
     }
 
     var _bounds = markerService.bounds(Set<Marker>.of(markers));
@@ -109,8 +105,8 @@ class ApplicationProcesses with ChangeNotifier {
     bikeStations = List<Marker>.from(markers);
     var position = await Geolocator.getCurrentPosition();
     Marker currentLocation =
-      Marker(markerId: const MarkerId("current location"),
-      position: LatLng(position.latitude, position.longitude)
+    Marker(markerId: const MarkerId("current location"),
+        position: LatLng(position.latitude, position.longitude)
     );
     //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(position.latitude, position.longitude, groupSize);
@@ -119,8 +115,8 @@ class ApplicationProcesses with ChangeNotifier {
     Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(temp.position.latitude, temp.position.longitude, groupSize);
     Map endStation = await futureBikeStation2;
     Marker station1 = Marker(
-      markerId: const MarkerId("start station"),
-      position: LatLng(startStation['lat'], startStation['lon'])
+        markerId: const MarkerId("start station"),
+        position: LatLng(startStation['lat'], startStation['lon'])
     );
     Marker station2 = Marker(
         markerId: const MarkerId("end station"),
@@ -183,7 +179,6 @@ class ApplicationProcesses with ChangeNotifier {
   /// [Polyline] are drawn between [Marker] coordinates.
   /*
   drawPolyline(Position? currentLoc) async {
-
     // // Hard coded for quick testing purposes.
     // markers.add(
     //   const Marker(
@@ -191,15 +186,12 @@ class ApplicationProcesses with ChangeNotifier {
     //     position: LatLng(51.50461919293181, -0.11954631306912968),
     //   )
     // );
-
     final userMarker = currentLoc!;
     for(int i = 0; i < markers.length; i++) {
       final locationMarker = markers.elementAt(i);
       final PointLatLng marker1 = PointLatLng(userMarker.latitude, userMarker.longitude);
       final PointLatLng marker2 = PointLatLng(locationMarker.position.latitude, locationMarker.position.longitude);
-
       PolylineResult result = await polylineService.getMarkerPoints(marker1, marker2);
-
       double polylineName = 0;
       if(result.status == 'OK') {
         for (var point in result.points) {
@@ -207,7 +199,6 @@ class ApplicationProcesses with ChangeNotifier {
           polylineName = point.latitude + point.longitude;
         }
       }
-
       if (i == 1 || i == markers.length - 1) {
         polylines.add(
           Polyline(
