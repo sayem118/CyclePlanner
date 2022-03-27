@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/services/marker_service.dart';
-import 'package:cycle_planner/services/polyline_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
@@ -22,7 +21,6 @@ class ApplicationProcesses with ChangeNotifier {
   final geoLocatorService = Geolocator();
   final placesService = PlacesService();
   final markerService = MarkerService();
-  final polylineService = PolylineService();
   final polylinePoints = PolylinePoints();
   final bikeService = BikeStationService();
 
