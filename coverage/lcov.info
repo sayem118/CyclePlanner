@@ -511,8 +511,8 @@ LH:1
 end_of_record
 SF:lib\widgets\iconic_places.dart
 DA:10,7
-DA:13,0
-DA:14,0
+DA:13,1
+DA:14,1
 DA:20,0
 DA:22,0
 DA:23,0
@@ -530,7 +530,7 @@ DA:40,0
 DA:41,0
 DA:43,0
 LF:19
-LH:1
+LH:3
 end_of_record
 SF:lib\widgets\search_page.dart
 DA:8,0

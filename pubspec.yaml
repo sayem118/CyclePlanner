@@ -48,6 +48,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   firebase_core: ^1.13.1
   firebase_storage: ^10.2.9
+  fake_cloud_firestore: ^1.2.2
   cloud_firestore: ^3.1.10
   favorite_button: ^0.0.4
   expansion_tile_card: ^2.0.0
