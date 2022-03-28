@@ -13,10 +13,8 @@ class BikeStationService {
     Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=60000&lat=$lat&lon=$lon'));
     List stations = [];
     // Get bike stations from TFL JSON
-    if(response.statusCode == 200) {
+
       stations = jsonDecode(response.body)['places'];
-    }
-    else{stations.add(0);}
 
     return stations;
   }
