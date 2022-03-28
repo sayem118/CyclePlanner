@@ -8,6 +8,7 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
+import 'package:cycle_planner/services/marker_service.dart';
 import 'package:cycle_planner/services/mapbox_navigation_service.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -22,6 +23,11 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'package:cycle_planner/models/location.dart';
+import 'package:cycle_planner/models/geometry.dart';
+import 'package:cycle_planner/models/place.dart';
+
 
 void main() {
   MapboxNavigationService navigation = MapboxNavigationService();
