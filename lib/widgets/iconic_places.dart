@@ -1,10 +1,9 @@
-import 'package:favorite_button/favorite_button.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expansion_tile_card/expansion_tile_card.dart';
+
+import 'iconic_card_item.dart';
 
 
 class IconicScreen extends StatefulWidget {
@@ -37,9 +36,11 @@ class _IconicScreenState extends State<IconicScreen> {
               itemBuilder: (context, index) {
                 String itemTitle = snapshot.data!.docs[index]['name'] ;
                 String itemInfo = snapshot.data!.docs[index]['address'];
+                String placeInfo = snapshot.data!.docs[index]['place_info'];
                 String imageInfo = snapshot.data!.docs[index]['image'];
+                String placeId = snapshot.data!.docs[index]['place_id'];
 
-                return CardItem(itemTitle: itemTitle, itemInfo: itemInfo, imageInfo: imageInfo,);
+                return CardItem(itemTitle: itemTitle, itemInfo: itemInfo, imageInfo: imageInfo, placeId: placeId, placeInfo: placeInfo );
           });
           },
         ),
@@ -48,57 +49,4 @@ class _IconicScreenState extends State<IconicScreen> {
 }
 
 
-class CardItem extends StatefulWidget {
-    final String itemTitle;
-    final String itemInfo;
-    final String imageInfo;
-
-  const CardItem({Key? key, required this.itemTitle, required this.itemInfo, required this.imageInfo}) : super(key: key);
-
-  @override
-  State<CardItem> createState() => _CardItemState();
-}
-
-
-class _CardItemState extends State<CardItem> {
-  @override
-  Widget build(BuildContext context) {
-
-    return  Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ExpansionTileCard(
-        //background: Image.network(widget.imageInfo),
-        title: Text(widget.itemTitle,
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w900,
-            color: Colors.grey[370],
-          ),
-        ),
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              title: Text(widget.itemInfo,
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.left
-              ),
-
-            trailing:  FavoriteButton(
-              isFavorite: false, valueChanged: (_isFavorite){
-                if (kDebugMode) {
-                  print('Is Favorite : $_isFavorite');
-                }
-            },
-            ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 

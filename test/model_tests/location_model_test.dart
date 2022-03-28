@@ -10,4 +10,15 @@ void main() {
     //ensure the longitude is set
     expect(mockLocation.lng, 8.6821);
   });
+
+  test('Testing Location factory method', () {
+
+    //creating a test JSON and feeding it in
+    Map mockLocationJSON = {'lat': 50.1109, 'lng': 8.6821};
+    final mockLocation = Location.fromJson(mockLocationJSON);
+
+    //ensure the attributes are set
+    expect(mockLocation.lat, 50.1109);
+    expect(mockLocation.lng, 8.6821);
+  });
 }

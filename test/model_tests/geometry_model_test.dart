@@ -10,4 +10,15 @@ void main() {
     //ensure the attributes are set
     expect(mockGeometry.location, mockLocation);
   });
+
+  test('Testing Geometry factory method', () {
+
+    //creating a test JSON and feeding it in
+    Map<dynamic, dynamic> mockGeometryJSON = {'location': {'lat': 50.1109, 'lng': 8.6821} };
+    final mockGeometry = Geometry.fromJson(mockGeometryJSON);
+
+    //ensure the attributes are set
+    expect(mockGeometry.location.lat, 50.1109);
+    expect(mockGeometry.location.lng, 8.6821);
+  });
 }
