@@ -11,6 +11,14 @@ void main() {
   testWidgets('Iconic Screen created successfully', (WidgetTester tester) async {
 
     final firestore = FakeFirebaseFirestore();
+    
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+            title: const Text("Iconic Places"),
+        ),
+      )
+    ));
 
     await tester.pumpWidget(
     const MaterialApp(
