@@ -6,17 +6,21 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  group("Bottom navbar -", () {
-    Widget homeScreen =  ChangeNotifierProvider(
-      create: (context) => ApplicationProcesses(),
-      child: MaterialApp(
-        title: 'Cycle Planner',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+  late Widget homeScreen;
+
+    setUp(() {
+      homeScreen =  ChangeNotifierProvider(
+        create: (context) => ApplicationProcesses(),
+        child: MaterialApp(
+          title: 'Cycle Planner',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const HomeScreen(),
         ),
-        home: const HomeScreen(),
-      ),
-    );
+      );
+    });
+  group("Bottom navbar -", () {
 
     testWidgets('Testing for widgets created using key', (WidgetTester tester) async {
       // Define the test key.
