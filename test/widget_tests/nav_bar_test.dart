@@ -4,7 +4,7 @@ import 'package:cycle_planner/widgets/nav_bar.dart';
 import 'dart:io';
 
 void main() {
-  group("Navbar - ", () {
+  group("Navbar -", () {
     late Widget navbar;
 
     setUpAll(() {
