@@ -11,9 +11,12 @@ class BikeStationService {
   Future<List> getClosestStations(double? lat, double? lon) async {
     // Request URL with user latitude and longitude
     Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=60000&lat=$lat&lon=$lon'));
-    
+    List stations = [];
     // Get bike stations from TFL JSON
-    List stations = jsonDecode(response.body)['places'];
+    if(response.statusCode == 200) {
+      stations = jsonDecode(response.body)['places'];
+    }
+    else{stations.add(0);}
 
     return stations;
   }

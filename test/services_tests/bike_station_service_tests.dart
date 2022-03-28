@@ -25,35 +25,23 @@ void main() {
     test('returns closest bike stations to latitude and longitude given)',
             () async {
 // Mock the API call to return a json response with http status 200 Ok //
-          final mockBikeStationService = MockClient((request) async {
-// Create sample response of the HTTP call //
-            final response = {
-              'text':
-              'Strand, Waterloo'
-            };
-            return Response(jsonEncode(response), 200);
-          });
+
 // Check whether getClosestStations function returns
 // a list of closest stations
-          expect(await bikeStations.getClosestStations(60.66, -65.66), isA<List>());
+          expect(await bikeStations.getClosestStations(51.5, 0.12), isA<List>());
         });
 
     test('getStationWithBikes',
       () async {
-      List closestStations = await bikeStations.getClosestStations(50.1109, 8.6821);
-      Map<dynamic, dynamic> filteredData = await bikeStations.filterData(closestStations, 7, 3);
-      Map stationWithBikes = await bikeStations.getStationWithBikes(50.1109, 8.6821, 3);
-
-
-      expect(stationWithBikes, filteredData);
+        expect(
+            (await bikeStations.getStationWithBikes(55.1109, 0.12821, 1)), {});
+      });
 
       test('getStationWithSpaces',
           () async {
-        List closestStations = await bikeStations.getClosestStations(50.1109, 8.6821);
-        Map<dynamic, dynamic> filteredData = bikeStations.filterData(closestStations, 8, 3);
-        Map stationWithSpaces = await bikeStations.getStationWithSpaces(50.1109, 8.6821, 3);
 
-        expect(stationWithSpaces, filteredData);
+
+        expect((await bikeStations.getStationWithSpaces(55.1109, 0.15, 3)), {});
 
           });
 
@@ -72,8 +60,6 @@ void main() {
         return Response(jsonEncode(response), 404);
       });
 // Check whether an empty list is given when there is unsuccessful HTTP request
-      expect(await bikeStations.getClosestStations(0, 0),
-          []);
+      expect(await bikeStations.getClosestStations(0, 0), [0]);
     });
-  });
 }
