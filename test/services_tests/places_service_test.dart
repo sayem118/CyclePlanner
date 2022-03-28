@@ -28,24 +28,34 @@ void main() {
           expect(search, isA<Place>());
         });
 
-});
+    test('returns if autocomplete search works',
+            () async {
 
-  test('returns if autocomplete search works',
-          () async {
+          // Mock the API call to return a json response with http status 200 Ok //
+          // Check whether getAutocomplete function returns
+          // a list of PlaceSearch
+          expect(await place.getAutocomplete("poplar"), isA<List<PlaceSearch>>());
+        });
 
-        // Mock the API call to return a json response with http status 200 Ok //
-        // Check whether getAutocomplete function returns
-        // a list of PlaceSearch
-        expect(await place.getAutocomplete("poplar"), isA<List<PlaceSearch>>());
-      });
+    test('return error message when http response is unsuccessful', () async {
 
-  test('return error message when http response is unsuccessful', () async {
+      // Mock the API call to return an
+      // empty json response with http status 404
+      expect(await place.getAutocomplete(""),
+          []);
+    });
 
-    // Mock the API call to return an
-    // empty json response with http status 404
-    expect(await place.getAutocomplete(""),
-        []);
+    test('return if getPlaceMarkers',
+        () async {
+      Place getPlaceMakers = await place.getPlaceMarkers(50.1109, 8.6821, "ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      expect(getPlaceMakers, isA<Place>());
+        });
+
+
+
   });
+
+
 
 
 }
