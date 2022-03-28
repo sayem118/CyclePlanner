@@ -82,6 +82,68 @@ void main() {
       expect(navigation.wayPoints, <WayPoint>[mockWayPoint]);
 
         });
+
+    test('mapBoxBegin',
+        () async {
+          MapboxNavigationService navigation = MapboxNavigationService();
+          MarkerService serviceMarker = MarkerService();
+          final mockLocation = Location(lat: 50.1109, lng: 8.6821);
+          final mockGeometry = Geometry(location: mockLocation);
+          final mockPlace = Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          final MarkerID = mockPlace.name;
+          final createMarker = serviceMarker.createMarkerFromPlace(mockPlace);
+          final marker1 = Marker(
+              markerId: MarkerId(MarkerID),
+          draggable: false,
+          visible: true,
+          infoWindow: InfoWindow(
+          title: mockPlace.name, snippet: mockPlace.vicinity
+          ),
+          position: LatLng(
+          mockPlace.geometry.location.lat,
+          mockPlace.geometry.location.lng));
+
+          MarkerService serviceMaker2 = MarkerService();
+          final mockLocation2 = Location(lat: 51.494720, lng: -0.135278);
+          final mockGeometry2 = Geometry(location: mockLocation2);
+          final mockPlace2 = Place(geometry: mockGeometry2, name: "Test2", vicinity: "Test2");
+          final MarkerID2 = mockPlace2.name;
+          final createMarker2 = serviceMarker.createMarkerFromPlace(mockPlace2);
+          final marker2 = Marker(
+              markerId: MarkerId(MarkerID2),
+              draggable: false,
+              visible: true,
+              infoWindow: InfoWindow(
+                  title: mockPlace2.name, snippet: mockPlace2.vicinity
+              ),
+              position: LatLng(
+                  mockPlace2.geometry.location.lat,
+                  mockPlace2.geometry.location.lng));
+
+          List<Marker> markersPresent = [marker1,marker2];
+          final wayPointsTemp = navigation.wayPoints;
+          final directionTemp = navigation.directions;
+
+          navigation.mapboxBegin(markersPresent);
+          for (var stop in markersPresent) {
+            wayPointsTemp.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
+          final mockWayPoint = WayPoint(name: "Test2", latitude: mockPlace2.geometry.location.lat, longitude: mockPlace2.geometry.location.lng );
+
+          // expect(navigation.directions.startNavigation(wayPoints: wayPointsTemp, options:navigation.options), isA<)
+
+          expect(await navigation.directions.finishNavigation(), false);
+
+
+
+
+
+
+
+
+
+        }
+
+    });
         });
 
 
