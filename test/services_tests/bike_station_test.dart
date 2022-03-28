@@ -25,6 +25,11 @@ void main() {
       var test = await bikeStations.getStationWithSpaces(55.1109, 0.15, 3);
         expect(test, {});
           });
+    test('Get filtered data', () async{
+      var test = bikeStations.filterData(await bikeStations.getClosestStations(55.1109, 0.15,), 6, 10);
+      expect(test, {});
+
+    });
 
 
 });
