@@ -21,7 +21,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 void main() {
   BikeStationService bikeStations = BikeStationService();
-  group('getClosestStations', () {
+  group('BikeStationService', () {
     test('returns closest bike stations to latitude and longitude given)',
             () async {
 // Mock the API call to return a json response with http status 200 Ok //
@@ -37,18 +37,43 @@ void main() {
 // a list of closest stations
           expect(await bikeStations.getClosestStations(60.66, -65.66), isA<List>());
         });
+    
+    test('getStationWithBikes',
+      () async {
+      List closestStations = await bikeStations.getClosestStations(50.1109, 8.6821);
+      Map<dynamic, dynamic> filteredData = await bikeStations.filterData(closestStations, 7, 3);
+      Map stationWithBikes = await bikeStations.getStationWithBikes(50.1109, 8.6821, 3);
 
-//     test(
-//         'return error message when http response is unsuccessful and cant give closest bike stations', () async {
-// // Mock the API call to return an
-// // empty json response with http status 404
-//       final mockBikeStationService = MockClient((request) async {
-//         final response = {};
-//         return Response(jsonEncode(response), 404);
-//       });
-// // Check whether an empty list is given when there is unsuccessful HTTP request
-//       expect(await bikeStations.getClosestStations(0, 0),
-//           []);
-//     });
+
+      expect(stationWithBikes, filteredData);
+
+      test('getStationWithSpaces',
+          () async {
+        List closestStations = await bikeStations.getClosestStations(50.1109, 8.6821);
+        Map<dynamic, dynamic> filteredData = await bikeStations.filterData(closestStations, 8, 3);
+        Map stationWithSpaces = await bikeStations.getStationWithSpaces(50.1109, 8.6821, 3);
+
+        expect(stationWithSpaces, filteredData);
+
+          });
+
+
+
+
+
+    });
+
+    test(
+        'return error message when http response is unsuccessful and cant give closest bike stations', () async {
+// Mock the API call to return an
+// empty json response with http status 404
+      final mockBikeStationService = MockClient((request) async {
+        final response = {};
+        return Response(jsonEncode(response), 404);
+      });
+// Check whether an empty list is given when there is unsuccessful HTTP request
+      expect(await bikeStations.getClosestStations(0, 0),
+          []);
+    });
   });
 }
