@@ -106,7 +106,10 @@ class ApplicationProcesses with ChangeNotifier {
   void drawNewRouteIfPossible(context) async {
     var position = await Geolocator.getCurrentPosition();
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
-        position.latitude, position.longitude, groupSize);
+      position.latitude,
+      position.longitude,
+      groupSize
+    );
     Map startStation = await futureBikeStation1;
 
     Marker temp = markers.last;
@@ -114,22 +117,22 @@ class ApplicationProcesses with ChangeNotifier {
         temp.position.latitude, temp.position.longitude, groupSize);
     Map endStation = await futureBikeStation2;
 
-    if(!startStation.isEmpty && !endStation.isEmpty) {
+    if(startStation.isNotEmpty && endStation.isNotEmpty) {
       bikeStations.clear();
       polylines = {};
       bikeStations = List<Marker>.from(markers);
       Marker currentLocation =
       Marker(markerId: const MarkerId("current location"),
-          position: LatLng(position.latitude, position.longitude)
+        position: LatLng(position.latitude, position.longitude)
       );
       //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
       Marker station1 = Marker(
-          markerId: const MarkerId("start station"),
-          position: LatLng(startStation['lat'], startStation['lon'])
+        markerId: const MarkerId("start station"),
+        position: LatLng(startStation['lat'], startStation['lon'])
       );
       Marker station2 = Marker(
-          markerId: const MarkerId("end station"),
-          position: LatLng(endStation['lat'], endStation['lon'])
+        markerId: const MarkerId("end station"),
+        position: LatLng(endStation['lat'], endStation['lon'])
       );
       bikeStations.insert(0, station1);
       bikeStations.insert(0, currentLocation);
