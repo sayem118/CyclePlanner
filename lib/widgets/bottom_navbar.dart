@@ -65,8 +65,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
               break;
               case 4: {
-                applicationProcesses.drawRoute();
-                setState(() {});
+                applicationProcesses.drawNewRouteIfPossible(context);
+
+                // if(applicationProcesses.bikeStations.l) {
+                //   applicationProcesses.drawRoute();
+                //   setState(() {});
+                // }
                 break;
               }
               case 5: {
