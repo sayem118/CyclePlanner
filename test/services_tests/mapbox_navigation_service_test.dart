@@ -92,8 +92,7 @@ void main() {
           for (var stop in markersPresent) {
             wayPointsTemp.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
 
-          //expect(await navigation.directions.startNavigation(wayPoints: wayPointsTemp, options:_options), isA<Future<dynamic>>());
-
+          expect(await navigation.directions.startNavigation(wayPoints: wayPointsTemp, options:navigation.options), null);
           expect(await navigation.directions.finishNavigation(), false);
 
 
