@@ -45,6 +45,8 @@ void main() {
       // Search for the favorite icon in the tree and verify it exists.
       expect(favoriteIcon, findsOneWidget);
 
+      await tester.tap(favoriteIcon);
+
       await tester.pumpAndSettle();
     });
 
@@ -58,6 +60,8 @@ void main() {
       // Search for the info icon in the tree and verify it exists.
       expect(infoIcon, findsOneWidget);
 
+      await tester.tap(infoIcon);
+
       await tester.pumpAndSettle();
     });
 
@@ -70,8 +74,6 @@ void main() {
 
       // Search for the exit icon in the tree and verify it exists.
       expect(exitIcon, findsOneWidget);
-      
-      // await tester.tap(exitIcon);
 
       await tester.pumpAndSettle();
     });
