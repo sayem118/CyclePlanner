@@ -65,19 +65,6 @@ void main() {
           position: LatLng(mockPlace.geometry.location.lat,
               mockPlace.geometry.location.lng));
 
-      final mockLocation2 = Location(lat: 51.494720, lng: -0.135278);
-      final mockGeometry2 = Geometry(location: mockLocation2);
-      final mockPlace2 =
-      Place(geometry: mockGeometry2, name: "Test2", vicinity: "Test2");
-      final markerID2 = mockPlace2.name;
-      final marker2 = Marker(
-          markerId: MarkerId(markerID2),
-          draggable: false,
-          visible: true,
-          infoWindow:
-          InfoWindow(title: mockPlace2.name, snippet: mockPlace2.vicinity),
-          position: LatLng(mockPlace2.geometry.location.lat,
-              mockPlace2.geometry.location.lng));
       final addedMarker = appProcesses.markers;
 
       addedMarker.add(marker1);
