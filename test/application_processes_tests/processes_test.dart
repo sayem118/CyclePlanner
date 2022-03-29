@@ -7,68 +7,49 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-Position get mockPosition =>
-    Position(
-        latitude: 55.561270,
-        longitude: 0.17639382,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(
-          500,
-          isUtc: true,
-        ),
-        altitude: 3000.0,
-        accuracy: 0.0,
-        heading: 0.0,
-        speed: 0.0,
-        speedAccuracy: 0.0);
-    final  appProcesses = ApplicationProcesses();
+Position get mockPosition => Position(
+    latitude: 55.561270,
+    longitude: 0.17639382,
+    timestamp: DateTime.fromMillisecondsSinceEpoch(
+      500,
+      isUtc: true,
+    ),
+    altitude: 3000.0,
+    accuracy: 0.0,
+    heading: 0.0,
+    speed: 0.0,
+    speedAccuracy: 0.0);
+final appProcesses = ApplicationProcesses();
 
 void main() {
   GeolocatorPlatform.instance = MockGeolocatorPlatform();
   TestWidgetsFlutterBinding.ensureInitialized();
+  const MethodChannel('flutter.baseflow.com/geolocator')
+      .setMockMethodCallHandler((MethodCall methodCall) async {
+    if (methodCall.method == 'getCurrentPosition') {
+      return {};
+    }
+    return {};
+  });
   group('MarkerService', () {
-
     test('setGroupSize', () async {
-      const MethodChannel('flutter.baseflow.com/geolocator')
-          .setMockMethodCallHandler((MethodCall methodCall) async {
-        if (methodCall.method == 'getCurrentPosition') {
-          return{};
-        }
-        return {};
-      });
       appProcesses.setGroupSize(2);
       //ensure the number 2 is set
       expect(appProcesses.groupSize, 2);
-
     });
 
     test('Remove Polylines', () async {
-      const MethodChannel('flutter.baseflow.com/geolocator')
-          .setMockMethodCallHandler((MethodCall methodCall) async {
-        if (methodCall.method == 'getCurrentPosition') {
-          return null;
-        }
-        return {};
-      });
       appProcesses.removePolyline();
 
       expect(appProcesses.polylines, []);
       expect(appProcesses.polyCoords, []);
-
-
     });
-
-
-
   });
-
-
-
-
 }
 
 class MockGeolocatorPlatform extends Mock
     with
-    // ignore: prefer_mixin
+        // ignore: prefer_mixin
         MockPlatformInterfaceMixin
     implements
         GeolocatorPlatform {
@@ -141,16 +122,20 @@ class MockGeolocatorPlatform extends Mock
   Future<bool> openLocationSettings() => Future.value(true);
 
   @override
-  double distanceBetween(double startLatitude,
-      double startLongitude,
-      double endLatitude,
-      double endLongitude,) =>
+  double distanceBetween(
+    double startLatitude,
+    double startLongitude,
+    double endLatitude,
+    double endLongitude,
+  ) =>
       42;
 
   @override
-  double bearingBetween(double startLatitude,
-      double startLongitude,
-      double endLatitude,
-      double endLongitude,) =>
+  double bearingBetween(
+    double startLatitude,
+    double startLongitude,
+    double endLatitude,
+    double endLongitude,
+  ) =>
       42;
 }
