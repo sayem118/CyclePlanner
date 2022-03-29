@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/mapbox_navigation_service.dart';
 import 'package:flutter/material.dart';
@@ -65,8 +67,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
               break;
               case 4: {
-                applicationProcesses.drawRoute();
-                setState(() {});
+                applicationProcesses.drawNewRouteIfPossible(context);
                 break;
               }
               case 5: {
@@ -77,7 +78,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 break;
               }
             }
-            // print(_selectedIndex);
           });
         },
       ),
