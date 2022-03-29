@@ -124,7 +124,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.pumpWidget(homeScreen);
 
-      // Creather the finder
+      // Create the finder
       final groupIcon = find.byIcon(Icons.group);
 
       // Search for the group icon in the tree and verify it exists.
