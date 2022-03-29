@@ -45,7 +45,7 @@ class StartState extends State<SplashScreen> {
           children: <Widget>[
             Container(
 
-              child: Image.asset("assets/cyclebaylogoo.png",
+              child: Image.asset("assets/cyclebaynew.png",
                 width: 300,
                 height: 300,
                fit: BoxFit.cover,
@@ -70,13 +70,7 @@ class StartState extends State<SplashScreen> {
     );
   }
 }
-// class SplashScreen extends StatefulWidget {
-//   const SplashScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SplashScreen> createState() => _SplashScreenState();
-// }
-//
+
 //
 // class _SplashScreenState extends State <SplashScreen> with TickerProviderStateMixin {
 //
