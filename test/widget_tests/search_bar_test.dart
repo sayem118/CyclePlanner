@@ -6,12 +6,10 @@ import 'dart:io';
 void main() {
 
   late Widget searchbar;
-  const testKey = Key('K');
 
   setUpAll(() {
     HttpOverrides.global = null;
     searchbar = const MaterialApp(
-        key: testKey,
         home: SearchBar()
     );
   });
@@ -66,9 +64,6 @@ void main() {
     expect(find.byType(TextField), findsOneWidget);
     //Mock a search
     await tester.tap(find.byType(TextField));
-    //await tester.pump();
-    //??? What to check for after search
-
   });
 
 }
