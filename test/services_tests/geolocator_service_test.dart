@@ -1,30 +1,29 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
 // import 'package:permission_handler/permission_handler.dart';
 // import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
 
 
-
-
 const String key = 'AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
 
-Position get mockPosition => Position(
-    latitude: 52.561270,
-    longitude: 5.639382,
-    timestamp: DateTime.fromMillisecondsSinceEpoch(
-      500,
-      isUtc: true,
-    ),
-    altitude: 3000.0,
-    accuracy: 0.0,
-    heading: 0.0,
-    speed: 0.0,
-    speedAccuracy: 0.0);
+Position get mockPosition =>
+    Position(
+        latitude: 52.561270,
+        longitude: 5.639382,
+        timestamp: DateTime.fromMillisecondsSinceEpoch(
+          500,
+          isUtc: true,
+        ),
+        altitude: 3000.0,
+        accuracy: 0.0,
+        heading: 0.0,
+        speed: 0.0,
+        speedAccuracy: 0.0);
 
 void main() {
   group('Geolocator', () {
@@ -218,20 +217,16 @@ class MockGeolocatorPlatform extends Mock
   Future<bool> openLocationSettings() => Future.value(true);
 
   @override
-  double distanceBetween(
-      double startLatitude,
+  double distanceBetween(double startLatitude,
       double startLongitude,
       double endLatitude,
-      double endLongitude,
-      ) =>
+      double endLongitude,) =>
       42;
 
   @override
-  double bearingBetween(
-      double startLatitude,
+  double bearingBetween(double startLatitude,
       double startLongitude,
       double endLatitude,
-      double endLongitude,
-      ) =>
+      double endLongitude,) =>
       42;
 }
