@@ -34,6 +34,7 @@ class ApplicationProcesses with ChangeNotifier {
   Place? selectedLocationStatic;
   String? placeName;
   List<Marker> markers = [];
+  Timer? timer;
 
   //hidden set of markers to be used behind the scenes
   List<Marker> bikeStations = [];
@@ -66,6 +67,10 @@ class ApplicationProcesses with ChangeNotifier {
 
   void setGroupSize(int group) {
     groupSize = group;
+  }
+
+  int getGroupSize() {
+    return groupSize;
   }
 
   /// Receive [userInput] to proccess for autocompletion
@@ -135,6 +140,12 @@ class ApplicationProcesses with ChangeNotifier {
       bikeStations.insert(0, currentLocation);
       bikeStations.add(station2);
       drawRoute();
+
+      // automatically refresh route overview.
+      timer?.cancel();
+      timer = Timer.periodic(Duration(minutes: 3), (Timer t) => {
+        drawNewRouteIfPossible(context),
+      });
     }
     else if (endStation.isEmpty) {
       _showNoStationsFinalStopAlert(context);
@@ -196,7 +207,6 @@ class ApplicationProcesses with ChangeNotifier {
     }
     notifyListeners();
   }
-
 
 /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
 /// [Polyline] are drawn between [Marker] coordinates.
@@ -267,6 +277,7 @@ class ApplicationProcesses with ChangeNotifier {
     bounds.close();
     super.dispose();
   }
+
 
   // Creates alert if there are no available bike stations near final stop.
   Future<void> _showNoStationsFinalStopAlert(context) async {
