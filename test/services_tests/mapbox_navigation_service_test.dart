@@ -59,6 +59,20 @@ void main() {
 
 
           });
+
+    test('returns directions present', () async {
+      final directionsGiven = navigation.directions;
+
+      expect(navigation.getDirections(), directionsGiven);
+    });
+
+    test('add Waypoints', () async {
+      // final wayPointsGiven = navigation.wayPoints;
+      final mockWayPoint = WayPoint(
+          name: "westminster", latitude: 51.4974948, longitude: -0.1356583);
+      navigation.addStop(mockWayPoint);
+      expect(navigation.wayPoints, <WayPoint>[mockWayPoint]);
+    });
         });
 
 
