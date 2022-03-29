@@ -15,13 +15,12 @@ class LoginScreen extends StatefulWidget{
 
 
 class _LoginScreenState extends State<LoginScreen>{
-
   // form key
   final _formKey = GlobalKey<FormState>();
 
   //editing controller
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
 
   //firebase
@@ -103,7 +102,7 @@ final _auth = FirebaseAuth.instance;
       borderRadius: BorderRadius.circular(30),
       color: Colors.blueGrey,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
 
 
@@ -111,7 +110,7 @@ final _auth = FirebaseAuth.instance;
           {
             signIn(emailController.text, passwordController.text);
           },
-          child: Text(
+          child: const Text(
             "Login",
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -166,24 +165,24 @@ final _auth = FirebaseAuth.instance;
                         )],
 
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(" Sign in as "),
-                        GestureDetector(onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                        },
-                          child: Text(
-                            "Guest",
-                            style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 15),
-                          ),
-
-                        )],
-
-                    )
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     Text(" Sign in as "),
+                    //     GestureDetector(onTap: (){
+                    //       Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                    //     },
+                    //       child: const Text(
+                    //         "Guest",
+                    //         style: TextStyle(
+                    //             color: Colors.redAccent,
+                    //             fontWeight: FontWeight.w900,
+                    //             fontSize: 15),
+                    //       ),
+                    //
+                    //     )],
+                    //
+                    // )
                   ],
                 ),
               ),
@@ -193,6 +192,7 @@ final _auth = FirebaseAuth.instance;
       ),
     );
   }
+
 
   void signIn(String email, String password) async
   {

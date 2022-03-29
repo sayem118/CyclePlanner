@@ -29,8 +29,8 @@ class ApplicationProcesses with ChangeNotifier {
   // Class variables
   Position? currentLocation;
   List<PlaceSearch> searchResults = [];
-  StreamController<Place> selectedLocation = StreamController<Place>();
-  StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>();
+  StreamController<Place> selectedLocation = StreamController<Place>.broadcast();
+  StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>.broadcast();
   Place? selectedLocationStatic;
   String? placeName;
   List<Marker> markers = [];

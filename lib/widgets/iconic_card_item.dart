@@ -1,16 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 
-class CardItem extends StatefulWidget {
+
+
+
+ class CardItem extends StatefulWidget {
+  // var _place;
+  // PlaceDetails(_place);
   final String itemTitle;
   final String itemInfo;
   final String imageInfo;
   final String placeId;
   final String placeInfo;
 
-  const CardItem({Key? key,
+   const CardItem({Key? key,
     required this.itemTitle,
     required this.itemInfo,
     required this.imageInfo,
@@ -74,13 +81,41 @@ class _CardItemState extends State<CardItem> {
                                 textAlign: TextAlign.left ,
                               )
                           ),
-                          trailing: IconButton(
+
+                          trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                IconButton(
                             icon: const Icon(Icons.add_location_alt),
                             onPressed: () {
                               applicationProcesses.toggleMarker(widget.placeId);
                               Navigator.pop(context);
                               Navigator.pop(context);
                             },
+                              ),
+                      StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection("users-favourite-places").doc(FirebaseAuth.instance.currentUser!.email)
+                              .collection("places").where("name",isEqualTo: widget.itemTitle).snapshots(), builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if(snapshot.data == null){
+                              return Text("");
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: IconButton(
+                                onPressed: () => snapshot.data.docs.length == 0? addToFavourite():print ("Already added"),
+                                icon: snapshot.data.docs.length == 0? Icon(
+                                  Icons.favorite_outline,
+                                  size: 20.0,
+                                  color: Colors.red[900],
+                                ): Icon(
+                        Icons.favorite,
+                        ),
+
+                              ),
+                            );
+                      }),
+                     
+                  ],
                           ),
                         )
                     )
@@ -90,5 +125,22 @@ class _CardItemState extends State<CardItem> {
           )
       ),
     );
+  }
+
+  Future addToFavourite() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+    CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection("users-favourite-places");
+    return _collectionRef
+        .doc(currentUser!.email)
+        .collection("iconic-places")
+        .doc()
+        .set({
+      "name": widget.itemTitle,
+      "images": widget.imageInfo,
+      "Id": widget.placeId,
+      "info": widget.itemInfo,
+    }).then((value) => print("Added to favourite"));
   }
 }

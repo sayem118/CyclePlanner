@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cycle_planner/widgets/saved_places_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/widgets/iconic_places.dart';
@@ -18,6 +19,7 @@ class NavBar extends StatefulWidget {
 
   @override
   void initState() {
+    super.initState();
   FirebaseFirestore.instance
       .collection("users")
       .doc(user!.uid)
@@ -85,7 +87,11 @@ class NavBar extends StatefulWidget {
           ListTile(
             leading: const Icon(Icons.favorite),
             title: const Text('Saved places'),
-            onTap: () => {null},
+            onTap: () => {}
+              // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+              //   return SavedPlaces();
+              // },),)
+            //},
           ),
           const Divider(),
           ListTile(
@@ -94,12 +100,11 @@ class NavBar extends StatefulWidget {
             onTap: () => {null},
           ),
           const Divider(),
-          ListTile(
-            title: const Text('Logout'),
-            leading: const Icon(Icons.exit_to_app),
-              onTap: () {
-                logout(context);
-              },
+          ActionChip(
+            label: Text("Logout"),
+            onPressed: () {
+              logout(context);
+            },
           ),
         ],
       ),
@@ -111,6 +116,6 @@ class NavBar extends StatefulWidget {
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()));
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 }
