@@ -26,8 +26,6 @@ class _LoginScreenState extends State<LoginScreen>{
   //firebase
 final _auth = FirebaseAuth.instance;
 
-
-
   @override
   Widget build(BuildContext context){
     //email field
@@ -54,8 +52,8 @@ final _auth = FirebaseAuth.instance;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.mail),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        prefixIcon: const Icon(Icons.mail),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Email",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -87,8 +85,8 @@ final _auth = FirebaseAuth.instance;
       },
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.vpn_key),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        prefixIcon: const Icon(Icons.vpn_key),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Password",
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -104,8 +102,6 @@ final _auth = FirebaseAuth.instance;
       child: MaterialButton(
           padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
-
-
           onPressed: ()
           {
             signIn(emailController.text, passwordController.text);
@@ -115,11 +111,9 @@ final _auth = FirebaseAuth.instance;
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-          )),
+          )
+      ),
     );
-
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -137,33 +131,31 @@ final _auth = FirebaseAuth.instance;
 
                     SizedBox(
                         height: 200,
-                        child: Image.asset("assets/cyclebaylogoo.png",
+                        child: Image.asset("assets/cyclebaynew.png",
                           fit: BoxFit.contain,
                         )),
-                    SizedBox(height: 45),
+                    const SizedBox(height: 45),
                     emailField,
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     passwordField,
-                    SizedBox(height: 35),
+                    const SizedBox(height: 35),
                     loginButton,
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Don't have an account? "),
+                        const Text("Don't have an account? "),
                         GestureDetector(onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
                         },
-                          child: Text(
+                          child: const Text(
                             "SignUp",
                             style: TextStyle(
                                 color: Colors.redAccent,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 15),
                           ),
-
                         )],
-
                     ),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +185,6 @@ final _auth = FirebaseAuth.instance;
     );
   }
 
-
   void signIn(String email, String password) async
   {
     if (_formKey.currentState!.validate())
@@ -210,5 +201,4 @@ final _auth = FirebaseAuth.instance;
             });
       }
   }
-
 }
