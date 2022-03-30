@@ -7,12 +7,12 @@ class MapboxNavigation extends StatefulWidget {
   const MapboxNavigation({ Key? key, this.bike_stations }) : super(key: key);
 
   @override
-  State<MapboxNavigation> createState() => _MapboxNavigationState();
+  State<MapboxNavigation> createState() => MapboxNavigationState();
 }
 
-class _MapboxNavigationState extends State<MapboxNavigation> {
+class MapboxNavigationState extends State<MapboxNavigation> {
   late MapBoxNavigationViewController _controller;
-  late MapBoxOptions _options;
+  late MapBoxOptions options;
   late MapBoxNavigation _directions;
 
   List<WayPoint> wayPoints = [];
@@ -37,7 +37,7 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
     if (!mounted) return;
 
     _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
-    _options = MapBoxOptions(
+     options = MapBoxOptions(
       zoom: 15.0,
       tilt: 1.0,
       bearing: 1.0,
@@ -57,7 +57,7 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
     for (var stop in widget.bike_stations) {
       wayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
     }
-    await _directions.startNavigation(wayPoints: wayPoints, options: _options);
+    await _directions.startNavigation(wayPoints: wayPoints, options: options);
   }
 
   @override
@@ -65,7 +65,7 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
     return Container(
       color: Colors.blueGrey,
       child: MapBoxNavigationView(
-        options: _options,
+        options: options,
         onRouteEvent: _onEmbeddedRouteEvent,
         onCreated: (MapBoxNavigationViewController controller) async {
           _controller = controller;

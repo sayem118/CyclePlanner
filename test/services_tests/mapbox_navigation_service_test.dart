@@ -1,13 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cycle_planner/services/mapbox_navigation_service.dart';
+import 'package:cycle_planner/widgets/mapbox_navigation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/place.dart';
 
-final navigation = MapboxNavigationService();
+final navigation = MapboxNavigationState();
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
