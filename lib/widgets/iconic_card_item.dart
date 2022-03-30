@@ -139,9 +139,10 @@ class _CardItemState extends State<CardItem> {
         .doc()
         .set({
       "name": widget.itemTitle,
-      "images": widget.imageInfo,
-      "Id": widget.placeId,
-      "info": widget.itemInfo,
+      "image": widget.imageInfo,
+      "place_id": widget.placeId,
+      "place_info": widget.placeInfo,
+      "item_info":widget.itemInfo,
     }).then((value) => print("Added to favourite"));
   }
 }

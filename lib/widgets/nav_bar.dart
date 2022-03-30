@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cycle_planner/widgets/saved_places.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/widgets/iconic_places.dart';
@@ -86,11 +87,11 @@ class NavBar extends StatefulWidget {
           ListTile(
             leading: const Icon(Icons.favorite),
             title: const Text('Saved places'),
-            onTap: () => {}
-              // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-              //   return SavedPlaces();
-              // },),)
-            //},
+            onTap: () => {
+               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                 return SavedPlaces();
+               },),)
+            },
           ),
           const Divider(),
           ListTile(
