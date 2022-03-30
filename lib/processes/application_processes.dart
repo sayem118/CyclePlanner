@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/services/marker_service.dart';
-import 'package:cycle_planner/services/polyline_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/models/place.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:cycle_planner/widgets/journey_planner.dart';
@@ -19,10 +19,9 @@ import 'package:cycle_planner/widgets/journey_planner.dart';
 /// and processing user typed search locations.
 
 class ApplicationProcesses with ChangeNotifier {
-  final geoLocatorService = Geolocator();
+  final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
   final markerService = MarkerService();
-  final polylineService = PolylineService();
   final polylinePoints = PolylinePoints();
   final bikeService = BikeStationService();
 
@@ -34,8 +33,11 @@ class ApplicationProcesses with ChangeNotifier {
   Place? selectedLocationStatic;
   String? placeName;
   List<Marker> markers = [];
+  Timer? timer;
+
   //hidden set of markers to be used behind the scenes
   List<Marker> bikeStations = [];
+
   //station1 has initial bike station and station 2 has last one
   Set<Polyline> polylines = {};
   List<LatLng> polyCoords = [];
@@ -48,22 +50,26 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Update the user's [currentLocation]
   setCurrentLocation() async {
-    currentLocation = await Geolocator.getCurrentPosition();
+    currentLocation = await geoLocatorService.getCurrentLocation();
     selectedLocationStatic = Place(
       name: '',
       geometry: Geometry(
         location: Location(
-          lat: currentLocation!.latitude,
-          lng: currentLocation!.longitude
+            lat: currentLocation!.latitude,
+            lng: currentLocation!.longitude
         ),
-      ), 
+      ),
       vicinity: '',
     );
     notifyListeners();
   }
 
-  void setGroupSize(int group){
+  void setGroupSize(int group) {
     groupSize = group;
+  }
+
+  int getGroupSize() {
+    return groupSize;
   }
 
   /// Receive [userInput] to proccess for autocompletion
@@ -86,15 +92,14 @@ class ApplicationProcesses with ChangeNotifier {
     placeName = value;
 
     Place place = await placesService.getPlaceMarkers(
-      selectedLocationStatic!.geometry.location.lat,
-      selectedLocationStatic!.geometry.location.lng,
-      placeName!
+        selectedLocationStatic!.geometry.location.lat,
+        selectedLocationStatic!.geometry.location.lng,
+        placeName!
     );
 
     var newMarker = markerService.createMarkerFromPlace(place);
     if (!markers.contains(newMarker)) {
       markers.add(newMarker);
-      drawRoute();
     }
 
     var _bounds = markerService.bounds(Set<Marker>.of(markers));
@@ -102,47 +107,74 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
-
-  void drawRoute() async{
-    bikeStations.clear();
-    polylines = {};
-    bikeStations = List<Marker>.from(markers);
+  void drawNewRouteIfPossible(context) async {
     var position = await Geolocator.getCurrentPosition();
-    Marker currentLocation =
-      Marker(markerId: const MarkerId("current location"),
-      position: LatLng(position.latitude, position.longitude)
+    Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
+      position.latitude,
+      position.longitude,
+      groupSize
     );
-    //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
-    Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(position.latitude, position.longitude, groupSize);
     Map startStation = await futureBikeStation1;
+
     Marker temp = markers.last;
-    Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(temp.position.latitude, temp.position.longitude, groupSize);
+    Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(
+        temp.position.latitude, temp.position.longitude, groupSize);
     Map endStation = await futureBikeStation2;
-    Marker station1 = Marker(
-      markerId: const MarkerId("start station"),
-      position: LatLng(startStation['lat'], startStation['lon'])
-    );
-    Marker station2 = Marker(
+
+    if(startStation.isNotEmpty && endStation.isNotEmpty) {
+      bikeStations.clear();
+      polylines = {};
+      bikeStations = List<Marker>.from(markers);
+      Marker currentLocation =
+      Marker(markerId: const MarkerId("current location"),
+        position: LatLng(position.latitude, position.longitude)
+      );
+      //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
+      Marker station1 = Marker(
+        markerId: const MarkerId("start station"),
+        position: LatLng(startStation['lat'], startStation['lon'])
+      );
+      Marker station2 = Marker(
         markerId: const MarkerId("end station"),
         position: LatLng(endStation['lat'], endStation['lon'])
-    );
-    bikeStations.insert(0, station1);
-    bikeStations.insert(0, currentLocation);
-    bikeStations.add(station2);
-    for(int i = 1; i < bikeStations.length; i++) {
+      );
+      bikeStations.insert(0, station1);
+      bikeStations.insert(0, currentLocation);
+      bikeStations.add(station2);
+      drawRoute();
+
+      // automatically refresh route overview.
+      timer?.cancel();
+      timer = Timer.periodic(Duration(minutes: 3), (Timer t) => {
+        drawNewRouteIfPossible(context),
+      });
+    }
+    else if (endStation.isEmpty) {
+      _showNoStationsFinalStopAlert(context);
+    }
+    else {
+      _showNoStationsCurrentLocationAlert(context);
+    }
+  }
+
+  void drawRoute() async {
+    for (int i = 1; i < bikeStations.length; i++) {
       late PolylinePoints polylinePoints;
       polylinePoints = PolylinePoints();
       final markerS = bikeStations.elementAt(i - 1);
       final markerd = bikeStations.elementAt(i);
-      final PointLatLng marker1 = PointLatLng(markerd.position.latitude, markerd.position.longitude);
-      final PointLatLng marker2 = PointLatLng(markerS.position.latitude, markerS.position.longitude);
+      final PointLatLng marker1 = PointLatLng(
+          markerd.position.latitude, markerd.position.longitude);
+      final PointLatLng marker2 = PointLatLng(
+          markerS.position.latitude, markerS.position.longitude);
       //gets a set of coordinates between 2 markers
       late PolylineResult result;
-      if (i == 1){result = await polylinePoints.getRouteBetweenCoordinates(
-        "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
-        marker1,
-        marker2,
-        travelMode: TravelMode.walking,);
+      if (i == 1) {
+        result = await polylinePoints.getRouteBetweenCoordinates(
+          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          marker1,
+          marker2,
+          travelMode: TravelMode.walking,);
       }
       else {
         result = await polylinePoints.getRouteBetweenCoordinates(
@@ -160,28 +192,27 @@ class ApplicationProcesses with ChangeNotifier {
       }
       //adds stuff to polyline
       //if its a cycle path line is red otherwise line is blue
-      if (i == 1 || i == bikeStations.length - 1){
+      if (i == 1 || i == bikeStations.length - 1) {
         polylines.add(Polyline(
             polylineId: PolylineId(stuff.toString()),
             points: nPoints,
             color: Colors.red
         ));
       }
-      else{
+      else {
         polylines.add(Polyline(
             polylineId: PolylineId(stuff.toString()),
             points: nPoints,
             color: Colors.blue
         ));
       }
-
     }
     notifyListeners();
-
   }
-  /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
-  /// [Polyline] are drawn between [Marker] coordinates.
-  /*
+
+/// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
+/// [Polyline] are drawn between [Marker] coordinates.
+/*
   drawPolyline(Position? currentLoc) async {
 
     // // Hard coded for quick testing purposes.
@@ -247,5 +278,62 @@ class ApplicationProcesses with ChangeNotifier {
     selectedLocation.close();
     bounds.close();
     super.dispose();
+  }
+
+
+  // Creates alert if there are no available bike stations near final stop.
+  Future<void> _showNoStationsFinalStopAlert(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('No available bike stations near your final stop.'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Try reordering your stops or changing your final stop.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Creates alert if there are no available bike stations near final stop.
+  Future<void> _showNoStationsCurrentLocationAlert(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('No available bike stations near your current location.'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Try using the app from somewhere else.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

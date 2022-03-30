@@ -17,4 +17,19 @@ void main() {
     expect(mockPlace.vicinity, "Test");
 
   });
+
+  test('Testing Place factory method', () {
+
+    //creating a test JSON and feeding it in
+    Map mockGeometryJSON = {'location': {'lat': 50.1109, 'lng': 8.6821}};
+    Map mockPlaceJSON = {'geometry': mockGeometryJSON
+      , 'formatted_address': "Test", 'vicinity': "Test"};
+    final mockPlace = Place.fromJson(mockPlaceJSON);
+
+    //ensure the attributes are set
+    expect(mockPlace.geometry.location.lat, 50.1109);
+    expect(mockPlace.geometry.location.lng, 8.6821);
+    expect(mockPlace.name, "Test");
+    expect(mockPlace.vicinity, "Test");
+  });
 }
