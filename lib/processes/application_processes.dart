@@ -145,7 +145,7 @@ class ApplicationProcesses with ChangeNotifier {
 
       // automatically refresh route overview.
       timer?.cancel();
-      timer = Timer.periodic(Duration(minutes: 3), (Timer t) => {
+      timer = Timer.periodic(Duration(seconds: 3), (Timer t) => {
         drawNewRouteIfPossible(context),
       });
     }
