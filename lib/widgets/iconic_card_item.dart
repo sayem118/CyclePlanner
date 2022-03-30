@@ -22,7 +22,8 @@ import 'package:cycle_planner/processes/application_processes.dart';
     required this.itemInfo,
     required this.imageInfo,
     required this.placeId,
-    required this.placeInfo}) : super(key: key);
+    required this.placeInfo}) : super( // coverage:ignore-line
+      key: key);
 
   @override
   State<CardItem> createState() => _CardItemState();

@@ -26,7 +26,7 @@ class GoogleMapPage extends StatefulWidget {
 class _MapPageState extends State<GoogleMapPage> {
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
-  final LatLng _center = const LatLng(53.1424, 7.6921);
+  final LatLng _center = const LatLng(51.509865, -0.118092);
 
   @override
   void initState() {

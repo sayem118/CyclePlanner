@@ -23,8 +23,6 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +71,7 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
                         child: ElevatedButton(
                             onPressed: () {
                               applicationProcesses.setGroupSize(_currentValue);
-                              applicationProcesses.drawRoute();
+                              applicationProcesses.drawNewRouteIfPossible(context);
                               // set group size
                               _pc1.close();
                             },
@@ -120,7 +118,7 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
                       final element = applicationProcesses.markers.removeAt(oldIndex);
 
                       applicationProcesses.markers.insert(newIndex, element);
-                      applicationProcesses.drawRoute();
+                      applicationProcesses.drawNewRouteIfPossible(context);
 
                     });
                   }
@@ -145,8 +143,7 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
         setState(() {
           applicationProcesses.removePolyline();
           applicationProcesses.removeMarker(index);
-
-          applicationProcesses.drawRoute();
+          applicationProcesses.drawNewRouteIfPossible(context);
         });
       },
       background: Container(color: Colors.red),

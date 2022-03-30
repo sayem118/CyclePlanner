@@ -41,9 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         key: scaffoldKey,
         extendBody: true,
-        drawer:  NavBar(),
-        body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
-        :GoogleMapPage(mapController: _mapController, applicationProcesses: applicationProcesses),
+        drawer: const NavBar(),
+        body: /*(applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
+        :*/GoogleMapPage(mapController: _mapController, applicationProcesses: applicationProcesses),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final GoogleMapController controller = await _mapController.future;
