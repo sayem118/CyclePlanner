@@ -20,9 +20,50 @@ import '../application_processes_tests/processes_test.dart';
       test('Check if error message is given if location service is not enabled', () async {
 
         serviceGeolocator.getCurrentLocation();
+        await Geolocator.isLocationServiceEnabled();
         serviceGeolocator.serviceEnabled = false;
 
         expect(Future.error, 'Location services are disabled.');
+
+        test('Check if error message is given if location permission is not given', () async {
+          serviceGeolocator.getCurrentLocation();
+          await Geolocator.checkPermission();
+          serviceGeolocator.permission = LocationPermission.denied;
+
+          expect(Future.error, 'Location permission are denied');
+
+
+
+        });
+
+        test('Check if error message is given if location permission is not given forever', () async {
+          serviceGeolocator.getCurrentLocation();
+          await Geolocator.checkPermission();
+          serviceGeolocator.permission = LocationPermission.deniedForever;
+
+          expect(Future.error, 'Location permissions are permanently denied, we cannot request permissions.');
+
+
+        });
+
+        test('Check whether the currentPosition is given if permission and service is enabled.', () async {
+          serviceGeolocator.getCurrentLocation();
+          await Geolocator.checkPermission();
+          serviceGeolocator.permission = LocationPermission.whileInUse;
+
+          await Geolocator.isLocationServiceEnabled();
+          serviceGeolocator.serviceEnabled = true;
+
+          expect(await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high
+          ), isA<Position>);
+
+
+
+        });
+
+
+
 
 
 
