@@ -106,6 +106,18 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
         break;
       case MapBoxEvent.navigation_finished:
         setState(() {
+          AlertDialog(
+            title: const Text("Destenation reached"),
+            content: const Text("You have reached your destination"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
         });
         break;
       case MapBoxEvent.navigation_cancelled:
