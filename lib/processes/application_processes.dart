@@ -8,6 +8,7 @@ import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/models/place.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:cycle_planner/widgets/journey_planner.dart';
@@ -18,7 +19,7 @@ import 'package:cycle_planner/widgets/journey_planner.dart';
 /// and processing user typed search locations.
 
 class ApplicationProcesses with ChangeNotifier {
-  final geoLocatorService = Geolocator();
+  final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
   final markerService = MarkerService();
   final polylinePoints = PolylinePoints();
@@ -49,7 +50,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Update the user's [currentLocation]
   setCurrentLocation() async {
-    currentLocation = await Geolocator.getCurrentPosition();
+    currentLocation = await geoLocatorService.getCurrentLocation();
     selectedLocationStatic = Place(
       name: '',
       geometry: Geometry(
