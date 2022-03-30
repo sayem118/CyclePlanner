@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/place.dart';
-
 import 'mapbox_navigation_service_test.dart';
 
 
@@ -93,6 +92,7 @@ void main() {
             wayPoints: wayPointsTemp, options: navigation.options),
         null);
     expect(await navigation.directions.finishNavigation(), false);
+
   }
 });
 
