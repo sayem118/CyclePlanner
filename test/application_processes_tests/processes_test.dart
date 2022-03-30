@@ -78,7 +78,7 @@ void main() {
     await appProcesses.setSelectedLocation("ChIJc2nSALkEdkgRkuoJJBfzkUI");
 
     expect(appProcesses.searchResults, []);
-    expect(appProcesses.selectedLocation, StreamController<Place>);
+    expect(appProcesses.selectedLocation, isA<StreamController<Place>>());
 
   });
 
