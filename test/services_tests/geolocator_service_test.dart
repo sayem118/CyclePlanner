@@ -1,15 +1,56 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:cycle_planner/services/geolocator_service.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:mockito/mockito.dart';
-// import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-//
-// // import 'package:permission_handler/permission_handler.dart';
-// // import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:cycle_planner/services/geolocator_service.dart';
+import 'package:flutter/foundation.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:mockito/mockito.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import '../application_processes_tests/processes_test.dart';
+
+// import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler_platform_interface/permission_handler_platform_interface.dart';
 //
 //
 // const String key = 'AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
+
+  void main () {
+
+    GeolocatorService serviceGeolocator = GeolocatorService();
+    group('Geolocator', () {
+      test('Check if error message is given if location service is not enabled', () async {
+
+        serviceGeolocator.getCurrentLocation();
+        serviceGeolocator.serviceEnabled = false;
+
+        expect(Future.error, 'Location services are disabled.');
+
+
+
+        // getLocation.serviceEnabled;
+        // GeolocatorPlatform.instance = MockGeolocatorPlatform();
+        // serviceGeolocator.getCurrentLocation();
+        // checkServiceEnabled = await Geolocator.isLocationServiceEnabled();
+        // checkServiceEnabled = false;
+        //
+        // expect()
+
+
+
+        //
+        //
+        //
+        // final Locator = Geolocator();
+        // Locator.isServiceEnabled =  false;
+
+
+
+
+
+      });
+
+    });
+
+  }
 //
 // Position get mockPosition =>
 //     Position(

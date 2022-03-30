@@ -1,15 +1,20 @@
 import 'package:geolocator/geolocator.dart';
 
+
 /// Class description:
 /// This class uses the geolocator package to locate
 /// the user's current location and handles app permissions.
 
 class GeolocatorService {
 
+  late bool serviceEnabled;
+  late LocationPermission permission;
+
+
   // Return the user's current location.
   Future<Position> getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+    // bool serviceEnabled;
+    // LocationPermission permission;
 
     // Check User's location services settings
     serviceEnabled = await Geolocator.isLocationServiceEnabled();

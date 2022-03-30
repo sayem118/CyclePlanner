@@ -64,5 +64,8 @@ void main() {
               position: LatLng(mockPlace.geometry.location.lat,
                   mockPlace.geometry.location.lng)));
     });
+
+
+
   });
 }

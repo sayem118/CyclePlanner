@@ -89,7 +89,16 @@ void main() {
                 wayPoints: wayPointsTemp, options: navigation.options),
             null);
         expect(await navigation.directions.finishNavigation(), false);
+
       }
     });
+
+
+
+
+
+
+
+
   });
 }
