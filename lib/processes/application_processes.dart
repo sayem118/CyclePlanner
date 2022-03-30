@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/services/marker_service.dart';
-import 'package:cycle_planner/services/polyline_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/models/place.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:cycle_planner/widgets/journey_planner.dart';
@@ -19,10 +19,9 @@ import 'package:cycle_planner/widgets/journey_planner.dart';
 /// and processing user typed search locations.
 
 class ApplicationProcesses with ChangeNotifier {
-  final geoLocatorService = Geolocator();
+  final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
   final markerService = MarkerService();
-  final polylineService = PolylineService();
   final polylinePoints = PolylinePoints();
   final bikeService = BikeStationService();
 
@@ -34,6 +33,7 @@ class ApplicationProcesses with ChangeNotifier {
   Place? selectedLocationStatic;
   String? placeName;
   List<Marker> markers = [];
+  Timer? timer;
 
   //hidden set of markers to be used behind the scenes
   List<Marker> bikeStations = [];
@@ -50,7 +50,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Update the user's [currentLocation]
   setCurrentLocation() async {
-    currentLocation = await Geolocator.getCurrentPosition();
+    currentLocation = await geoLocatorService.getCurrentLocation();
     selectedLocationStatic = Place(
       name: '',
       geometry: Geometry(
@@ -66,6 +66,10 @@ class ApplicationProcesses with ChangeNotifier {
 
   void setGroupSize(int group) {
     groupSize = group;
+  }
+
+  int getGroupSize() {
+    return groupSize;
   }
 
   /// Receive [userInput] to proccess for autocompletion
@@ -106,7 +110,10 @@ class ApplicationProcesses with ChangeNotifier {
   void drawNewRouteIfPossible(context) async {
     var position = await Geolocator.getCurrentPosition();
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
-        position.latitude, position.longitude, groupSize);
+      position.latitude,
+      position.longitude,
+      groupSize
+    );
     Map startStation = await futureBikeStation1;
 
     Marker temp = markers.last;
@@ -114,27 +121,33 @@ class ApplicationProcesses with ChangeNotifier {
         temp.position.latitude, temp.position.longitude, groupSize);
     Map endStation = await futureBikeStation2;
 
-    if(!startStation.isEmpty && !endStation.isEmpty) {
+    if(startStation.isNotEmpty && endStation.isNotEmpty) {
       bikeStations.clear();
       polylines = {};
       bikeStations = List<Marker>.from(markers);
       Marker currentLocation =
       Marker(markerId: const MarkerId("current location"),
-          position: LatLng(position.latitude, position.longitude)
+        position: LatLng(position.latitude, position.longitude)
       );
       //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
       Marker station1 = Marker(
-          markerId: const MarkerId("start station"),
-          position: LatLng(startStation['lat'], startStation['lon'])
+        markerId: const MarkerId("start station"),
+        position: LatLng(startStation['lat'], startStation['lon'])
       );
       Marker station2 = Marker(
-          markerId: const MarkerId("end station"),
-          position: LatLng(endStation['lat'], endStation['lon'])
+        markerId: const MarkerId("end station"),
+        position: LatLng(endStation['lat'], endStation['lon'])
       );
       bikeStations.insert(0, station1);
       bikeStations.insert(0, currentLocation);
       bikeStations.add(station2);
       drawRoute();
+
+      // automatically refresh route overview.
+      timer?.cancel();
+      timer = Timer.periodic(Duration(minutes: 3), (Timer t) => {
+        drawNewRouteIfPossible(context),
+      });
     }
     else if (endStation.isEmpty) {
       _showNoStationsFinalStopAlert(context);
@@ -196,7 +209,6 @@ class ApplicationProcesses with ChangeNotifier {
     }
     notifyListeners();
   }
-
 
 /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
 /// [Polyline] are drawn between [Marker] coordinates.
@@ -267,6 +279,7 @@ class ApplicationProcesses with ChangeNotifier {
     bounds.close();
     super.dispose();
   }
+
 
   // Creates alert if there are no available bike stations near final stop.
   Future<void> _showNoStationsFinalStopAlert(context) async {

@@ -9,8 +9,7 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body : Container(
+    return Container(
       padding: const EdgeInsets.all(5),
       margin: const EdgeInsets.only(top: 3, bottom: 3, left: 20, right: 20),
       decoration: BoxDecoration(
@@ -61,7 +60,6 @@ class SearchBar extends StatelessWidget {
           ),
         ],
       ),
-    )
     );
   }
 }

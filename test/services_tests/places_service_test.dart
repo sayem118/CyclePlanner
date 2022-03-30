@@ -1,61 +1,46 @@
-import 'dart:convert';
-
 import 'package:cycle_planner/models/place.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cycle_planner/models/groups.dart';
 import 'package:cycle_planner/models/place_search.dart';
-import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:cycle_planner/services/bike_station_service.dart';
-import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
-import 'package:cycle_planner/services/mapbox_navigation_service.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:http/testing.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:flutter_mapbox_navigation/library.dart';
-import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 
 void main() {
-  PlacesService place = PlacesService();
+  final PlacesService place = PlacesService();
   group('PlacesService', () {
-    setUp(() {
+    test('returns if getPlace search works', () async {
+// Mock the API call to return a json response with http status 200 Ok //
+      Place search = await place.getPlace("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      //const String key = 'AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
+      //const String placeId = 'Riverside Building, County Hall, London SE1 7PB, UK';
+      //const double lat = 51.5033;
+      //const double lng = 0.1196;
+      //final response = await place.getResponse('ChIJc2nSALkEdkgRkuoJJBfzkUI', 'result');
+      //var search = await place.getPlace("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      //String url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI&location=51.5033,0.1196&key=AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
+      //https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI&location=51.5033,0.1196&key=AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY
+      //https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY&place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI
+
+      // Check whether getAutocomplete function returns
+      // a list of PlaceSearch
+      expect(search, isA<Place>());
     });
 
-    test('returns if getPlace search works',
-            () async {
+    test('returns if autocomplete search works', () async {
+      // Mock the API call to return a json response with http status 200 Ok //
+      // Check whether getAutocomplete function returns
+      // a list of PlaceSearch
+      expect(await place.getAutocomplete("poplar"), isA<List<PlaceSearch>>());
+    });
 
-// Mock the API call to return a json response with http status 200 Ok //
+    test('return error message when http response is unsuccessful', () async {
+      // Mock the API call to return an
+      // empty json response with http status 404
+      expect(await place.getAutocomplete(""), []);
+    });
 
-          final test =((await place.getPlace("temple")));
-          final String key = 'AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
-          final String placeId = 'Westminster';
-          final double lat = 51.4974948;
-          final double lng = -0.1356583;
-          final response = await place.getResponse('https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&location=$lat,$lng&key=$key', '1');
-
-// Check whether getAutocomplete function returns
-// a list of PlaceSearch
-          expect(place.getPlace("Westminster"), response);
-        });
-
-});
+    test('return if getPlaceMarkers', () async {
+      Place getPlaceMakers = await place.getPlaceMarkers(
+          50.1109, 8.6821, "ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      expect(getPlaceMakers, isA<Place>());
+    });
+  });
 }
-
-
-
-
-
-
-
-
-
-
-
