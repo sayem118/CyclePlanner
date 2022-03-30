@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/place.dart';
+import 'package:cycle_planner/models/place_search.dart';
 
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -71,6 +72,17 @@ void main() {
       appProcesses.removeMarker(0);
 
       expect(addedMarker, []);
+
+    });
+
+    test('testing the Search results', () async {
+
+      appProcesses.searchPlaces("Westminster");
+
+      expect(appProcesses.searchResults, isA<List<PlaceSearch>>());
+
+
+
 
     });
 
