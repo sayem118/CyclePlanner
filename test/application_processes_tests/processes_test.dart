@@ -8,6 +8,7 @@ import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/place.dart';
 import 'package:cycle_planner/models/place_search.dart';
 
+
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -30,14 +31,12 @@ void main() {
 
   group('MarkerService', () {
     test('setGroupSize', () async {
-
       appProcesses.setGroupSize(2);
       //ensure the number 2 is set
       expect(appProcesses.groupSize, 2);
     });
 
     test('Remove Polylines', () async {
-
       appProcesses.removePolyline();
 
       expect(appProcesses.polylines, []);
@@ -45,20 +44,17 @@ void main() {
     });
 
     test('Remove a marker', () async {
-
-
-
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
-      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
       final markerID = mockPlace.name;
       final marker1 = Marker(
           markerId: MarkerId(markerID),
           draggable: false,
           visible: true,
           infoWindow:
-          InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
+              InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
           position: LatLng(mockPlace.geometry.location.lat,
               mockPlace.geometry.location.lng));
 
@@ -68,22 +64,27 @@ void main() {
       appProcesses.removeMarker(0);
 
       expect(addedMarker, []);
-
     });
 
     test('testing the Search results', () async {
-
       await appProcesses.searchPlaces("Westminster");
 
       expect(appProcesses.searchResults, isA<List<PlaceSearch>>());
-
-
-
-
     });
+  });
+
+  test('setLocationSelected', () async {
+
+    await appProcesses.setSelectedLocation("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+
+    expect(appProcesses.searchResults, []);
+    expect(appProcesses.selectedLocation, StreamController<Place>);
 
   });
+
+
 }
+
 
 class MockGeolocatorPlatform extends Mock
     with
