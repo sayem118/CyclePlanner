@@ -167,7 +167,7 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
   late MapBoxNavigation _directions;
 
   List<WayPoint> wayPoints = [];
-  bool _isMultipleStop = false;
+  final bool _isMultipleStop = false;
   bool _routeBuilt = false;
   bool _isNavigating = false;
   String? _instruction;
@@ -178,7 +178,6 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance!.addPostFrameCallback((_) => MapboxNavigationService().mapboxBegin());
     initialize();
     
   }
@@ -192,8 +191,6 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
 
     _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
     _options = MapBoxOptions(
-      // initialLatitude: 51.509865, 
-      // initialLongitude: -0.118092,
       zoom: 15.0,
       tilt: 1.0,
       bearing: 1.0,
@@ -218,7 +215,6 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    // final applicationProcesses = Provider.of<ApplicationProcesses>(context);
     return Container(
       color: Colors.pink,
       child: MapBoxNavigationView(
@@ -230,13 +226,6 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
       ),
     );
   }
-
-  // void mapboxBegin(List<Marker> markers) async {
-  //   for (var stop in markers) {
-  //     wayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
-  //   }
-  //   await _directions.startNavigation(wayPoints: wayPoints, options: _options);
-  // }
 
   Future<void> _onEmbeddedRouteEvent(e) async {
 
