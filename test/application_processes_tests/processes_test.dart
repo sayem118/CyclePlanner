@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/geolocator_service.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/location.dart';
@@ -28,22 +27,17 @@ final appProcesses = ApplicationProcesses();
 
 void main() {
   GeolocatorPlatform.instance = MockGeolocatorPlatform();
-  TestWidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel('flutter.baseflow.com/geolocator')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    if (methodCall.method == 'getCurrentPosition') {
-      return {};
-    }
-    return {};
-  });
+
   group('MarkerService', () {
     test('setGroupSize', () async {
+
       appProcesses.setGroupSize(2);
       //ensure the number 2 is set
       expect(appProcesses.groupSize, 2);
     });
 
     test('Remove Polylines', () async {
+
       appProcesses.removePolyline();
 
       expect(appProcesses.polylines, []);
@@ -51,6 +45,8 @@ void main() {
     });
 
     test('Remove a marker', () async {
+
+
 
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
@@ -77,7 +73,7 @@ void main() {
 
     test('testing the Search results', () async {
 
-      appProcesses.searchPlaces("Westminster");
+      await appProcesses.searchPlaces("Westminster");
 
       expect(appProcesses.searchResults, isA<List<PlaceSearch>>());
 
