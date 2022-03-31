@@ -96,7 +96,7 @@ class _CardItemState extends State<CardItem> {
                               ),
                       StreamBuilder(
                           stream: FirebaseFirestore.instance.collection("users-favourite-places").doc(FirebaseAuth.instance.currentUser!.email)
-                              .collection("places").where("name",isEqualTo: widget.itemTitle).snapshots(), builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              .collection("iconic-places").where("name",isEqualTo: widget.itemTitle).snapshots(), builder: (BuildContext context, AsyncSnapshot snapshot) {
                             if(snapshot.data == null){
                               return Text("");
                             }
@@ -110,6 +110,7 @@ class _CardItemState extends State<CardItem> {
                                   color: Colors.red[900],
                                 ): Icon(
                         Icons.favorite,
+                                  color: Colors.red,
                         ),
 
                               ),
