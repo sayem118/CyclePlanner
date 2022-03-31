@@ -17,8 +17,23 @@ Widget fetchData (String collectionName){
           child: Text("Something is wrong"),
         );
       }
-return Text("");
 
+      return ListView.builder(
+          itemCount:
+          snapshot.data == null ? 0 : snapshot.data!.docs.length,
+          itemBuilder: (_, index) {
+            DocumentSnapshot _documentSnapshot =
+            snapshot.data!.docs[index];
+
+            return Card(
+              elevation: 5,
+              child: ListTile(
+                leading: Text(_documentSnapshot['name']),
+                title: Text(_documentSnapshot['place_info']),
+                ),
+              );
+
+          });
     },
   );
 }
