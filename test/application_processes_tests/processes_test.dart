@@ -84,19 +84,18 @@ void main() {
     });
 
     test('toggleMarker', () async {
-      appProcesses.toggleMarker("westminster");
-
-      expect(appProcesses.placeName, "westminster");
+      await appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      expect(appProcesses.placeName, isA<String>());
     });
 
     test('', () async {
       PlacesService place = PlacesService();
       final markerService = MarkerService();
 
-      appProcesses.toggleMarker("westminster");
+      appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
 
 
-      expect(appProcesses.placeName, "westminster");
+      expect(appProcesses.placeName, isA<String>());
 
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
@@ -110,7 +109,7 @@ void main() {
       final newMarker = markerService.createMarkerFromPlace(place1);
       appProcesses.markers.add(newMarker);
 
-      expect(appProcesses.markers, isA<List<Marker>>);
+      expect(appProcesses.markers, isA<List<Marker>>());
 
       final bounds1 = markerService.bounds(Set<Marker>.of(appProcesses.markers));
       appProcesses.bounds.add(bounds1!);
@@ -119,12 +118,6 @@ void main() {
 
     });
 
-    test('setLocationSelected', () async {
-      await appProcesses.setSelectedLocation("ChIJc2nSALkEdkgRkuoJJBfzkUI");
-
-      expect(appProcesses.searchResults, []);
-      expect(appProcesses.selectedLocation, isA<StreamController<Place>>());
-    });
 
     // test('toggleMarker', ()  {
     //   appProcesses.toggleMarker("westminster");
