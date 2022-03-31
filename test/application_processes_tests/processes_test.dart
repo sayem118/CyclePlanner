@@ -1,6 +1,5 @@
 // import 'dart:async';
 // import 'package:cycle_planner/processes/application_processes.dart';
-// import 'package:cycle_planner/services/geolocator_service.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_test/flutter_test.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
