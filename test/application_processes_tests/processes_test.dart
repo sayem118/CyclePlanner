@@ -19,8 +19,8 @@ final appProcesses = ApplicationProcesses();
 void main() {
 
   group('MarkerService', () {
-    test('setGroupSize', () async {
 
+    test('setGroupSize', () async {
       appProcesses.setGroupSize(2);
       //ensure the number 2 is set
       expect(appProcesses.groupSize, 2);
