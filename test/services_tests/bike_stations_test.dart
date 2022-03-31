@@ -42,7 +42,7 @@ void main() {
       expect(test, {});
     });
   
-  test('mapBoxBegin', () async {
+ /* test('mapBoxBegin', () async {
   const MethodChannel('flutter_mapbox_navigation')
       .setMockMethodCallHandler((MethodCall methodCall) async {
     if (methodCall.method == 'finishNavigation') {
@@ -95,6 +95,6 @@ void main() {
     expect(await navigation.directions.finishNavigation(), false);
   }
 });
-
+ */
   });
 }
