@@ -107,10 +107,16 @@ void main() {
           appProcesses.selectedLocationStatic!.geometry.location.lng,
           appProcesses.placeName!);
 
-      var newMarker = markerService.createMarkerFromPlace(place1);
+      final newMarker = markerService.createMarkerFromPlace(place1);
       appProcesses.markers.add(newMarker);
 
       expect(appProcesses.markers, isA<List<Marker>>);
+
+      final bounds1 = markerService.bounds(Set<Marker>.of(appProcesses.markers));
+      appProcesses.bounds.add(bounds1!);
+
+
+
     });
 
     test('setLocationSelected', () async {
@@ -120,11 +126,11 @@ void main() {
       expect(appProcesses.selectedLocation, isA<StreamController<Place>>());
     });
 
-    test('toggleMarker', ()  {
-      appProcesses.toggleMarker("westminster");
-
-      expect(appProcesses.placeName, "westminster");
-    });
+    // test('toggleMarker', ()  {
+    //   appProcesses.toggleMarker("westminster");
+    //
+    //   expect(appProcesses.placeName, "westminster");
+    // });
 
     // test('', () async {
     //   PlacesService place = PlacesService();
@@ -151,6 +157,8 @@ void main() {
 
 
   });
+
+
 }
 
 

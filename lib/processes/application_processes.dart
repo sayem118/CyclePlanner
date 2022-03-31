@@ -100,8 +100,8 @@ class ApplicationProcesses with ChangeNotifier {
       markers.add(newMarker);
     }
 
-    var _bounds = markerService.bounds(Set<Marker>.of(markers));
-    bounds.add(_bounds!);
+    var bounds1 = markerService.bounds(Set<Marker>.of(markers));
+    bounds.add(bounds1!);
     notifyListeners();
   }
 
