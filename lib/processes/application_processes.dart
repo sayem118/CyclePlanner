@@ -10,7 +10,6 @@ import 'package:cycle_planner/models/place.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
-import 'package:cycle_planner/widgets/journey_planner.dart';
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
@@ -90,9 +89,9 @@ class ApplicationProcesses with ChangeNotifier {
     placeName = value;
 
     Place place = await placesService.getPlaceMarkers(
-        selectedLocationStatic!.geometry.location.lat,
-        selectedLocationStatic!.geometry.location.lng,
-        placeName!
+      selectedLocationStatic!.geometry.location.lat,
+      selectedLocationStatic!.geometry.location.lng,
+      placeName!
     );
 
     var newMarker = markerService.createMarkerFromPlace(place);
@@ -106,7 +105,6 @@ class ApplicationProcesses with ChangeNotifier {
   }
 
   void drawNewRouteIfPossible(context) async {
-    // var position = await Geolocator.getCurrentPosition();
     var position = currentLocation;
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
       position!.latitude,
@@ -117,7 +115,8 @@ class ApplicationProcesses with ChangeNotifier {
 
     Marker temp = markers.last;
     Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(
-        temp.position.latitude, temp.position.longitude, groupSize);
+      temp.position.latitude, temp.position.longitude, groupSize
+    );
     Map endStation = await futureBikeStation2;
 
     if(startStation.isNotEmpty && endStation.isNotEmpty) {
@@ -163,9 +162,11 @@ class ApplicationProcesses with ChangeNotifier {
       final markerS = bikeStations.elementAt(i - 1);
       final markerd = bikeStations.elementAt(i);
       final PointLatLng marker1 = PointLatLng(
-          markerd.position.latitude, markerd.position.longitude);
+        markerd.position.latitude, markerd.position.longitude
+      );
       final PointLatLng marker2 = PointLatLng(
-          markerS.position.latitude, markerS.position.longitude);
+        markerS.position.latitude, markerS.position.longitude
+      );
       //gets a set of coordinates between 2 markers
       late PolylineResult result;
       if (i == 1) {
@@ -195,16 +196,16 @@ class ApplicationProcesses with ChangeNotifier {
       //if its a cycle path line is red otherwise line is blue
       if (i == 1 || i == bikeStations.length - 1) {
         polylines.add(Polyline(
-            polylineId: PolylineId(stuff.toString()),
-            points: nPoints,
-            color: Colors.red
+          polylineId: PolylineId(stuff.toString()),
+          points: nPoints,
+          color: Colors.red
         ));
       }
       else {
         polylines.add(Polyline(
-            polylineId: PolylineId(stuff.toString()),
-            points: nPoints,
-            color: Colors.blue
+          polylineId: PolylineId(stuff.toString()),
+          points: nPoints,
+          color: Colors.blue
         ));
       }
     }
@@ -268,8 +269,6 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// For now, removes all [polylines] from the map
   void removePolyline() {
-    // polylines.remove(index);
-    // polyCoords.remove(index);
     polylines = {};
     polyCoords = [];
   }

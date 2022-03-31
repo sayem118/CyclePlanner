@@ -1,4 +1,3 @@
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/place.dart';
 
@@ -7,7 +6,6 @@ class MarkerService{
     if (markers.isEmpty) return null;
     return createBounds(markers.map((m) => m.position).toList());
   }
-
 
   LatLngBounds createBounds(List<LatLng> positions) {
     final southwestLat = positions.map((p) => p.latitude).reduce((value, element) => value < element ? value : element); // smallest
@@ -37,16 +35,3 @@ class MarkerService{
     );
   }
 }
-
-// return Marker(
-// markerId: MarkerId(markerId),
-// draggable: false,
-// visible: true,
-// infoWindow: InfoWindow(
-// title: mockPlace.name, snippet: mockPlace.vicinity
-// ),
-// position: LatLng(
-// mockPlace.geometry.location.lat,
-// mockPlace.geometry.location.lng
-// )
-// );

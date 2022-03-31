@@ -12,9 +12,9 @@ class BikeStationService {
     // Request URL with user latitude and longitude
     Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=6000&lat=$lat&lon=$lon'));
     List stations = [];
+    
     // Get bike stations from TFL JSON
-
-      stations = jsonDecode(response.body)['places'];
+    stations = jsonDecode(response.body)['places'];
 
     return stations;
   }
