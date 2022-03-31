@@ -50,7 +50,11 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Update the user's [currentLocation]
   setCurrentLocation() async {
-    currentLocation = await geoLocatorService.getCurrentLocation();
+    //old method using geolocator class we had
+    //currentLocation = await geoLocatorService.getCurrentLocation();
+
+    //new way to get location without geolocator class
+    currentLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     selectedLocationStatic = Place(
       name: '',
       geometry: Geometry(
