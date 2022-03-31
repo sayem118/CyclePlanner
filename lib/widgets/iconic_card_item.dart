@@ -103,15 +103,8 @@ class _CardItemState extends State<CardItem> {
                             return Padding(
                               padding: const EdgeInsets.only(right: 8),
                               child: IconButton(
-                                onPressed: () => snapshot.data.docs.length == 0? addToFavourite():print ("Already added"),
-                                icon: snapshot.data.docs.length == 0? Icon(
-                                  Icons.favorite_outline,
-                                  size: 20.0,
-                                  color: Colors.red[900],
-                                ): Icon(
-                        Icons.favorite,
-                                  color: Colors.red,
-                        ),
+                                onPressed: () => snapshot.data.docs.length == 0? addToFavourite():print ("Already added"), icon: Icons.key,
+
 
                               ),
                             );
