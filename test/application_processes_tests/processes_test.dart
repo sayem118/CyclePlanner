@@ -71,6 +71,8 @@ void main() {
     });
 
     test('testing the Search results', () async {
+
+
       await appProcesses.searchPlaces("Westminster");
 
       expect(appProcesses.searchResults, isA<List<PlaceSearch>>());
@@ -84,12 +86,14 @@ void main() {
     });
 
     test('toggleMarker', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       appProcesses.toggleMarker("westminster");
 
       expect(appProcesses.placeName, "westminster");
     });
 
     test('', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       PlacesService place = PlacesService();
       final markerService = MarkerService();
 
@@ -119,12 +123,6 @@ void main() {
 
     });
 
-    test('setLocationSelected', () async {
-      await appProcesses.setSelectedLocation("ChIJc2nSALkEdkgRkuoJJBfzkUI");
-
-      expect(appProcesses.searchResults, []);
-      expect(appProcesses.selectedLocation, isA<StreamController<Place>>());
-    });
 
     // test('toggleMarker', ()  {
     //   appProcesses.toggleMarker("westminster");
