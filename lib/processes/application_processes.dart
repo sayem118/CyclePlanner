@@ -108,9 +108,10 @@ class ApplicationProcesses with ChangeNotifier {
   }
 
   void drawNewRouteIfPossible(context) async {
-    var position = await Geolocator.getCurrentPosition();
+    // var position = await Geolocator.getCurrentPosition();
+    var position = currentLocation;
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
-      position.latitude,
+      position!.latitude,
       position.longitude,
       groupSize
     );
@@ -145,7 +146,7 @@ class ApplicationProcesses with ChangeNotifier {
 
       // automatically refresh route overview.
       timer?.cancel();
-      timer = Timer.periodic(Duration(minutes: 3), (Timer t) => {
+      timer = Timer.periodic(const Duration(minutes: 3), (Timer t) => {
         drawNewRouteIfPossible(context),
       });
     }
@@ -174,14 +175,16 @@ class ApplicationProcesses with ChangeNotifier {
           "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
           marker1,
           marker2,
-          travelMode: TravelMode.walking,);
+          travelMode: TravelMode.walking,
+        );
       }
       else {
         result = await polylinePoints.getRouteBetweenCoordinates(
           "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
           marker1,
           marker2,
-          travelMode: TravelMode.bicycling,);
+          travelMode: TravelMode.bicycling,
+        );
       }
       //drawing route to bike stations
       late List<LatLng> nPoints = [];

@@ -107,7 +107,7 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
       case MapBoxEvent.navigation_finished:
         setState(() {
           AlertDialog(
-            title: const Text("Destenation reached"),
+            title: const Text("Destination reached"),
             content: const Text("You have reached your destination"),
             actions: [
               TextButton(
