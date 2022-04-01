@@ -39,12 +39,12 @@ final navigation = MapboxNavigationState();
     });
 
     test('mapBoxBegin', () async {
-      const MethodChannel('flutter_mapbox_navigation')
-          .setMockMethodCallHandler((MethodCall methodCall) async {
-        if (methodCall.method == 'finishNavigation') {
-          return false;
-        }
-        return "";
+      // const MethodChannel('flutter_mapbox_navigation')
+      //     .setMockMethodCallHandler((MethodCall methodCall) async {
+      //   if (methodCall.method == 'finishNavigation') {
+      //     return false;
+      //   }
+      //   return "";
       });
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);

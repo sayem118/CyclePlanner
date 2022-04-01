@@ -131,7 +131,7 @@ void main() {
     });
 
     test('GetGroupSize', () async {
-      TestWidgetsFlutterBinding.ensureInitialized();
+
       final groupSizeNum = appProcesses.groupSize;
 
       expect(appProcesses.getGroupSize(), groupSizeNum);
@@ -191,8 +191,9 @@ void main() {
           points: nPoints,
           color: Colors.blue
       );
-      polylineGiven;
+
       appProcesses.drawRoute();
+      appProcesses.polylines.add(polylineGiven);
       // for (int i = 1; i < appProcesses.bikeStations.length; i++) {
       //   late PolylinePoints polylinePoints;
       //   polylinePoints = PolylinePoints();
@@ -218,7 +219,20 @@ void main() {
       //       marker2,
       //       travelMode: TravelMode.bicycling,);
       expect(appProcesses.polylines, isA<Set<Polyline>>());
-      expect(appProcesses.polylines, []);
+      expect(appProcesses.polylines.last, polylineGiven );
+
+    });
+
+    test('', () async {
+
+      final mockLocation = Location(lat: 50.1109, lng: 8.6821);
+      final mockGeometry = Geometry(location: mockLocation);
+      final mockPlace =
+      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+
+
+
+
 
     });
 
