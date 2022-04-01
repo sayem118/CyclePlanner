@@ -9,7 +9,7 @@ import 'package:cycle_planner/models/place.dart';
 
 final navigation = MapboxNavigationState();
 
-void main() {
+/* void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   // var routeEventHandler;
   // late final ApplicationProcesses applicationProcesses;
@@ -92,4 +92,4 @@ void main() {
       }
     });
   });
-}
+} */
