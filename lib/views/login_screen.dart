@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen>{
 
   //firebase
 final _auth = FirebaseAuth.instance;
+  bool signUp = true;
 
   @override
   Widget build(BuildContext context){
@@ -95,6 +96,8 @@ final _auth = FirebaseAuth.instance;
     );
 
 
+
+
     final loginButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -157,24 +160,6 @@ final _auth = FirebaseAuth.instance;
                           ),
                         )],
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: <Widget>[
-                    //     Text(" Sign in as "),
-                    //     GestureDetector(onTap: (){
-                    //       Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                    //     },
-                    //       child: const Text(
-                    //         "Guest",
-                    //         style: TextStyle(
-                    //             color: Colors.redAccent,
-                    //             fontWeight: FontWeight.w900,
-                    //             fontSize: 15),
-                    //       ),
-                    //
-                    //     )],
-                    //
-                    // )
                   ],
                 ),
               ),
