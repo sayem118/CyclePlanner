@@ -19,17 +19,6 @@ void main() {
     );
   });
 
-  testWidgets('Testing for SearchBar created using key', (WidgetTester tester) async {
-    // Define the test key.
-    const testKey = Key('K');
-
-    // Build a MaterialApp with the testKey.
-    await tester.pumpWidget(MaterialApp(key: testKey, home: Container()));
-
-    // Find the MaterialApp widget using the testKey.
-    expect(find.byKey(testKey), findsOneWidget);
-  });
-
   testWidgets('contains child row', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(searchbar);

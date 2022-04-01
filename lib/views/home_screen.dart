@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cycle_planner/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/widgets/google_map_page.dart';
 import 'package:cycle_planner/widgets/bottom_navbar.dart';
@@ -39,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         key: scaffoldKey,
         extendBody: true,
         drawer: const NavBar(),
-        body: (applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
-        :GoogleMapPage(mapController: _mapController, applicationProcesses: applicationProcesses),
+        body: /*(applicationProcesses.currentLocation == null) ? const Center(child: CircularProgressIndicator())
+        :*/GoogleMapPage(mapController: _mapController, applicationProcesses: applicationProcesses),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final GoogleMapController controller = await _mapController.future;

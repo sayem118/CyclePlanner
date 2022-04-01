@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cycle_planner/main.dart';
 import 'package:cycle_planner/widgets/iconic_card_item.dart';
+import 'dart:io';
 
 void main() {
 
-  //Mock Iconic Card Item
-  // CardItem testCard = const CardItem(itemTitle: 'Test', itemInfo: 'Test', imageInfo: 'Test'
-  //     , placeId: 'Test', placeInfo: 'Test');
+  Widget mockCardItem;
 
-  testWidgets('Card Item created successfully', (WidgetTester tester) async {
-    CardItem testCard = const CardItem(itemTitle: 'Test', itemInfo: 'Test', imageInfo: 'Test'
-        , placeId: 'Test', placeInfo: 'Test');
+  setUpAll(() {
+    HttpOverrides.global = null;
+    mockCardItem = const MaterialApp(
+        home: CardItem(
+          itemTitle: 'Test',
+          itemInfo: 'Test',
+          imageInfo: 'Test',
+          placeId: 'Test',
+          placeInfo: 'Test'
+        )
+    );
+  });
 
-    // await tester.pumpWidget(const CardItem(itemTitle: 'Test', itemInfo: 'Test', imageInfo: 'Test'
-    //     , placeId: 'Test', placeInfo: 'Test'));
-    //
-    // expect(find.text('Test'), findsOneWidget);
+  testWidgets('CardItem created successfully', (WidgetTester tester) async {
+    CardItem testCardItem = const CardItem(
+        itemTitle: 'Test',
+        itemInfo: 'Test',
+        imageInfo: 'Test',
+        placeId: 'Test',
+        placeInfo: 'Test'
+    );
   });
 
 }

@@ -23,8 +23,6 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
