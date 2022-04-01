@@ -98,7 +98,7 @@ class _CardItemState extends State<CardItem> {
                           stream: FirebaseFirestore.instance.collection("users-favourite-places").doc(FirebaseAuth.instance.currentUser!.email)
                               .collection("iconic-places").where("name",isEqualTo: widget.itemTitle).snapshots(), builder: (BuildContext context, AsyncSnapshot snapshot) {
                             if(snapshot.data == null){
-                              return Text("");
+                              return Text("No saved places");
                             }
                             return Padding(
                               padding: const EdgeInsets.only(right: 8),

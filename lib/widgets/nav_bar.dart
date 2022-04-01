@@ -14,108 +14,128 @@ class NavBar extends StatefulWidget {
   _NavBarState createState() => _NavBarState();
 }
   class _NavBarState extends State<NavBar> {
-  User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
+    User? user = FirebaseAuth.instance.currentUser;
+    UserModel loggedInUser = UserModel();
 
-  @override
-  void initState() {
-    super.initState();
-  FirebaseFirestore.instance
-      .collection("users")
-      .doc(user!.uid)
-      .get()
-      .then((value)
-  {
-  this.loggedInUser = UserModel.fromMap(value.data());
-  setState(() {});
+    @override
+    void initState() {
+      super.initState();
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        this.loggedInUser = UserModel.fromMap(value.data());
+        setState(() {});
+      });
+    }
 
-  });
-  }
+    // the logout function
+    Future<void> logout(BuildContext context) async {
+      await FirebaseAuth.instance.signOut();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
+    }
 
+    @override
+    Widget build(BuildContext context) {
+        return Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                    "${loggedInUser.firstName} ${loggedInUser.secondName}  "),
+                // style: TextStyle(
+                //  color: Colors.black,
+                //  fontWeight: FontWeight.bold,)
+                //)
+                accountEmail: Text("${loggedInUser.email}"),
 
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          UserAccountsDrawerHeader(
-            accountName: Text("${loggedInUser.firstName} ${loggedInUser.secondName}"),
-            // style: TextStyle(
-            //  color: Colors.black,
-            //  fontWeight: FontWeight.bold,)
-            //)
-            accountEmail: Text("${loggedInUser.email}"),
-            currentAccountPicture: CircleAvatar(
-              child: ClipOval(
-                child: Image.network(
-                  'https://media1.giphy.com/media/l41lYNASsqlUOt9Xq/giphy.gif',
-                  fit: BoxFit.fill,
-                  width: 200,
-                  height: 200,
+                currentAccountPicture: CircleAvatar(
+                  child: ClipOval(
+                    child: Image.network(
+                      'https://media1.giphy.com/media/l41lYNASsqlUOt9Xq/giphy.gif',
+                      fit: BoxFit.fill,
+                      width: 200,
+                      height: 200,
+                    ),
+                  ),
+                ),
+
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                        'https://media1.giphy.com/media/2Ozjbk786Umdy/giphy.gif?cid=ecf05e47vihcftxs1yzhnt85rsxcs9xhjkka9yalmlet95jd&rid=giphy.gif&ct=g'
+                    ),
+                  ),
                 ),
               ),
-            ),
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: NetworkImage(
-                  'https://media1.giphy.com/media/2Ozjbk786Umdy/giphy.gif?cid=ecf05e47vihcftxs1yzhnt85rsxcs9xhjkka9yalmlet95jd&rid=giphy.gif&ct=g'
-                ),
+
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text('Profile'),
+
+                onTap: () =>
+                {
+                if (loggedInUser.firstName == null) {
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (BuildContext context) {
+                    return const IconicScreen();
+                  },),)
+               }
+
+                },
               ),
-            ),
+              ListTile(
+                leading: const Icon(Icons.place_sharp),
+                title: const Text('Iconic places'),
+                onTap: () =>
+                {
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (BuildContext context) {
+                    return const IconicScreen();
+                  },),)
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.favorite),
+                title: const Text('Saved places'),
+                onTap: () =>
+                {
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (BuildContext context) {
+                    return SavedPlaces();
+                  },),)
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text('Info'),
+                onTap: () => {null},
+              ),
+              const Divider(),
+              ActionChip(
+                label: Text("Logout"),
+                onPressed: () {
+                  logout(context);
+                },
+              ),
+            ],
           ),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('Profile'),
-            onTap: () => {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return const IconicScreen();
-              },),)
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.place_sharp),
-            title: const Text('Iconic places'),
-            onTap: () => {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return const IconicScreen();
-              },),)
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.favorite),
-            title: const Text('Saved places'),
-            onTap: () => {
-               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                 return SavedPlaces();
-               },),)
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading:const Icon(Icons.info),
-            title: const Text('Info'),
-            onTap: () => {null},
-          ),
-          const Divider(),
-          ActionChip(
-            label: Text("Logout"),
-            onPressed: () {
-              logout(context);
-            },
-          ),
-        ],
-      ),
 
-    );
-  }
+        );
 
-  // the logout function
-  Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const LoginScreen()));
-  }
-}
+      }
+
+      // // the logout function
+      // Future<void> logout(BuildContext context) async {
+      //   await FirebaseAuth.instance.signOut();
+      //   Navigator.of(context).pushReplacement(
+      //       MaterialPageRoute(builder: (context) => const LoginScreen()));
+      // }
+    }
+
