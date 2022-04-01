@@ -13,6 +13,10 @@ class SavedPlaces extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Saved places"),
+        backgroundColor: Colors.blueGrey,
+      ),
   body: SafeArea(
   child: fetchData("users-favourite-places"),
   ),
