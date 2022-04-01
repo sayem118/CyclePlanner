@@ -53,8 +53,8 @@ class ApplicationProcesses with ChangeNotifier {
       name: '',
       geometry: Geometry(
         location: Location(
-            lat: currentLocation!.latitude,
-            lng: currentLocation!.longitude
+            lat: currentLocation?.latitude ?? 55.1,
+            lng: currentLocation?.longitude ?? 0.14
         ),
       ),
       vicinity: '',
