@@ -13,8 +13,8 @@ import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 Position get mockPosition => Position(
-    latitude: 55.561270,
-    longitude: 0.17639382,
+    latitude: 51.50087611180803,
+    longitude: -0.12455029998540676,
     timestamp: DateTime.fromMillisecondsSinceEpoch(
       500,
       isUtc: true,
@@ -36,15 +36,8 @@ void main() {
     }
     return {};
   });
+
   group('MarkerService', () {
-    test('drawNewRouteIfPossible', () async {
-      Builder(
-          builder: (BuildContext context) {
-            appProcesses.drawNewRouteIfPossible(context);
-            return Placeholder();
-          });
-      expect(appProcesses.timer?.isActive, null);
-    });
 
     test('setGroupSize', () async {
       appProcesses.setGroupSize(2);
@@ -83,6 +76,61 @@ void main() {
       expect(addedMarker, []);
 
     });
+
+    test('Timer is null', () async {
+      Builder(
+          builder: (BuildContext context) {
+            appProcesses.drawNewRouteIfPossible(context);
+            return Placeholder();
+          });
+      expect(appProcesses.timer?.isActive, null);
+    });
+
+    test('Bike stations length is 0', () async {
+      Builder(
+          builder: (BuildContext context) {
+            appProcesses.drawNewRouteIfPossible(context);
+            return Placeholder();
+          });
+      expect(appProcesses.bikeStations.length, 0);
+    });
+
+    test('Markers length is 0', () async {
+      Builder(
+          builder: (BuildContext context) {
+            appProcesses.drawNewRouteIfPossible(context);
+            return Placeholder();
+          });
+      expect(appProcesses.markers.length, 0);
+    });
+
+    test('Markers length is 1 after adding marker', () async {
+
+      final mockLocation = Location(lat: 51.49419789342217, lng: -0.1324269658815591);
+      final mockGeometry = Geometry(location: mockLocation);
+      final mockPlace =
+      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+      final markerID = mockPlace.name;
+      final marker = Marker(
+          markerId: MarkerId(markerID),
+          draggable: false,
+          visible: true,
+          infoWindow:
+          InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
+          position: LatLng(mockPlace.geometry.location.lat,
+              mockPlace.geometry.location.lng));
+
+      appProcesses.currentLocation = await MockGeolocatorPlatform().getCurrentPosition();
+      appProcesses.markers.add(marker);
+
+      await Builder(
+          builder: (BuildContext context) {
+            appProcesses.drawNewRouteIfPossible(context);
+            return Placeholder();
+          });
+
+      expect(appProcesses.markers.length, 1);
+      });
 
   });
 }
