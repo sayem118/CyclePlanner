@@ -20,5 +20,27 @@ void main() {
         ),
       );
     });
+
+    testWidgets('Journey Planner loads', (WidgetTester tester) async {
+      await tester.pumpWidget(journeyPlanner);
+
+      expect(true, true);
+    });
+
+    testWidgets('contains appBar', (WidgetTester tester) async {
+      await tester.pumpWidget(journeyPlanner);
+
+      Finder appBar = find.byType(AppBar);
+
+      expect(appBar, findsOneWidget);
+    });
+
+    testWidgets('appBar text', (WidgetTester tester) async {
+      await tester.pumpWidget(journeyPlanner);
+
+      Finder appBarText = find.text('My Journey');
+
+      expect(appBarText, findsOneWidget);
+    });
   });
 }
