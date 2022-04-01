@@ -20,8 +20,8 @@ final appProcesses = ApplicationProcesses();
 
 void main() {
   group('ApplicationProcess2', () {
-
-    test('DrawRoute', () {
+  TestWidgetsFlutterBinding.ensureInitialized();
+    test('DrawRoute', () async {
 
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
@@ -50,13 +50,29 @@ void main() {
           InfoWindow(title: mockPlace2.name, snippet: mockPlace2.vicinity),
           position: LatLng(mockPlace2.geometry.location.lat,
               mockPlace2.geometry.location.lng));
-
+      late PolylinePoints polylinePoints;
+      late PolylineResult result;
+      polylinePoints = PolylinePoints();
       appProcesses.bikeStations = [marker1, marker2];
+      final PointLatLng markerA = PointLatLng(
+          marker1.position.latitude, marker1.position.longitude);
+      final PointLatLng markerB = PointLatLng(
+          marker2.position.latitude, marker2.position.longitude);
+      result = await polylinePoints.getRouteBetweenCoordinates(
+        "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+        markerA,
+        markerB,
+        travelMode: TravelMode.bicycling,);
+
+      late List<LatLng> nPoints = [];
+      for (var point in result.points) {
+        nPoints.add(LatLng(point.latitude, point.longitude));
+      }
       Polyline(
-          polylineId: PolylineId(stuff.toString()),
+          polylineId: const PolylineId("test"),
           points: nPoints,
           color: Colors.blue
-      )
+      );
       appProcesses.drawRoute();
       // for (int i = 1; i < appProcesses.bikeStations.length; i++) {
       //   late PolylinePoints polylinePoints;
