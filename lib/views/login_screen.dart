@@ -26,6 +26,20 @@ class _LoginScreenState extends State<LoginScreen>{
   //firebase
 final _auth = FirebaseAuth.instance;
   bool signUp = true;
+  bool isLoading = false;
+
+  guestLogin() async{
+    setState(() {
+      isLoading = true;
+    });
+    UserCredential userCredential =
+   await FirebaseAuth.instance.signInAnonymously();
+    Fluttertoast.showToast(msg: "Logged in as Guest");
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -153,6 +167,22 @@ final _auth = FirebaseAuth.instance;
                         },
                           child: const Text(
                             "SignUp",
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 15),
+                          ),
+                        )],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text("Sign in as "),
+                        GestureDetector(onTap: (){
+                          guestLogin();
+                        },
+                          child: const Text(
+                            "Guest",
                             style: TextStyle(
                                 color: Colors.redAccent,
                                 fontWeight: FontWeight.w900,
