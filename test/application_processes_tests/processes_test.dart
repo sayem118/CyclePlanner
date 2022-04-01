@@ -43,6 +43,25 @@ Position get mockPosition => Position(
 void main() {
   setUp(() {
     GeolocatorPlatform.instance = MockGeolocatorPlatform();
+
+    const Marker a = Marker(
+      markerId: MarkerId("marker"),
+      position: LatLng(55, 0.12)
+    );
+    const Marker b = Marker(
+        markerId: MarkerId("marker1"),
+    position: LatLng(54, 0.15)
+    );
+
+    const Marker c  = Marker(
+        markerId: MarkerId("marker2"),
+    position: LatLng(56, 0.17)
+    );
+
+
+
+
+
   });
   group('MarkerService', () {
 
@@ -140,6 +159,7 @@ void main() {
     });
 
     test('DrawRoute', () async {
+      appProcesses.drawRoute();
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
@@ -167,10 +187,12 @@ void main() {
           InfoWindow(title: mockPlace2.name, snippet: mockPlace2.vicinity),
           position: LatLng(mockPlace2.geometry.location.lat,
               mockPlace2.geometry.location.lng));
+
       late PolylinePoints polylinePoints;
       late PolylineResult result;
       polylinePoints = PolylinePoints();
-      appProcesses.bikeStations = [marker1, marker2];
+      appProcesses.bikeStations.add(marker1);
+      appProcesses.bikeStations.add(marker2);
       final PointLatLng markerA = PointLatLng(
           marker1.position.latitude, marker1.position.longitude);
       final PointLatLng markerB = PointLatLng(
@@ -192,7 +214,6 @@ void main() {
           color: Colors.blue
       );
 
-      appProcesses.drawRoute();
       appProcesses.polylines.add(polylineGiven);
       // for (int i = 1; i < appProcesses.bikeStations.length; i++) {
       //   late PolylinePoints polylinePoints;
