@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:cycle_planner/services/marker_service.dart';
-import 'package:cycle_planner/services/places_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_test/flutter_test.dart';
