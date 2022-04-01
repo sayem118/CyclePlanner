@@ -26,11 +26,11 @@ void main(){
 
   });
 
-  test('setGroupSize', () async {
-    appProcesses.setGroupSize(2);
-    //ensure the number 2 is set
-    expect(appProcesses.groupSize, 2);
-  });
+  // test('setGroupSize', () async {
+  //   appProcesses.setGroupSize(2);
+  //   //ensure the number 2 is set
+  //   expect(appProcesses.groupSize, 2);
+  // });
 
 });
 }
