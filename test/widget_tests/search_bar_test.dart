@@ -10,7 +10,8 @@ void main() {
   setUpAll(() {
     HttpOverrides.global = null;
     searchbar = const MaterialApp(
-        home: SearchBar()
+        home: Scaffold (
+        body: SearchBar() )
     );
   });
 

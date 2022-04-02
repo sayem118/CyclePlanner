@@ -149,10 +149,10 @@ class ApplicationProcesses with ChangeNotifier {
       });
     }
     else if (endStation.isEmpty) {
-      _showNoStationsFinalStopAlert(context);
+      showNoStationsFinalStopAlert(context);
     }
     else {
-      _showNoStationsCurrentLocationAlert(context);
+      showNoStationsCurrentLocationAlert(context);
     }
   }
 
@@ -283,7 +283,7 @@ class ApplicationProcesses with ChangeNotifier {
 
 
   // Creates alert if there are no available bike stations near final stop.
-  Future<void> _showNoStationsFinalStopAlert(context) async {
+  Future<void> showNoStationsFinalStopAlert(context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -311,7 +311,7 @@ class ApplicationProcesses with ChangeNotifier {
   }
 
   // Creates alert if there are no available bike stations near final stop.
-  Future<void> _showNoStationsCurrentLocationAlert(context) async {
+  Future<void> showNoStationsCurrentLocationAlert(context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
