@@ -42,12 +42,12 @@ class NavBar extends StatefulWidget {
 
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("${loggedInUser.firstName} ${loggedInUser.secondName}  ") ,
+            accountName: Text("${loggedInUser.firstName ??"Guest" } ${loggedInUser.secondName ?? "User"}  ") ,
             // style: TextStyle(
             //  color: Colors.black,
             //  fontWeight: FontWeight.bold,)
-            //)
-            accountEmail: Text("${loggedInUser.email}"),
+            // )
+            accountEmail: Text("${loggedInUser.email ?? ""}"),
 
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
