@@ -105,12 +105,11 @@ class _JourneyPlannerState extends State<JourneyPlanner> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 600,
+            Expanded(
               child: ReorderableListView(
                   children: _getListItems(),
-                  // The reorder function
                   onReorder: (oldIndex, newIndex) {
+                    // Reorder marked locations
                     setState(() {
                       if (newIndex > oldIndex) {
                         newIndex = newIndex - 1;
