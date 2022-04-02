@@ -3,6 +3,7 @@ import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/services/marker_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
@@ -11,11 +12,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 import 'package:cycle_planner/widgets/journey_planner.dart';
+import 'package:http/http.dart' as http;
+import 'package:mockito/annotations.dart';
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
 /// For example Updating the user's location
 /// and processing user typed search locations.
+
 
 class ApplicationProcesses with ChangeNotifier {
   final placesService = PlacesService();
