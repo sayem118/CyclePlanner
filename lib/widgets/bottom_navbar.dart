@@ -64,8 +64,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 break;
               }
               case 3: {
-                // MapboxNavigationService().mapboxBegin(applicationProcesses.bikeStations);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MapboxNavigation(bike_stations: applicationProcesses.bikeStations)));
+                if(applicationProcesses.polylines.isNotEmpty) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MapboxNavigation(bike_stations: applicationProcesses.bikeStations)));
+                }
               }
               break;
               case 4: {
