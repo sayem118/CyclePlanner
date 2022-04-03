@@ -109,6 +109,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Create a [Marker] on [bikeStations] around the user's location and set the appropriate camera [bounds].
   toggleBikeMarker() async {
+    markerService.setBikeMarkerIcon();
     var position = currentLocation;
     var futureBikeStation = bikeService.getStations(
       position!.latitude,
