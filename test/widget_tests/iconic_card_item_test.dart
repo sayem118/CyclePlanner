@@ -81,6 +81,14 @@ import 'package:provider/provider.dart';
         expect(true, true);
       });
 
+
+      testWidgets('find a container', (WidgetTester tester) async {
+        var container = find.byType(Container);
+        await tester.pumpWidget(cardItem);
+        await tester.pumpAndSettle();
+        expect(container, findsOneWidget);
+      });
+
       testWidgets('CardItem created successfully', (WidgetTester tester) async {
         CardItem testCardItem = const CardItem(
           itemTitle: 'Test',
