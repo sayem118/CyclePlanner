@@ -62,5 +62,15 @@ void main() {
 
       expect(generateBikeStation.lon, bikeModel.lon);
     });
+
+    test('Bike station object from JSON', () {
+      Map<dynamic, dynamic> mockGeometryJSON = {"id": "BikePoints_79", "commonName": "Arundel Street, Temple", 'lat': 51.511726, 'lon': -0.113855};
+      final mockGeometry = BikeStation.fromJson(mockGeometryJSON);
+
+      expect(mockGeometry.id, "BikePoints_79");
+      expect(mockGeometry.commonName, "Arundel Street, Temple");
+      expect(mockGeometry.lat, 51.511726);
+      expect(mockGeometry.lon, -0.113855);
+    });
   });
 }
