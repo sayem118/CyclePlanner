@@ -46,18 +46,29 @@ import 'package:provider/provider.dart';
                 primarySwatch: Colors.blue,
               ),
               home:  Scaffold(
-                body: Column(
-                  children: const [
-                    Text('testing'),
-                    CardItem(
-                      itemTitle: 'Test',
-                      itemInfo: 'Test',
-                      imageInfo: 'Test',
-                      placeId: 'Test',
-                      placeInfo: 'Test',
-                    ),
-                  ],
-                ),
+                  body: ListView.builder(
+                      itemCount: cardItemsList.length,
+                      itemBuilder: (context, index) {
+                        String itemTitle = cardItemsList [index] [0] ;
+                        String itemInfo =  cardItemsList [index] [1];
+                        String placeInfo =  cardItemsList [index] [2];
+                        String imageInfo =  cardItemsList [index] [3];
+                        String placeId =  cardItemsList [index] [4];
+
+                        return CardItem(itemTitle: itemTitle, itemInfo: itemInfo, imageInfo: imageInfo, placeId: placeId, placeInfo: placeInfo );
+                      })
+                // body: Column(
+                //   children: const [
+                //     Text('testing'),
+                //     CardItem(
+                //       itemTitle: 'Test',
+                //       itemInfo: 'Test',
+                //       imageInfo: 'Test',
+                //       placeId: 'Test',
+                //       placeInfo: 'Test',
+                //     ),
+                //   ],
+                // ),
               )
           ),
         );
