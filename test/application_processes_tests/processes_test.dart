@@ -120,6 +120,11 @@ void main() {
       expect(appProcesses.placeName, isA<String>());
     });
 
+    test('toggleMarker', () async {
+      await appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      expect(appProcesses.placeName, "ChIJc2nSALkEdkgRkuoJJBfzkUI");
+    });
+
     test('', () async {
       PlacesService place = PlacesService();
       final markerService = MarkerService();
@@ -127,7 +132,7 @@ void main() {
       appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
 
 
-      expect(appProcesses.placeName, isA<String>());
+      expect(appProcesses.placeName, "ChIJc2nSALkEdkgRkuoJJBfzkUI");
 
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
@@ -226,7 +231,10 @@ void main() {
       );
 
       // appProcesses.polylines.add(polylineGiven);
-      appProcesses.drawRoute();
+      final ifPossibleDrawRoute = appProcesses.drawRoute();
+      ifPossibleDrawRoute;
+      // appProcesses.drawRoute();
+
 
       // for (int i = 1; i < appProcesses.bikeStations.length; i++) {
       //   late PolylinePoints polylinePoints;
@@ -264,18 +272,22 @@ void main() {
       final mockPlace =
       Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
 
-      appProcesses.drawNewRouteIfPossible(BuildContext);
+      final ifPossibleDrawRoute = appProcesses.drawNewRouteIfPossible(BuildContext);
+      ifPossibleDrawRoute;
       expect(appProcesses.polylines, isA<Set<Polyline>>());
       // expect(appProcesses.polylines.first, polylineGiven1 );
 
 
-
-
-
-
-
-
     });
+
+    test('dispose', () async {
+      appProcesses.dispose();
+
+      expect(appProcesses.selectedLocation.isClosed, true);
+      expect(appProcesses.bounds.isClosed, true);
+    });
+
+
 
 
 
