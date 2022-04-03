@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>341050433977-egqh6fncbo7m2hbtumk7k3td2aivhmus.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.341050433977-egqh6fncbo7m2hbtumk7k3td2aivhmus</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAqinorWO03-s2csnX65f2MGtSEOl9HlF0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>341050433977</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hadwahossam.cyclePlanner</string>
+	<key>PROJECT_ID</key>
+	<string>cycleplanner-c70a6</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cycleplanner-c70a6.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:341050433977:ios:7632dbddbd8971e1c01668</string>
+</dict>
+</plist>

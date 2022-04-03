@@ -26,7 +26,7 @@ class GoogleMapPage extends StatefulWidget {
 class _MapPageState extends State<GoogleMapPage> {
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
-  final LatLng _center = const LatLng(53.1424, 7.6921);
+  final LatLng _center = const LatLng(51.509865, -0.118092);
 
   @override
   void initState() {
@@ -70,7 +70,8 @@ class _MapPageState extends State<GoogleMapPage> {
               : _center,
               zoom: 11.0,
             ),
-            markers: Set<Marker>.of(widget.applicationProcesses.markers),
+            markers: (widget.applicationProcesses.publicBikeStations.isNotEmpty) ? Set<Marker>.of(widget.applicationProcesses.publicBikeStations)
+            :Set<Marker>.of(widget.applicationProcesses.markers),
             //onTap: _handleTap,
           ),
 
@@ -98,19 +99,6 @@ class _MapPageState extends State<GoogleMapPage> {
   //           onDragEnd: (dragEndPosition){
   //             print(dragEndPosition);
   //           }
-  //         )
-  //     );
-  //   });
-  // }
-
-  // _handleSearch(Place searchedPoint){
-  //   print(searchedPoint);
-  //   setState(() {
-  //     myMarker = [];
-  //     myMarker.add(
-  //         Marker(
-  //             markerId: MarkerId(searchedPoint.toString()),
-  //             position: LatLng(searchedPoint.geometry.location.lat, searchedPoint.geometry.location.lng),
   //         )
   //     );
   //   });

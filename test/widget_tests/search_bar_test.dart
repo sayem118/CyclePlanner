@@ -10,24 +10,14 @@ void main() {
   setUpAll(() {
     HttpOverrides.global = null;
     searchbar = const MaterialApp(
-        home: SearchBar()
+        home: Scaffold (
+        body: SearchBar() )
     );
   });
 
   testWidgets('SearchBar created successfully', (WidgetTester tester) async {
     SearchBar testSearchBar = const SearchBar(
     );
-  });
-
-  testWidgets('Testing for SearchBar created using key', (WidgetTester tester) async {
-    // Define the test key.
-    const testKey = Key('K');
-
-    // Build a MaterialApp with the testKey.
-    await tester.pumpWidget(MaterialApp(key: testKey, home: Container()));
-
-    // Find the MaterialApp widget using the testKey.
-    expect(find.byKey(testKey), findsOneWidget);
   });
 
   testWidgets('contains child row', (WidgetTester tester) async {

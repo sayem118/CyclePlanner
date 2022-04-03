@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:cycle_planner/models/bikeStation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 
 /// Class description:
@@ -8,40 +9,70 @@ import 'package:http/http.dart';
 
 class BikeStationService {
 
+  List<Marker> bikeStops = [];
+
+  Future<List<BikeStation>> getStations(double? lat, double? lon) async {
+    String url = 'https://api.tfl.gov.uk/Bikepoint?radius=400&lat=$lat&lon=$lon';
+
+    // Request URL with user latitude and longitude
+    Response response = await get(Uri.parse(url));
+    
+    // Get bike stations from TFL JSON
+    dynamic json = jsonDecode(response.body);
+
+    List<dynamic> results = json['places'] as List;
+
+    return results.map((station) => BikeStation.fromJson(station)).toList();
+  }
+  
   // Return a list of bike stations closest to the user.
   Future<List> getClosestStations(double? lat, double? lon) async {
     // Request URL with user latitude and longitude
-    Response response = await get(Uri.parse(
-        'https://api.tfl.gov.uk/Bikepoint?radius=3000&lat=$lat&lon=$lon'));
-
+    Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=6000&lat=$lat&lon=$lon'));
+    List stations = [];
+    
     // Get bike stations from TFL JSON
-    List stations = jsonDecode(response.body)['places'];
+    stations = jsonDecode(response.body)['places'];
 
     return stations;
   }
 
   // Return a map of bike stations with available bycicles.
-  Future<Map> getStationWithBikes(double? lat, double? lon,
-      int groupSize) async {
+  Future<Map> getStationWithBikes(double? lat, double? lon, int groupSize) async {
     return filterData(await getClosestStations(lat, lon), 6, groupSize);
+  }
+ //will create a list of markers with all nearby bike stops matching the group size
+  Future<void> createBikeStopsList(List stations, int additionalPropertiesNumber, int groupSize)async {
+    bikeStops.clear();
+    //goes through list of bike stations
+    for (int i = 0; i < stations.length; i++) {
+      //if its good enough it'll be added to the list
+      if (int.parse(stations[i]['additionalProperties'][additionalPropertiesNumber]['value']) >= groupSize) {
+        bikeStops.add(Marker(
+            markerId: const MarkerId("bikes"),
+            position: LatLng(stations[i]['latitude'], stations[i]['longitude'])
+        ));
+      }
+      //once we have more than 5 it'll break the loop, you can change it to another number you like
+      if (bikeStops.length > 5){
+        break;
+      }
+    }
   }
 
   // Return a map of bike stations with ??? -> Maya fill this part :)
-  Future<Map> getStationWithSpaces(double? lat, double? lon,
-      int groupSize) async {
+  Future<Map> getStationWithSpaces(double? lat, double? lon, int groupSize) async {
     return filterData(await getClosestStations(lat, lon), 7, groupSize);
   }
 
   // Filter received data with the appropriate additionalProperties number
-  Map<dynamic, dynamic> filterData(List stations,
-      int additionalPropertiesNumber, int groupSize) {
+  Map<dynamic, dynamic> filterData(List stations, int additionalPropertiesNumber, int groupSize){
     for (int i = 0; i < stations.length; i++) {
-      if (int.parse(
-          stations[i]['additionalProperties'][additionalPropertiesNumber]['value']) >=
-          groupSize) {
+      if (int.parse(stations[i]['additionalProperties'][additionalPropertiesNumber]['value']) >= groupSize) {
         return stations[i];
       }
     }
     return {};
   }
+
 }

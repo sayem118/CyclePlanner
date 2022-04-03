@@ -1,13 +1,25 @@
-
+import 'package:cycle_planner/models/bikeStation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/place.dart';
 
 class MarkerService{
+  BitmapDescriptor? bikeMarker;
+
+  void setBikeMarkerIcon() async {
+    bikeMarker = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(
+        devicePixelRatio: 2.0,
+        size: Size(2.0, 2.0),
+      ),
+      'assets/bike-marker.png'
+    );
+  }
+
   LatLngBounds? bounds(Set<Marker> markers) {
     if (markers.isEmpty) return null;
     return createBounds(markers.map((m) => m.position).toList());
   }
-
 
   LatLngBounds createBounds(List<LatLng> positions) {
     final southwestLat = positions.map((p) => p.latitude).reduce((value, element) => value < element ? value : element); // smallest
@@ -17,6 +29,22 @@ class MarkerService{
     return LatLngBounds(
       southwest: LatLng(southwestLat, southwestLon),
       northeast: LatLng(northeastLat, northeastLon)
+    );
+  }
+
+  Marker createBikeMarker(BikeStation station) {
+    return Marker(
+      markerId: MarkerId(station.id),
+      icon: bikeMarker!,
+      draggable: false,
+      visible: true,
+      infoWindow: InfoWindow(
+        title: station.id, snippet: station.commonName
+      ),
+      position: LatLng(
+        station.lat,
+        station.lon
+      )
     );
   }
 
