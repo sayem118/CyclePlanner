@@ -1,3 +1,4 @@
+import 'package:cycle_planner/models/bikeStation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/place.dart';
 
@@ -18,17 +19,17 @@ class MarkerService{
     );
   }
 
-  Marker createBikeMarker(String id, double lat, double lng) {
+  Marker createBikeMarker(BikeStation station) {
     return Marker(
-      markerId: MarkerId(id),
+      markerId: MarkerId(station.id),
       draggable: false,
       visible: true,
-      // infoWindow: InfoWindow(
-      //   title: place.name, snippet: place.vicinity
-      // ),
+      infoWindow: InfoWindow(
+        title: station.id, snippet: station.commonName
+      ),
       position: LatLng(
-        lat,
-        lng
+        station.lat,
+        station.lon
       )
     );
   }
