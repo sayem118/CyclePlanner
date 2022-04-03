@@ -88,6 +88,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Create a [Marker] on a user selected [Place] and set the appropriate camera [bounds].
   toggleMarker(String value) async {
+    publicBikeStations.clear();
     placeName = value;
 
     Place place = await placesService.getPlaceMarkers(
@@ -340,11 +341,11 @@ class ApplicationProcesses with ChangeNotifier {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('No available bike stations near your current location.'),
+          title: const Text('No available bike stations.'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('Try using the app from somewhere else.'),
+                Text('Try using the app from a different location.'),
               ],
             ),
           ),
