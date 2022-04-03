@@ -113,10 +113,28 @@ class NavBar extends StatefulWidget {
           ),
           const Divider(),
           ActionChip(
-            label: const Text("Logout"),
-            onPressed: () {
-              logout(context);
-            },
+            label: Text("Logout"),
+            onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('Logout from this account'),
+                content: const Text('Are you sure you would like to Logout?'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      logout(context);
+                    },
+                    child: const Text('Logout'),
+
+                  ),
+                ],
+              ),
+            ),
+
           ),
         ],
       ),

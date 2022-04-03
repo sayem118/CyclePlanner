@@ -94,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
           Text("${loggedInUser.firstName ??"Guest" } ${loggedInUser.secondName ?? "User"}  ",
                   style: TextStyle(
@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: const Text('Go to your Saved places',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 26,
+                      fontSize: 20,
                       color: Colors.white,
                     ),
                   ),
@@ -180,9 +180,27 @@ class _ProfilePageState extends State<ProfilePage> {
                 Divider(),
                 ActionChip(
                   label: Text("Logout"),
-                  onPressed: () {
-                    logout(context);
-                  },
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Logout from this account'),
+                      content: const Text('Are you sure you would like to Logout?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            logout(context);
+                          },
+                          child: const Text('Logout'),
+
+                        ),
+                      ],
+                    ),
+                  ),
+
                 ),
                 Divider(),
         ActionChip(
