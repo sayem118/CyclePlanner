@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
     Widget mockCardItem;
 
+
     setUp(() {
       List<dynamic> cardItemsList = [
           [
@@ -73,6 +74,12 @@ import 'package:provider/provider.dart';
 
       // Find the MaterialApp widget using the testKey.
       expect(find.byKey(testKey), findsOneWidget);
+    });
+
+
+    testWidgets('CardItem created successfully', (WidgetTester tester) async {
+      await tester.pumpWidget(cardItem);
+      expect(true, true);
     });
 
       testWidgets('CardItem created successfully', (WidgetTester tester) async {
