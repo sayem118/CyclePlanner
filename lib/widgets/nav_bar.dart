@@ -58,8 +58,8 @@ class NavBar extends StatefulWidget {
 
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.network(
-                  'https://media1.giphy.com/media/l41lYNASsqlUOt9Xq/giphy.gif',
+                child: Image.asset(
+                  "assets/CYCLEBAY.gif",
                   fit: BoxFit.fill,
                   width: 200,
                   height: 200,
