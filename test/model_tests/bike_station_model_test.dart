@@ -1,14 +1,16 @@
-import 'package:test/test.dart';
+//import test package and groups model
 import 'package:cycle_planner/models/bikeStation.dart';
+import 'package:test/test.dart';
 
 void main() {
+  late dynamic bikeStationJSON;
+  late BikeStation bikeModel;
+  late String id;
+  late String commonName;
+  late double lat;
+  late double lon;
+
   group('Bike station model -', () {
-    late dynamic bikeStationJSON;
-    late BikeStation bikeModel;
-    late String id;
-    late String commonName;
-    late double lat;
-    late double lon;
     setUp(() {
       bikeStationJSON = {
         "id": "BikePoints_79",
@@ -25,7 +27,7 @@ void main() {
       bikeModel = BikeStation(id: id, commonName: commonName, lat: lat, lon: lon);
     });
 
-    test('Required Params passed', () {
+    test('Pass correct param data', () {
       id = '';
       commonName = '';
       lat = 0.0;
@@ -37,6 +39,19 @@ void main() {
       expect(generateBikeStation.commonName, '');
       expect(generateBikeStation.lat, 0.0);
       expect(generateBikeStation.lon, 0.0);
+    });
+    
+    test('Bike Station constructor sets attributes', () {
+      final mockBikeStation = BikeStation(id: "Test", commonName: "Test", lat: 50.1109, lon: 8.6821);
+
+      //ensure the id is set
+      expect(mockBikeStation.id, "Test");
+      //ensure the commonName is set
+      expect(mockBikeStation.commonName, "Test");
+      //ensure the latitude is set
+      expect(mockBikeStation.lat, 50.1109);
+      //ensure the longitude is set
+      expect(mockBikeStation.lon, 8.6821);
     });
 
     test('Bike station id matches JSON data', () {
@@ -63,14 +78,20 @@ void main() {
       expect(generateBikeStation.lon, bikeModel.lon);
     });
 
-    test('Bike station object from JSON', () {
-      Map<dynamic, dynamic> mockGeometryJSON = {"id": "BikePoints_79", "commonName": "Arundel Street, Temple", 'lat': 51.511726, 'lon': -0.113855};
-      final mockGeometry = BikeStation.fromJson(mockGeometryJSON);
+    test('Testing Bike Station factory method', () {
 
-      expect(mockGeometry.id, "BikePoints_79");
-      expect(mockGeometry.commonName, "Arundel Street, Temple");
-      expect(mockGeometry.lat, 51.511726);
-      expect(mockGeometry.lon, -0.113855);
+      //creating a test JSON and feeding it in
+      Map mockBikeStationJSON = {'id': "Test", 'commonName': "Test", 'lat': 50.1109, 'lon': 8.6821};
+      final mockBikeStation = BikeStation.fromJson(mockBikeStationJSON);
+
+      //ensure the id is set
+      expect(mockBikeStation.id, "Test");
+      //ensure the commonName is set
+      expect(mockBikeStation.commonName, "Test");
+      //ensure the latitude is set
+      expect(mockBikeStation.lat, 50.1109);
+      //ensure the longitude is set
+      expect(mockBikeStation.lon, 8.6821);
     });
   });
 }

@@ -2,6 +2,7 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
+import 'package:provider/provider.dart';
 
 class MapboxNavigation extends StatefulWidget {
   final bike_stations;
@@ -16,12 +17,12 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
   late MapBoxOptions _options;
   late MapBoxNavigation _directions;
 
-  List<WayPoint> wayPoints = [];
   final bool _isMultipleStop = false;
   bool _routeBuilt = false;
   bool _isNavigating = false;
 
   final bikeService = BikeStationService();
+  late final appProcesses;
 
   @override
   void initState() {
@@ -54,13 +55,10 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
       language: "en",
     );
 
-    for (var stop in widget.bike_stations) {
-      wayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
-    }
-    await _directions.startNavigation(wayPoints: wayPoints, options: _options);
+    appProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
+    appProcesses.addListener(_listener);
 
-    final model = ApplicationProcesses();
-    model.addListener(_listener);
+    startNavigation();
   }
 
   @override
@@ -142,7 +140,24 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
     setState(() {});
   }
 
-  void _listener() {
-    print('Model changed!');
+  void startNavigation() {
+    List<WayPoint> wayPoints = [];
+    for (var stop in appProcesses.bikeStations) {
+      wayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
+      print("name of stop: " + wayPoints.last.name.toString());
+    }
+    _directions.startNavigation(wayPoints: wayPoints, options: _options);
   }
+
+  Future<void> _listener() async {
+    // if(_isNavigating) {
+      _directions.finishNavigation();
+      List<WayPoint> newWayPoints = [];
+      for (var stop in appProcesses.bikeStations) {
+        newWayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
+        print("name of stop: " + newWayPoints.last.name.toString());
+      }
+      _directions.startNavigation(wayPoints: newWayPoints, options: _options);
+    }
+  // }
 }
