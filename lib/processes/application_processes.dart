@@ -35,6 +35,8 @@ class ApplicationProcesses with ChangeNotifier {
   //hidden set of markers to be used behind the scenes
   List<Marker> bikeStations = [];
 
+  List<Marker> publicBikeStations = [];
+
   //station1 has initial bike station and station 2 has last one
   Set<Polyline> polylines = {};
   List<LatLng> polyCoords = [];
@@ -102,6 +104,39 @@ class ApplicationProcesses with ChangeNotifier {
     var _bounds = markerService.bounds(Set<Marker>.of(markers));
     bounds.add(_bounds!);
     notifyListeners();
+  }
+
+  /// Create a [Marker] on [bikeStations] around the user's location and set the appropriate camera [bounds].
+  toggleBikeMarker() async {
+    late Marker bikeMarker;
+    for(var marker in publicBikeStations) {
+      bikeMarker = markerService.createBikeMarker(marker.markerId.value, marker.position.latitude, marker.position.longitude);
+    }
+    
+    if (!publicBikeStations.contains(bikeMarker)) {
+      publicBikeStations.add(bikeMarker);
+    }
+
+    var _bounds = markerService.bounds(Set<Marker>.of(publicBikeStations));
+    bounds.add(_bounds!);
+    notifyListeners();
+  }
+
+  void showBikeStations() async {
+    Future<Map> futureBikeStation = bikeService.getStationWithBikes(
+      currentLocation!.latitude,
+      currentLocation!.longitude,
+      groupSize
+    );
+
+    Map stations = await futureBikeStation;
+
+    if(stations.isNotEmpty) {
+      for(int i = 0; i < 6; i++) {
+        Marker stationMarker = markerService.createBikeMarker("Bike station $i", stations[i]['lat'], stations[i]['lon']);
+        publicBikeStations.add(stationMarker);
+      }
+    }
   }
 
   void drawNewRouteIfPossible(context) async {
