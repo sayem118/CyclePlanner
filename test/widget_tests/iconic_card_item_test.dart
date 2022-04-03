@@ -34,14 +34,46 @@ import 'package:provider/provider.dart';
           imageInfo='Test2',
           placeId=  'Test2',
           placeInfo='Test2',
-      ]
+       ]
 
       ];
-
+      cardItem =  ChangeNotifierProvider<ApplicationProcesses>(
+        create: (context) => ApplicationProcesses(),
+        child: MaterialApp(
+            title: 'Cycle Planner',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home:  Scaffold(
+              body: Column(
+                children: const [
+                  Text('testing'),
+                  CardItem(
+                    itemTitle: 'Test',
+                    itemInfo: 'Test',
+                    imageInfo: 'Test',
+                    placeId: 'Test',
+                    placeInfo: 'Test',
+                  ),
+                ],
+              ),
+            )
+        ),
+      );
 
     });
 
+    testWidgets(
+        'Testing for widgets created using key', (WidgetTester tester) async {
+      // Define the test key.
+      const testKey = Key('K');
 
+      // Build a MaterialApp with the testKey.
+      await tester.pumpWidget(MaterialApp(key: testKey, home: Container()));
+
+      // Find the MaterialApp widget using the testKey.
+      expect(find.byKey(testKey), findsOneWidget);
+    });
 
       testWidgets('CardItem created successfully', (WidgetTester tester) async {
         CardItem testCardItem = const CardItem(
