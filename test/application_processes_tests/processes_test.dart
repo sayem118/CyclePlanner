@@ -3,6 +3,7 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/marker_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/location.dart';
@@ -159,7 +160,7 @@ void main() {
     });
 
     test('DrawRoute', () async {
-      appProcesses.drawRoute();
+      // appProcesses.drawRoute();
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
@@ -197,6 +198,8 @@ void main() {
           marker1.position.latitude, marker1.position.longitude);
       final PointLatLng markerB = PointLatLng(
           marker2.position.latitude, marker2.position.longitude);
+
+
       result = await polylinePoints.getRouteBetweenCoordinates(
         "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
         markerA,
@@ -207,14 +210,24 @@ void main() {
       late List<LatLng> nPoints = [];
       for (var point in result.points) {
         nPoints.add(LatLng(point.latitude, point.longitude));
-      }
-      final polylineGiven = Polyline(
+
+        final polylineGiven = Polyline(
+            polylineId: const PolylineId("test"),
+            points: nPoints,
+            color: Colors.blue);
+        appProcesses.polylines.add(polylineGiven);
+
+        }
+      final polylineGiven1 = Polyline(
           polylineId: const PolylineId("test"),
           points: nPoints,
           color: Colors.blue
+
       );
 
-      appProcesses.polylines.add(polylineGiven);
+      // appProcesses.polylines.add(polylineGiven);
+      appProcesses.drawRoute();
+
       // for (int i = 1; i < appProcesses.bikeStations.length; i++) {
       //   late PolylinePoints polylinePoints;
       //   polylinePoints = PolylinePoints();
@@ -240,7 +253,7 @@ void main() {
       //       marker2,
       //       travelMode: TravelMode.bicycling,);
       expect(appProcesses.polylines, isA<Set<Polyline>>());
-      expect(appProcesses.polylines.last, polylineGiven );
+      expect(appProcesses.polylines.first, polylineGiven1 );
 
     });
 
@@ -250,6 +263,13 @@ void main() {
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
       Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+
+      appProcesses.drawNewRouteIfPossible(BuildContext);
+      expect(appProcesses.polylines, isA<Set<Polyline>>());
+      // expect(appProcesses.polylines.first, polylineGiven1 );
+
+
+
 
 
 
