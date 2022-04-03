@@ -27,7 +27,6 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
   void initState() {
     super.initState();
     initialize();
-    
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -106,10 +105,14 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
         if (!_isMultipleStop) {
           await Future.delayed(const Duration(seconds: 3));
           await _controller.finishNavigation();
-        } else {}
+        } else {
+          _controller.finishNavigation();
+        }
         break;
       case MapBoxEvent.navigation_finished:
         setState(() {
+          _directions.finishNavigation();
+          _controller.finishNavigation();
           AlertDialog(
             title: const Text("Destination reached"),
             content: const Text("You have reached your destination"),
@@ -128,6 +131,8 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
         setState(() {
           _routeBuilt = false;
           _isNavigating = false;
+          _directions.finishNavigation();
+          _controller.finishNavigation();
           Navigator.pop(context);
         });
         break;
