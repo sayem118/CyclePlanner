@@ -66,31 +66,31 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.black12,
-                      minRadius: 35.0,
-                      child: Icon(
-                          Icons.call,
-                          size: 30.0
-                      ),
-                    ),
+                    // CircleAvatar(
+                    //   backgroundColor: Colors.black12,
+                    //   minRadius: 35.0,
+                    //   child: Icon(
+                    //       Icons.call,
+                    //       size: 30.0
+                    //   ),
+                    // ),
                     CircleAvatar(
                       backgroundColor: Colors.white70,
                       minRadius: 60.0,
                       child: CircleAvatar(
                         radius: 50.0,
                         backgroundImage:
-                        AssetImage("assets/cyclebaynew.png"),
+                        AssetImage("assets/CYCLEBAY.gif"),
                       ),
                     ),
-                    CircleAvatar(
-                      backgroundColor: Colors.black12,
-                      minRadius: 35.0,
-                      child: Icon(
-                          Icons.message,
-                          size: 30.0
-                      ),
-                    ),
+                    // CircleAvatar(
+                    //   backgroundColor: Colors.black12,
+                    //   minRadius: 35.0,
+                    //   child: Icon(
+                    //       Icons.message,
+                    //       size: 30.0
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(
