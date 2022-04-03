@@ -18,6 +18,21 @@ class MarkerService{
     );
   }
 
+  Marker createBikeMarker(String id, double lat, double lng) {
+    return Marker(
+      markerId: MarkerId(id),
+      draggable: false,
+      visible: true,
+      // infoWindow: InfoWindow(
+      //   title: place.name, snippet: place.vicinity
+      // ),
+      position: LatLng(
+        lat,
+        lng
+      )
+    );
+  }
+
   Marker createMarkerFromPlace(Place place) {
     String markerId = place.name;
 
