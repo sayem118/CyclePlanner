@@ -151,7 +151,7 @@ final _auth = FirebaseAuth.instance;
 
                     SizedBox(
                         height: 200,
-                        child: Image.asset("assets/cyclebaynew.png",
+                        child: Image.asset("assets/CYCLEBAY.gif",
                           fit: BoxFit.contain,
                         )),
                     const SizedBox(height: 45),

@@ -219,7 +219,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     SizedBox(
                         height: 180,
-                        child: Image.asset("assets/cyclebaynew.png",
+                        child: Image.asset("assets/CYCLEBAY.gif",
                           fit: BoxFit.contain,
                         )),
                     const SizedBox(height: 45),

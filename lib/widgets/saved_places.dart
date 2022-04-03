@@ -22,6 +22,8 @@ class SavedPlaces extends StatefulWidget {
   ),
   );
   }
+
+
   }
 //
 //
