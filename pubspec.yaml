@@ -55,6 +55,7 @@ dependencies:
   fluttertoast: ^8.0.9
   firebase_auth: ^3.3.11
   file_picker: ^4.5.1
+  property_change_notifier: ^0.3.0
 
 
 dev_dependencies:

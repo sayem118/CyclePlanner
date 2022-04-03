@@ -141,43 +141,50 @@ class ApplicationProcesses with ChangeNotifier {
 
     Marker temp = markers.last;
     Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(
-      temp.position.latitude, temp.position.longitude, groupSize
+        temp.position.latitude, temp.position.longitude, groupSize
     );
     Map endStation = await futureBikeStation2;
 
-    if(startStation.isNotEmpty && endStation.isNotEmpty) {
-      bikeStations.clear();
-      polylines = {};
-      bikeStations = List<Marker>.from(markers);
-      Marker currentLocation =
-      Marker(markerId: const MarkerId("current location"),
-        position: LatLng(position.latitude, position.longitude)
-      );
-      //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
-      Marker station1 = Marker(
-        markerId: const MarkerId("start station"),
-        position: LatLng(startStation['lat'], startStation['lon'])
-      );
-      Marker station2 = Marker(
-        markerId: const MarkerId("end station"),
-        position: LatLng(endStation['lat'], endStation['lon'])
-      );
-      bikeStations.insert(0, station1);
-      bikeStations.insert(0, currentLocation);
-      bikeStations.add(station2);
-      drawRoute();
+    // only draw polylines if route has not been drawn already or bike stations have changed.
+    if( bikeStations.isEmpty
+        || (startStation['lat'] != bikeStations[1].position.latitude && startStation['lon'] != bikeStations[1].position.longitude)
+        || (endStation['lat'] != bikeStations.last.position.latitude && endStation['lon'] != bikeStations.last.position.longitude)) {
+      if(startStation.isNotEmpty && endStation.isNotEmpty) {
+        bikeStations.clear();
+        polylines = {};
+        bikeStations = List<Marker>.from(markers);
+        Marker currentLocation =
+        Marker(markerId: const MarkerId("current location"),
+            position: LatLng(position.latitude, position.longitude)
+        );
+        //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
+        Marker station1 = Marker(
+            markerId: const MarkerId("start station"),
+            position: LatLng(startStation['lat'], startStation['lon'])
+        );
+        Marker station2 = Marker(
+            markerId: const MarkerId("end station"),
+            position: LatLng(endStation['lat'], endStation['lon'])
+        );
+        bikeStations.insert(0, station1);
+        bikeStations.insert(0, currentLocation);
+        bikeStations.add(station2);
+        drawRoute();
+        print("bike station changed");
+        notifyListeners();
 
-      // automatically refresh route overview.
-      timer?.cancel();
-      timer = Timer.periodic(const Duration(minutes: 3), (Timer t) => {
-        drawNewRouteIfPossible(context),
-      });
-    }
-    else if (endStation.isEmpty) {
-      showNoStationsFinalStopAlert(context);
-    }
-    else {
-      showNoStationsCurrentLocationAlert(context);
+        // automatically refresh route overview.
+        timer?.cancel();
+        timer = Timer.periodic(const Duration(minutes: 3), (Timer t) => {
+          drawNewRouteIfPossible(context),
+        });
+      }
+      else if (endStation.isEmpty) {
+        showNoStationsFinalStopAlert(context);
+      }
+      else {
+        showNoStationsCurrentLocationAlert(context);
+      }
     }
   }
 

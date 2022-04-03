@@ -1,3 +1,4 @@
+import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
@@ -58,6 +59,9 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
       wayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
     }
     await _directions.startNavigation(wayPoints: wayPoints, options: _options);
+
+    final model = ApplicationProcesses();
+    model.addListener(_listener);
   }
 
   @override
@@ -131,5 +135,9 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
         break;
     }
     setState(() {});
+  }
+
+  void _listener() {
+    print('Model changed!');
   }
 }
