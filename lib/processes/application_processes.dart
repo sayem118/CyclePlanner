@@ -109,73 +109,24 @@ class ApplicationProcesses with ChangeNotifier {
   /// Create a [Marker] on [bikeStations] around the user's location and set the appropriate camera [bounds].
   toggleBikeMarker() async {
     var position = currentLocation;
-    Future<Map> futureBikeStation = bikeService.getStationWithBikes(
+    var futureBikeStation = bikeService.getStations(
       position!.latitude,
       position.longitude,
-      groupSize
     );
 
-    Map stations = await futureBikeStation;
-    // print('lat is: ${stations}');
-    // print('lon is: ${stations['lon']}');
+    List stations = await futureBikeStation;
 
     if(stations.isNotEmpty) {
-      int index = 1;
-      // for(var key in stations.keys) {
-        var bikeMarker = markerService.createBikeMarker("Bike station $index", stations['lat'], stations['lon']);
+      for(int i = 0; i < stations.length; i++) {
+        var bikeMarker = markerService.createBikeMarker(stations[i]);
         publicBikeStations.add(bikeMarker);
-        // index++;
-      // }
-      // var bikeMarker = markerService.createBikeMarker(marker.markerId.value, marker.position.latitude, marker.position.longitude);
+      }
     }
-
-    // showBikeStations();
-
-    // late Marker bikeMarker;
-    // for(var marker in publicBikeStations) {
-    //   bikeMarker = markerService.createBikeMarker(marker.markerId.value, marker.position.latitude, marker.position.longitude);
-    //   publicBikeStations.add(bikeMarker);
-    // }
-    
-    // if (!publicBikeStations.contains(bikeMarker)) {
-      // publicBikeStations.add(bikeMarker);
-    // }
 
     var _bounds = markerService.bounds(Set<Marker>.of(publicBikeStations));
     bounds.add(_bounds!);
     notifyListeners();
   }
-
-  // void showBikeStations() async {
-  //   Future<Map> futureBikeStation = bikeService.getStationWithBikes(
-  //     currentLocation!.latitude,
-  //     currentLocation!.longitude,
-  //     groupSize
-  //   );
-
-  //   Map stations = await futureBikeStation;
-
-  //   if(stations.isNotEmpty) {
-  //     for(int i = 0; i < 6; i++) {
-  //       Marker stationMarker = markerService.createBikeMarker("Bike station $i", stations[i]['lat'], stations[i]['lon']);
-  //       publicBikeStations.add(stationMarker);
-  //     }
-  //   }
-  //   else {
-  //     AlertDialog(
-  //       title: const Text("No bikes found"),
-  //       content: const Text("This area does not contain any bike stations"),
-  //       actions: <Widget>[
-  //         TextButton(
-  //           child: const Text("OK"),
-  //           onPressed: () {
-  //             // Navigator.pop(context);
-  //           },
-  //         )
-  //       ],
-  //     );
-  //   }
-  // }
 
   void drawNewRouteIfPossible(context) async {
     var position = currentLocation;
