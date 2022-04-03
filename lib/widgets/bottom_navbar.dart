@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/mapbox_navigation_service.dart';
+import 'package:cycle_planner/widgets/mapbox_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 break;
               }
               case 3: {
-                MapboxNavigationService().mapboxBegin(applicationProcesses.bikeStations);
+                if(applicationProcesses.polylines.isNotEmpty) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MapboxNavigation(bike_stations: applicationProcesses.bikeStations)));
+                }
               }
               break;
               case 4: {

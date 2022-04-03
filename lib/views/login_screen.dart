@@ -45,6 +45,7 @@ final _auth = FirebaseAuth.instance;
   Widget build(BuildContext context){
     //email field
     final emailField = TextFormField(
+      key: const ValueKey('emailLogInField'),
       autofocus: false,
       controller: emailController,
       keyboardType:TextInputType.emailAddress,
@@ -79,6 +80,7 @@ final _auth = FirebaseAuth.instance;
 
     //password field
     final passwordField = TextFormField(
+      key: const ValueKey('passwordLogInField'),
       autofocus: false,
       controller: passwordController,
       obscureText: true,
@@ -113,6 +115,7 @@ final _auth = FirebaseAuth.instance;
 
 
     final loginButton = Material(
+      key: const ValueKey('LogInButton'),
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
       color: Colors.blueGrey,

@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cycle_planner/widgets/saved_places.dart';
+
+import 'package:cycle_planner/widgets/profile_page.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/widgets/iconic_places.dart';
@@ -76,7 +79,7 @@ class NavBar extends StatefulWidget {
             title: const Text('Profile'),
             onTap: () => {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return const IconicScreen();
+                return ProfilePage();
               },),)
             },
           ),

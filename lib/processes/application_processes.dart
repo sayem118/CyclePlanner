@@ -4,7 +4,6 @@ import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/services/marker_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:cycle_planner/services/geolocator_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
 import 'package:cycle_planner/models/place_search.dart';
 import 'package:cycle_planner/models/place.dart';
@@ -19,7 +18,6 @@ import 'package:cycle_planner/widgets/journey_planner.dart';
 /// and processing user typed search locations.
 
 class ApplicationProcesses with ChangeNotifier {
-  final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
   final markerService = MarkerService();
   final polylinePoints = PolylinePoints();
@@ -50,7 +48,7 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Update the user's [currentLocation]
   setCurrentLocation() async {
-    currentLocation = await geoLocatorService.getCurrentLocation();
+    currentLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     selectedLocationStatic = Place(
       name: '',
       geometry: Geometry(
@@ -108,9 +106,10 @@ class ApplicationProcesses with ChangeNotifier {
   }
 
   void drawNewRouteIfPossible(context) async {
-    var position = await Geolocator.getCurrentPosition();
+    // var position = await Geolocator.getCurrentPosition();
+    var position = currentLocation;
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
-      position.latitude,
+      position!.latitude,
       position.longitude,
       groupSize
     );
@@ -145,15 +144,15 @@ class ApplicationProcesses with ChangeNotifier {
 
       // automatically refresh route overview.
       timer?.cancel();
-      timer = Timer.periodic(Duration(minutes: 3), (Timer t) => {
+      timer = Timer.periodic(const Duration(minutes: 3), (Timer t) => {
         drawNewRouteIfPossible(context),
       });
     }
     else if (endStation.isEmpty) {
-      _showNoStationsFinalStopAlert(context);
+      showNoStationsFinalStopAlert(context);
     }
     else {
-      _showNoStationsCurrentLocationAlert(context);
+      showNoStationsCurrentLocationAlert(context);
     }
   }
 
@@ -174,14 +173,16 @@ class ApplicationProcesses with ChangeNotifier {
           "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
           marker1,
           marker2,
-          travelMode: TravelMode.walking,);
+          travelMode: TravelMode.walking,
+        );
       }
       else {
         result = await polylinePoints.getRouteBetweenCoordinates(
           "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
           marker1,
           marker2,
-          travelMode: TravelMode.bicycling,);
+          travelMode: TravelMode.bicycling,
+        );
       }
       //drawing route to bike stations
       late List<LatLng> nPoints = [];
@@ -282,7 +283,7 @@ class ApplicationProcesses with ChangeNotifier {
 
 
   // Creates alert if there are no available bike stations near final stop.
-  Future<void> _showNoStationsFinalStopAlert(context) async {
+  Future<void> showNoStationsFinalStopAlert(context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -310,7 +311,7 @@ class ApplicationProcesses with ChangeNotifier {
   }
 
   // Creates alert if there are no available bike stations near final stop.
-  Future<void> _showNoStationsCurrentLocationAlert(context) async {
+  Future<void> showNoStationsCurrentLocationAlert(context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
