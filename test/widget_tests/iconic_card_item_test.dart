@@ -1,33 +1,55 @@
+import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:cycle_planner/widgets/iconic_places.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/widgets/iconic_card_item.dart';
 import 'dart:io';
 
-void main() {
+import 'package:provider/provider.dart';
 
-  Widget mockCardItem;
+  void main() {
+    late Widget cardItem;
 
-  setUpAll(() {
-    HttpOverrides.global = null;
-    mockCardItem = const MaterialApp(
-        home: CardItem(
-          itemTitle: 'Test',
-          itemInfo: 'Test',
-          imageInfo: 'Test',
-          placeId: 'Test',
-          placeInfo: 'Test'
-        )
-    );
-  });
+    var itemTitle;
+    var itemInfo;
+    var imageInfo;
+    var placeId;
+    var placeInfo;
 
-  testWidgets('CardItem created successfully', (WidgetTester tester) async {
-    CardItem testCardItem = const CardItem(
-        itemTitle: 'Test',
-        itemInfo: 'Test',
-        imageInfo: 'Test',
-        placeId: 'Test',
-        placeInfo: 'Test'
-    );
-  });
+    Widget mockCardItem;
 
-}
+    setUp(() {
+      List<dynamic> cardItemsList = [
+          [
+             itemTitle = 'Test1',
+             itemInfo =  'Test1',
+             imageInfo = 'Test1',
+             placeId =   'Test1',
+             placeInfo = 'Test1',
+          ],
+
+        [
+          itemTitle = 'Test2',
+          itemInfo=  'Test2',
+          imageInfo='Test2',
+          placeId=  'Test2',
+          placeInfo='Test2',
+      ]
+
+      ];
+
+
+    });
+
+
+
+      testWidgets('CardItem created successfully', (WidgetTester tester) async {
+        CardItem testCardItem = const CardItem(
+            itemTitle: 'Test',
+            itemInfo: 'Test',
+            imageInfo: 'Test',
+            placeId: 'Test',
+            placeInfo: 'Test',
+        );
+      });
+  }
