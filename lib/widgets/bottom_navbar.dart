@@ -58,6 +58,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
               break;
               case 1: {
+                applicationProcesses.toggleBikeMarker();
                 break;
               }
               case 2: {

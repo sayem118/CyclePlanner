@@ -137,6 +137,20 @@ class ApplicationProcesses with ChangeNotifier {
         publicBikeStations.add(stationMarker);
       }
     }
+    else {
+      AlertDialog(
+        title: const Text("No bikes found"),
+        content: const Text("This area does not contain any bike stations"),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              // Navigator.pop(context);
+            },
+          )
+        ],
+      );
+    }
   }
 
   void drawNewRouteIfPossible(context) async {
