@@ -2,6 +2,7 @@ import 'package:cycle_planner/views/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_screen.dart';
 
@@ -192,6 +193,8 @@ final _auth = FirebaseAuth.instance;
   {
     if (_formKey.currentState!.validate())
       {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString('email', emailController.text);
         await _auth.signInWithEmailAndPassword(email: email, password: password)
             .then((uid) =>
         {

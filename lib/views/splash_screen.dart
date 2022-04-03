@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'package:cycle_planner/views/home_screen.dart';
+import 'package:cycle_planner/views/login_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'dart:math' as math;
 
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,6 +16,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class StartState extends State<SplashScreen> {
+  late String userUid;
+
+  Future getUid() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userUid= sharedPreferences.getString('email')!;
+    if (kDebugMode) {
+      print(userUid);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return initScreen(context);
@@ -19,8 +33,16 @@ class StartState extends State<SplashScreen> {
 
   @override
   void initState() {
+    getUid().whenComplete(() => {
+      Timer(
+        const Duration(seconds: 3),
+          () => Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  child: userUid == null ? const LoginScreen() : const HomeScreen(),
+                  type: PageTransitionType.leftToRightWithFade)))
+    });
     super.initState();
-    startTimer();
   }
 
   startTimer() async {
@@ -30,7 +52,7 @@ class StartState extends State<SplashScreen> {
 
   route() {
     Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => HomeScreen()
+        builder: (context) => const HomeScreen()
     )
     );
   }
