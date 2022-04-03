@@ -79,11 +79,28 @@ class NavBar extends StatefulWidget {
           ),
 
           ListTile(
-            leading: const Icon(Icons.info),
+            leading: const Icon(Icons.person),
             title: const Text('Profile'),
             onTap: () => {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return ProfilePage();
+                return (!(user!.isAnonymous)) ? const ProfilePage() :
+                AlertDialog(
+                  title: const Text("Sorry you can't view this page"),
+                  content: const Text("Sign up or login to view your profile!"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        logout(context);
+                      },
+                      child: const Text('Login'),
+
+                    ),
+                  ],
+                );
               },),)
             },
           ),
