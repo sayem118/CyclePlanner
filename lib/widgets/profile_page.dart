@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 
 import '../models/user_model.dart';
+import '../views/login_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     color: Colors.deepPurple.shade300,
               child: Container(
-                color: Colors.red,
+                color: Colors.deepPurple,
                 child: ListTile(
 
                   leading: const Icon(Icons.favorite),
@@ -177,29 +178,58 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 Divider(),
-                ListTile(
-                  title: Text(
-                    'Linkedin',
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    'www.linkedin.com/in/leonardo-palmeiro-834a1755',
-                    style: TextStyle(
-                        fontSize: 18
-                    ),
-                  ),
+                ActionChip(
+                  label: Text("Logout"),
+                  onPressed: () {
+                    logout(context);
+                  },
                 ),
+                Divider(),
+        ActionChip(
+          label: Text("Delete account"),
+        onPressed: () => showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Delete account'),
+        content: const Text('Are you sure you would like to delete this account?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              deleteAccount(context);
+            },
+            child: const Text('Delete'),
+
+          ),
+        ],
+      ),
+    ),
+
+    ),
+
               ],
             ),
           )
         ],
       ),
     );
-    }}
+    }
+  // the logout function
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+
+  Future<void> deleteAccount(BuildContext context) async {
+    user?.delete();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+}
 
 //     return Scaffold(
 //       appBar: AppBar(
@@ -235,9 +265,5 @@ class _ProfilePageState extends State<ProfilePage> {
 //   //   ],
 //   // );
 //
-//   // Widget DeleteAccount() => ButtonWidget(
-//   //   text: 'Upgrade To PRO',
-//   //   onClicked: () {},
-//   // );
 //
 // }
