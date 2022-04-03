@@ -184,28 +184,37 @@ class ApplicationProcesses with ChangeNotifier {
       //drawing route to bike stations
       late List<LatLng> nPoints = [];
       double stuff = 0;
-      for (var point in result.points) {
-        nPoints.add(LatLng(point.latitude, point.longitude));
-        stuff = point.latitude + point.longitude;
-      }
+      stuff = buildWaypoints(result, nPoints, stuff);
       //adds stuff to polyline
       //if its a cycle path line is red otherwise line is blue
-      if (i == 1 || i == bikeStations.length - 1) {
-        polylines.add(Polyline(
-            polylineId: PolylineId(stuff.toString()),
-            points: nPoints,
-            color: Colors.red
-        ));
-      }
-      else {
-        polylines.add(Polyline(
-            polylineId: PolylineId(stuff.toString()),
-            points: nPoints,
-            color: Colors.blue
-        ));
-      }
+      polylineBetweenMarkers(i, stuff, nPoints);
     }
     notifyListeners();
+  }
+
+  double buildWaypoints(PolylineResult result, List<LatLng> nPoints, double stuff) {
+    for (var point in result.points) {
+      nPoints.add(LatLng(point.latitude, point.longitude));
+      stuff = point.latitude + point.longitude;
+    }
+    return stuff;
+  }
+
+  void polylineBetweenMarkers(int i, double stuff, List<LatLng> nPoints) {
+    if (i == 1 || i == bikeStations.length - 1) {
+      polylines.add(Polyline(
+          polylineId: PolylineId(stuff.toString()),
+          points: nPoints,
+          color: Colors.red
+      ));
+    }
+    else {
+      polylines.add(Polyline(
+          polylineId: PolylineId(stuff.toString()),
+          points: nPoints,
+          color: Colors.blue
+      ));
+    }
   }
 
 /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].

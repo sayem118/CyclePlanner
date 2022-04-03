@@ -29,8 +29,8 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 final appProcesses = ApplicationProcesses();
 
 Position get mockPosition => Position(
-    latitude: 52.561270,
-    longitude: 5.639382,
+    latitude: 55.561270,
+    longitude: 0.139382,
     timestamp: DateTime.fromMillisecondsSinceEpoch(
       500,
       isUtc: true,
@@ -173,10 +173,6 @@ void main() {
       final markerID = mockPlace.name;
       final marker1 = Marker(
           markerId: MarkerId(markerID),
-          draggable: false,
-          visible: true,
-          infoWindow:
-          InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
           position: LatLng(mockPlace.geometry.location.lat,
               mockPlace.geometry.location.lng));
 
@@ -187,10 +183,6 @@ void main() {
       final markerID2 = mockPlace2.name;
       final marker2 = Marker(
           markerId: MarkerId(markerID2),
-          draggable: false,
-          visible: true,
-          infoWindow:
-          InfoWindow(title: mockPlace2.name, snippet: mockPlace2.vicinity),
           position: LatLng(mockPlace2.geometry.location.lat,
               mockPlace2.geometry.location.lng));
 
@@ -286,6 +278,67 @@ void main() {
       expect(appProcesses.selectedLocation.isClosed, true);
       expect(appProcesses.bounds.isClosed, true);
     });
+
+    test('draw between markers', () async{
+
+      late PolylinePoints polylinePoints;
+      late PolylineResult result;
+      polylinePoints = PolylinePoints();
+
+      const marker1 = Marker(
+          markerId: MarkerId("marker"),
+          position: LatLng(51.5, 0.01));
+
+      const marker2 = Marker(
+          markerId: MarkerId("marker"),
+          position: LatLng(51.5, 0.03));
+
+      final PointLatLng markerA = PointLatLng(
+          marker1.position.latitude, marker1.position.longitude);
+      final PointLatLng markerB = PointLatLng(
+          marker2.position.latitude, marker2.position.longitude);
+
+
+      final PointLatLng markerC = PointLatLng(
+          marker2.position.latitude, marker2.position.longitude);
+
+
+      result = await polylinePoints.getRouteBetweenCoordinates(
+        "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+        markerA,
+        markerB,
+        travelMode: TravelMode.bicycling,);
+
+      late List<LatLng> nPoints = [];
+      double stuff = 0;
+
+      for (var point in result.points) {
+        nPoints.add(LatLng(point.latitude, point.longitude));
+        stuff = point.latitude + point.longitude;
+      }
+
+      result = await polylinePoints.getRouteBetweenCoordinates(
+        "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+        markerA,
+        markerC,
+        travelMode: TravelMode.walking,);
+      for (var point in result.points) {
+        nPoints.add(LatLng(point.latitude, point.longitude));
+        stuff = point.latitude + point.longitude;
+      }
+
+      double number = appProcesses.buildWaypoints(result, nPoints, stuff);
+      appProcesses.polylineBetweenMarkers(2, stuff, nPoints);
+      appProcesses.polylineBetweenMarkers(1, stuff, nPoints);
+      appProcesses.buildWaypoints(result, nPoints, stuff);
+
+
+      expect(appProcesses.polylines, isA<Set<Polyline>>());
+      expect(number, isA<double>());
+
+    });
+
+
 
 
 
