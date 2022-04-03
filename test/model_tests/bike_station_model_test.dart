@@ -1,7 +1,6 @@
 //import test package and groups model
 import 'package:cycle_planner/models/bikeStation.dart';
 import 'package:test/test.dart';
-import 'package:cycle_planner/models/bikeStation.dart';
 
 void main() {
   test('Bike Station constructor sets attributes', () {
