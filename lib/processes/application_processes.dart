@@ -108,14 +108,38 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Create a [Marker] on [bikeStations] around the user's location and set the appropriate camera [bounds].
   toggleBikeMarker() async {
-    late Marker bikeMarker;
-    for(var marker in publicBikeStations) {
-      bikeMarker = markerService.createBikeMarker(marker.markerId.value, marker.position.latitude, marker.position.longitude);
+    var position = currentLocation;
+    Future<Map> futureBikeStation = bikeService.getStationWithBikes(
+      position!.latitude,
+      position.longitude,
+      groupSize
+    );
+
+    Map stations = await futureBikeStation;
+    // print('lat is: ${stations}');
+    // print('lon is: ${stations['lon']}');
+
+    if(stations.isNotEmpty) {
+      int index = 1;
+      // for(var key in stations.keys) {
+        var bikeMarker = markerService.createBikeMarker("Bike station $index", stations['lat'], stations['lon']);
+        publicBikeStations.add(bikeMarker);
+        // index++;
+      // }
+      // var bikeMarker = markerService.createBikeMarker(marker.markerId.value, marker.position.latitude, marker.position.longitude);
     }
+
+    // showBikeStations();
+
+    // late Marker bikeMarker;
+    // for(var marker in publicBikeStations) {
+    //   bikeMarker = markerService.createBikeMarker(marker.markerId.value, marker.position.latitude, marker.position.longitude);
+    //   publicBikeStations.add(bikeMarker);
+    // }
     
-    if (!publicBikeStations.contains(bikeMarker)) {
-      publicBikeStations.add(bikeMarker);
-    }
+    // if (!publicBikeStations.contains(bikeMarker)) {
+      // publicBikeStations.add(bikeMarker);
+    // }
 
     var _bounds = markerService.bounds(Set<Marker>.of(publicBikeStations));
     bounds.add(_bounds!);
