@@ -146,36 +146,36 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
-  void showBikeStations() async {
-    Future<Map> futureBikeStation = bikeService.getStationWithBikes(
-      currentLocation!.latitude,
-      currentLocation!.longitude,
-      groupSize
-    );
+  // void showBikeStations() async {
+  //   Future<Map> futureBikeStation = bikeService.getStationWithBikes(
+  //     currentLocation!.latitude,
+  //     currentLocation!.longitude,
+  //     groupSize
+  //   );
 
-    Map stations = await futureBikeStation;
+  //   Map stations = await futureBikeStation;
 
-    if(stations.isNotEmpty) {
-      for(int i = 0; i < 6; i++) {
-        Marker stationMarker = markerService.createBikeMarker("Bike station $i", stations[i]['lat'], stations[i]['lon']);
-        publicBikeStations.add(stationMarker);
-      }
-    }
-    else {
-      AlertDialog(
-        title: const Text("No bikes found"),
-        content: const Text("This area does not contain any bike stations"),
-        actions: <Widget>[
-          TextButton(
-            child: const Text("OK"),
-            onPressed: () {
-              // Navigator.pop(context);
-            },
-          )
-        ],
-      );
-    }
-  }
+  //   if(stations.isNotEmpty) {
+  //     for(int i = 0; i < 6; i++) {
+  //       Marker stationMarker = markerService.createBikeMarker("Bike station $i", stations[i]['lat'], stations[i]['lon']);
+  //       publicBikeStations.add(stationMarker);
+  //     }
+  //   }
+  //   else {
+  //     AlertDialog(
+  //       title: const Text("No bikes found"),
+  //       content: const Text("This area does not contain any bike stations"),
+  //       actions: <Widget>[
+  //         TextButton(
+  //           child: const Text("OK"),
+  //           onPressed: () {
+  //             // Navigator.pop(context);
+  //           },
+  //         )
+  //       ],
+  //     );
+  //   }
+  // }
 
   void drawNewRouteIfPossible(context) async {
     var position = currentLocation;
