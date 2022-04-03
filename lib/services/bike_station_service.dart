@@ -43,6 +43,7 @@ class BikeStationService {
   }
  //will create a list of markers with all nearby bike stops matching the group size
   Future<void> createBikeStopsList(List stations, int additionalPropertiesNumber, int groupSize)async {
+    bikeStops.clear();
     //goes through list of bike stations
     for (int i = 0; i < stations.length; i++) {
       //if its good enough it'll be added to the list
