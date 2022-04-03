@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cycle_planner/models/bikeStation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 
 /// Class description:
@@ -7,6 +8,8 @@ import 'package:http/http.dart';
 /// from TFL API and filter the data to show available bike stations
 
 class BikeStationService {
+
+  List<Marker> bikeStops = [];
 
   Future<List<BikeStation>> getStations(double? lat, double? lon) async {
     String url = 'https://api.tfl.gov.uk/Bikepoint?radius=400&lat=$lat&lon=$lon';
@@ -37,6 +40,23 @@ class BikeStationService {
   // Return a map of bike stations with available bycicles.
   Future<Map> getStationWithBikes(double? lat, double? lon, int groupSize) async {
     return filterData(await getClosestStations(lat, lon), 6, groupSize);
+  }
+ //will create a list of markers with all nearby bike stops matching the group size
+  Future<void> createBikeStopsList(List stations, int additionalPropertiesNumber, int groupSize)async {
+    //goes through list of bike stations
+    for (int i = 0; i < stations.length; i++) {
+      //if its good enough it'll be added to the list
+      if (int.parse(stations[i]['additionalProperties'][additionalPropertiesNumber]['value']) >= groupSize) {
+        bikeStops.add(Marker(
+            markerId: const MarkerId("bikes"),
+            position: LatLng(stations[i]['latitude'], stations[i]['longitude'])
+        ));
+      }
+      //once we have more than 5 it'll break the loop, you can change it to another number you like
+      if (bikeStops.length > 5){
+        break;
+      }
+    }
   }
 
   // Return a map of bike stations with ??? -> Maya fill this part :)
