@@ -45,12 +45,16 @@ class NavBar extends StatefulWidget {
 
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("${loggedInUser.firstName ??"Guest" } ${loggedInUser.secondName ?? "User"}  ") ,
-            // style: TextStyle(
-            //  color: Colors.black,
-            //  fontWeight: FontWeight.bold,)
-            // )
-            accountEmail: Text("${loggedInUser.email ?? ""}"),
+            accountName: Text("${loggedInUser.firstName ??"Guest" } ${loggedInUser.secondName ?? "User"}  " ,
+            style: const TextStyle(
+             color: Colors.black,
+             fontWeight: FontWeight.bold,)
+            ),
+            accountEmail: Text("${loggedInUser.email ?? ""}" ,
+              style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,)
+    ),
 
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
@@ -109,7 +113,7 @@ class NavBar extends StatefulWidget {
           ),
           const Divider(),
           ActionChip(
-            label: Text("Logout"),
+            label: const Text("Logout"),
             onPressed: () {
               logout(context);
             },
