@@ -42,6 +42,7 @@ class SearchPage extends SearchDelegate<String> {
   // Build a list widget that holds search / suggestion results
   Widget resultTemplate(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
+    applicationProcesses.publicBikeStations.clear();
     applicationProcesses.searchPlaces(query);
 
     return ListView.separated(

@@ -1,4 +1,6 @@
 import 'package:cycle_planner/widgets/iconic_places.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,7 +8,7 @@ import 'package:cycle_planner/widgets/iconic_places.dart';
 import 'dart:io';
 
 void main() {
-
+  const iconicCollection = "iconic-places";
   late Widget iconicScreen;
 
   setUpAll(() {
@@ -17,8 +19,23 @@ void main() {
   });
 
   testWidgets('Iconic Screen created successfully', (WidgetTester tester) async {
-    IconicScreen testIconicScreen = const IconicScreen(
+
+
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+            title: const Text("Iconic Places"),
+        ),
+      )
+    ));
+
+    await tester.pumpWidget(
+    const MaterialApp(
+          home:IconicScreen( )
+      ),
     );
+    Finder title = find.text("Iconic Places");
+      expect(title, findsOneWidget);
   });
 
   testWidgets('contains appropriate text', (WidgetTester tester) async {

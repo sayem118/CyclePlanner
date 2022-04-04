@@ -24,46 +24,45 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-
 	<key>MBXAccessToken</key>
-	<string>sk.eyJ1IjoiaW1wYWxhMTIzIiwiYSI6ImNrenpvaDlpNTBjYjMzZHFwamh1cHdjN2kifQ.px6V3Acf_ydmEsg9syjuVg</string>
-    <key>MGLMapboxAccessToken</key>
-    <string>sk.eyJ1IjoiaW1wYWxhMTIzIiwiYSI6ImNrenpvaDlpNTBjYjMzZHFwamh1cHdjN2kifQ.px6V3Acf_ydmEsg9syjuVg</string>
-    <key>MGLMapboxMetricsEnabledSettingShownInApp</key>
-    <true/>
+	<string>sk.eyJ1IjoiczQ5ZW0iLCJhIjoiY2wxa3ZhaGk3MDBpNDNpcGw4MHF3Yms1dSJ9.ZIxaFT3pbUenoKS_DTLmog</string>
+	<key>MGLMapboxAccessToken</key>
+	<string>sk.eyJ1IjoiczQ5ZW0iLCJhIjoiY2wxa3ZhaGk3MDBpNDNpcGw4MHF3Yms1dSJ9.ZIxaFT3pbUenoKS_DTLmog</string>
+	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
+	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    		<string>Shows your location on the map and helps improve the map</string>
-    		<key>NSLocationAlwaysUsageDescription</key>
-    		<string>Shows your location on the map and helps improve the map</string>
-    		<key>NSLocationWhenInUseUsageDescription</key>
-    		<string>Shows your location on the map and helps improve the map</string>
-    		<key>UIBackgroundModes</key>
-    		<array>
-    			<string>audio</string>
-    			<string>location</string>
-    		</array>
-    		<key>UILaunchStoryboardName</key>
-    		<string>LaunchScreen</string>
-    		<key>UIMainStoryboardFile</key>
-    		<string>Main</string>
-    		<key>UISupportedInterfaceOrientations</key>
-    		<array>
-    			<string>UIInterfaceOrientationPortrait</string>
-    			<string>UIInterfaceOrientationLandscapeLeft</string>
-    			<string>UIInterfaceOrientationLandscapeRight</string>
-    		</array>
-    		<key>UISupportedInterfaceOrientations~ipad</key>
-    		<array>
-    			<string>UIInterfaceOrientationPortrait</string>
-    			<string>UIInterfaceOrientationPortraitUpsideDown</string>
-    			<string>UIInterfaceOrientationLandscapeLeft</string>
-    			<string>UIInterfaceOrientationLandscapeRight</string>
-    		</array>
-    		<key>UIViewControllerBasedStatusBarAppearance</key>
-    		<false/>
-    		<key>io.flutter.embedded_views_preview</key>
-    		<true/>
-    		<key>UIStatusBarHidden</key>
-    		<false/>
-    	</dict>
-    </plist>
+	<string>Shows your location on the map and helps improve the map</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Shows your location on the map and helps improve the map</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Shows your location on the map and helps improve the map</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>location</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+</dict>
+</plist>

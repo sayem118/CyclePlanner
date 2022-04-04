@@ -70,7 +70,8 @@ class _MapPageState extends State<GoogleMapPage> {
               : _center,
               zoom: 11.0,
             ),
-            markers: Set<Marker>.of(widget.applicationProcesses.markers),
+            markers: (widget.applicationProcesses.publicBikeStations.isNotEmpty) ? Set<Marker>.of(widget.applicationProcesses.publicBikeStations)
+            :Set<Marker>.of(widget.applicationProcesses.markers),
             //onTap: _handleTap,
           ),
 
@@ -98,19 +99,6 @@ class _MapPageState extends State<GoogleMapPage> {
   //           onDragEnd: (dragEndPosition){
   //             print(dragEndPosition);
   //           }
-  //         )
-  //     );
-  //   });
-  // }
-
-  // _handleSearch(Place searchedPoint){
-  //   print(searchedPoint);
-  //   setState(() {
-  //     myMarker = [];
-  //     myMarker.add(
-  //         Marker(
-  //             markerId: MarkerId(searchedPoint.toString()),
-  //             position: LatLng(searchedPoint.geometry.location.lat, searchedPoint.geometry.location.lng),
   //         )
   //     );
   //   });

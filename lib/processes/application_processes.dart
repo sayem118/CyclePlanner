@@ -10,7 +10,6 @@ import 'package:cycle_planner/models/place.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
-import 'package:cycle_planner/widgets/journey_planner.dart';
 
 /// Class description:
 /// This class handles features that requires constant proccessing.
@@ -35,6 +34,8 @@ class ApplicationProcesses with ChangeNotifier {
 
   //hidden set of markers to be used behind the scenes
   List<Marker> bikeStations = [];
+
+  List<Marker> publicBikeStations = [];
 
   //station1 has initial bike station and station 2 has last one
   Set<Polyline> polylines = {};
@@ -87,12 +88,13 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// Create a [Marker] on a user selected [Place] and set the appropriate camera [bounds].
   toggleMarker(String value) async {
+    publicBikeStations.clear();
     placeName = value;
 
     Place place = await placesService.getPlaceMarkers(
-        selectedLocationStatic!.geometry.location.lat,
-        selectedLocationStatic!.geometry.location.lng,
-        placeName!
+      selectedLocationStatic!.geometry.location.lat,
+      selectedLocationStatic!.geometry.location.lng,
+      placeName!
     );
 
     var newMarker = markerService.createMarkerFromPlace(place);
@@ -105,8 +107,30 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Create a [Marker] on [bikeStations] around the user's location and set the appropriate camera [bounds].
+  toggleBikeMarker() async {
+    markerService.setBikeMarkerIcon();
+    var position = currentLocation;
+    var futureBikeStation = bikeService.getStations(
+      position!.latitude,
+      position.longitude,
+    );
+
+    List stations = await futureBikeStation;
+
+    if(stations.isNotEmpty) {
+      for(int i = 0; i < stations.length; i++) {
+        var bikeMarker = markerService.createBikeMarker(stations[i]);
+        publicBikeStations.add(bikeMarker);
+      }
+    }
+
+    var _bounds = markerService.bounds(Set<Marker>.of(publicBikeStations));
+    bounds.add(_bounds!);
+    notifyListeners();
+  }
+
   void drawNewRouteIfPossible(context) async {
-    // var position = await Geolocator.getCurrentPosition();
     var position = currentLocation;
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
       position!.latitude,
@@ -117,42 +141,49 @@ class ApplicationProcesses with ChangeNotifier {
 
     Marker temp = markers.last;
     Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(
-        temp.position.latitude, temp.position.longitude, groupSize);
+        temp.position.latitude, temp.position.longitude, groupSize
+    );
     Map endStation = await futureBikeStation2;
 
-    if(startStation.isNotEmpty && endStation.isNotEmpty) {
-      bikeStations.clear();
-      polylines = {};
-      bikeStations = List<Marker>.from(markers);
-      Marker currentLocation =
-      Marker(markerId: const MarkerId("current location"),
-        position: LatLng(position.latitude, position.longitude)
-      );
-      //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
-      Marker station1 = Marker(
-        markerId: const MarkerId("start station"),
-        position: LatLng(startStation['lat'], startStation['lon'])
-      );
-      Marker station2 = Marker(
-        markerId: const MarkerId("end station"),
-        position: LatLng(endStation['lat'], endStation['lon'])
-      );
-      bikeStations.insert(0, station1);
-      bikeStations.insert(0, currentLocation);
-      bikeStations.add(station2);
-      drawRoute();
+    // only draw polylines if route has not been drawn already or bike stations have changed.
+    if( polylines.isEmpty
+        || (startStation['lat'] != bikeStations[1].position.latitude && startStation['lon'] != bikeStations[1].position.longitude)
+        || (endStation['lat'] != bikeStations.last.position.latitude && endStation['lon'] != bikeStations.last.position.longitude)) {
+      if(startStation.isNotEmpty && endStation.isNotEmpty) {
+        bikeStations.clear();
+        removePolyline();
+        bikeStations = List<Marker>.from(markers);
+        Marker currentLocation =
+        Marker(markerId: const MarkerId("current location"),
+            position: LatLng(position.latitude, position.longitude)
+        );
+        //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
+        Marker station1 = Marker(
+            markerId: const MarkerId("start station"),
+            position: LatLng(startStation['lat'], startStation['lon'])
+        );
+        Marker station2 = Marker(
+            markerId: const MarkerId("end station"),
+            position: LatLng(endStation['lat'], endStation['lon'])
+        );
+        bikeStations.insert(0, station1);
+        bikeStations.insert(0, currentLocation);
+        bikeStations.add(station2);
+        drawRoute();
+        notifyListeners();
 
-      // automatically refresh route overview.
-      timer?.cancel();
-      timer = Timer.periodic(const Duration(minutes: 3), (Timer t) => {
-        drawNewRouteIfPossible(context),
-      });
-    }
-    else if (endStation.isEmpty) {
-      showNoStationsFinalStopAlert(context);
-    }
-    else {
-      showNoStationsCurrentLocationAlert(context);
+        // automatically refresh route overview.
+        timer?.cancel();
+        timer = Timer.periodic(const Duration(seconds: 15), (Timer t) => {
+          drawNewRouteIfPossible(context),
+        });
+      }
+      else if (endStation.isEmpty) {
+        showNoStationsFinalStopAlert(context);
+      }
+      else {
+        showNoStationsCurrentLocationAlert(context);
+      }
     }
   }
 
@@ -163,14 +194,16 @@ class ApplicationProcesses with ChangeNotifier {
       final markerS = bikeStations.elementAt(i - 1);
       final markerd = bikeStations.elementAt(i);
       final PointLatLng marker1 = PointLatLng(
-          markerd.position.latitude, markerd.position.longitude);
+        markerd.position.latitude, markerd.position.longitude
+      );
       final PointLatLng marker2 = PointLatLng(
-          markerS.position.latitude, markerS.position.longitude);
+        markerS.position.latitude, markerS.position.longitude
+      );
       //gets a set of coordinates between 2 markers
       late PolylineResult result;
       if (i == 1) {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
           marker1,
           marker2,
           travelMode: TravelMode.walking,
@@ -178,7 +211,7 @@ class ApplicationProcesses with ChangeNotifier {
       }
       else {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
           marker1,
           marker2,
           travelMode: TravelMode.bicycling,
@@ -195,16 +228,16 @@ class ApplicationProcesses with ChangeNotifier {
       //if its a cycle path line is red otherwise line is blue
       if (i == 1 || i == bikeStations.length - 1) {
         polylines.add(Polyline(
-            polylineId: PolylineId(stuff.toString()),
-            points: nPoints,
-            color: Colors.red
+          polylineId: PolylineId(stuff.toString()),
+          points: nPoints,
+          color: Colors.red
         ));
       }
       else {
         polylines.add(Polyline(
-            polylineId: PolylineId(stuff.toString()),
-            points: nPoints,
-            color: Colors.blue
+          polylineId: PolylineId(stuff.toString()),
+          points: nPoints,
+          color: Colors.blue
         ));
       }
     }
@@ -213,53 +246,7 @@ class ApplicationProcesses with ChangeNotifier {
 
 /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
 /// [Polyline] are drawn between [Marker] coordinates.
-/*
-  drawPolyline(Position? currentLoc) async {
 
-    // // Hard coded for quick testing purposes.
-    // markers.add(
-    //   const Marker(
-    //     markerId: MarkerId("London eye"),
-    //     position: LatLng(51.50461919293181, -0.11954631306912968),
-    //   )
-    // );
-
-    final userMarker = currentLoc!;
-    for(int i = 0; i < markers.length; i++) {
-      final locationMarker = markers.elementAt(i);
-      final PointLatLng marker1 = PointLatLng(userMarker.latitude, userMarker.longitude);
-      final PointLatLng marker2 = PointLatLng(locationMarker.position.latitude, locationMarker.position.longitude);
-
-      PolylineResult result = await polylineService.getMarkerPoints(marker1, marker2);
-
-      double polylineName = 0;
-      if(result.status == 'OK') {
-        for (var point in result.points) {
-          polyCoords.add(LatLng(point.latitude, point.longitude));
-          polylineName = point.latitude + point.longitude;
-        }
-      }
-
-      if (i == 1 || i == markers.length - 1) {
-        polylines.add(
-          Polyline(
-            polylineId: PolylineId(polylineName.toString()),
-            points: polyCoords,
-            color: Colors.red
-          )
-        );
-      }
-      polylines.add(
-        Polyline(
-          polylineId: PolylineId(polylineName.toString()),
-          points: polyCoords,
-          color: Colors.blue
-        )
-      );
-    }
-    notifyListeners();
-  }
-*/
   /// Remove a [Marker] from a selected [index]
   void removeMarker(index) {
     markers.removeAt(index);
@@ -268,19 +255,9 @@ class ApplicationProcesses with ChangeNotifier {
 
   /// For now, removes all [polylines] from the map
   void removePolyline() {
-    // polylines.remove(index);
-    // polyCoords.remove(index);
     polylines = {};
     polyCoords = [];
   }
-
-  @override
-  void dispose() {
-    selectedLocation.close();
-    bounds.close();
-    super.dispose();
-  }
-
 
   // Creates alert if there are no available bike stations near final stop.
   Future<void> showNoStationsFinalStopAlert(context) async {
@@ -317,11 +294,11 @@ class ApplicationProcesses with ChangeNotifier {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('No available bike stations near your current location.'),
+          title: const Text('No available bike stations.'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('Try using the app from somewhere else.'),
+                Text('Try using the app from a different location.'),
               ],
             ),
           ),
@@ -336,5 +313,12 @@ class ApplicationProcesses with ChangeNotifier {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    selectedLocation.close();
+    bounds.close();
+    super.dispose();
   }
 }

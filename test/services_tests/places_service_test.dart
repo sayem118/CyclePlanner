@@ -9,15 +9,15 @@ void main() {
     test('returns if getPlace search works', () async {
 // Mock the API call to return a json response with http status 200 Ok //
       Place search = await place.getPlace("ChIJc2nSALkEdkgRkuoJJBfzkUI");
-      //const String key = 'AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
+      //const String key = 'AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk';
       //const String placeId = 'Riverside Building, County Hall, London SE1 7PB, UK';
       //const double lat = 51.5033;
       //const double lng = 0.1196;
       //final response = await place.getResponse('ChIJc2nSALkEdkgRkuoJJBfzkUI', 'result');
       //var search = await place.getPlace("ChIJc2nSALkEdkgRkuoJJBfzkUI");
-      //String url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI&location=51.5033,0.1196&key=AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
-      //https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI&location=51.5033,0.1196&key=AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY
-      //https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY&place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI
+      //String url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI&location=51.5033,0.1196&key=AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk';
+      //https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI&location=51.5033,0.1196&key=AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk
+      //https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk&place_id=ChIJc2nSALkEdkgRkuoJJBfzkUI
 
       // Check whether getAutocomplete function returns
       // a list of PlaceSearch

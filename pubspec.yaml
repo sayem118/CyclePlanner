@@ -47,6 +47,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   firebase_core: ^1.13.1
   firebase_storage: ^10.2.9
+  fake_cloud_firestore: ^1.2.2
   cloud_firestore: ^3.1.10
   favorite_button: ^0.0.4
   expansion_tile_card: ^2.0.0
@@ -55,7 +56,16 @@ dependencies:
   fluttertoast: ^8.0.9
   firebase_auth: ^3.3.11
   file_picker: ^4.5.1
+  flutter_spinkit: ^5.1.0
+  animated_text_kit: ^4.2.1
+  shared_preferences: ^2.0.13
+  page_transition: ^2.0.5
 
+
+
+  property_change_notifier: ^0.3.0
+
+metadata: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -88,7 +98,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/bike-marker-old.png
+    - assets/bike-marker.png
     - assets/cyclebaynew.png
+    - assets/cycleBayGifLogo.gif
+    - assets/CYCLEBAY.gif
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

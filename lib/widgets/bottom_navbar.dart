@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:cycle_planner/services/mapbox_navigation_service.dart';
 import 'package:cycle_planner/widgets/mapbox_navigation.dart';
+import 'package:cycle_planner/widgets/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +23,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
 
-  int _selectedIndex = 3;
+  final int _selectedIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Icon(Icons.navigation_rounded, size: 27.0,),
           Icon(Icons.directions, size: 27.0,),
           Icon(Icons.group, size: 27.0,),
-         // Icon(Icons.info, size: 27.0,),
         ],
         height: 60.0,
         color: (Colors.cyan[300])!,
@@ -58,9 +55,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
               break;
               case 1: {
+                applicationProcesses.toggleBikeMarker();
                 break;
               }
               case 2: {
+                showSearch(context: context, delegate: SearchPage());
                 break;
               }
               case 3: {

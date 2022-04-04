@@ -8,20 +8,20 @@ import 'package:provider/provider.dart';
 void main() {
   late Widget bottomNavBar;
 
-    setUp(() {
-      bottomNavBar =  ChangeNotifierProvider<ApplicationProcesses>(
-        create: (context) => ApplicationProcesses(),
-        child: MaterialApp(
+  setUp(() {
+    bottomNavBar =  ChangeNotifierProvider<ApplicationProcesses>(
+      create: (context) => ApplicationProcesses(),
+      child: MaterialApp(
           title: 'Cycle Planner',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
           home: Scaffold(
             body: BottomNavBar(scaffoldKey: GlobalKey<ScaffoldState>()),
-          ) 
-        ),
-      );
-    });
+          )
+      ),
+    );
+  });
 
   group("Bottom navbar -", () {
 
@@ -61,7 +61,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.pumpWidget(bottomNavBar);
 
-      // Creather the finder
+      // Create the finder
       final menuIcon = find.byIcon(Icons.menu);
 
       // Search for the menu icon in the tree and verify it exists.
@@ -74,7 +74,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.pumpWidget(bottomNavBar);
 
-      // Creather the finder
+      // Create the finder
       final directionsBikeIcon = find.byIcon(Icons.menu);
 
       // Search for the directions_bike icon in the tree and verify it exists.
@@ -87,7 +87,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.pumpWidget(bottomNavBar);
 
-      // Creather the finder
+      // Create the finder
       final addIcon = find.byIcon(Icons.add);
 
       // Search for the add icon in the tree and verify it exists.
@@ -101,7 +101,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.pumpWidget(bottomNavBar);
 
-      // Creather the finder
+      // Create the finder
       final navigationRoundedIcon = find.byIcon(Icons.navigation_rounded);
 
       // Search for the navigation_rounded icon in the tree and verify it exists.
@@ -114,7 +114,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.pumpWidget(bottomNavBar);
 
-      // Creather the finder
+      // Create the finder
       final directionsIcon = find.byIcon(Icons.directions);
 
       // Search for the directions icon in the tree and verify it exists.
