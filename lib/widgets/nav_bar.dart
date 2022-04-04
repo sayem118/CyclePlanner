@@ -82,26 +82,36 @@ class NavBar extends StatefulWidget {
             leading: const Icon(Icons.person),
             title: const Text('Profile'),
             onTap: () => {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return (!(user!.isAnonymous)) ? const ProfilePage() :
-                AlertDialog(
-                  title: const Text("Sorry you can't view this page"),
-                  content: const Text("Sign up or login to view your profile!"),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        logout(context);
-                      },
-                      child: const Text('Login'),
+              if(!(user!.isAnonymous)) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) => const ProfilePage())
+                )
+              }
+              else {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Sorry you can't view this page"),
+                      content: const Text("Sign up or login to view your profile!"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            logout(context);
+                          },
+                          child: const Text('Login'),
 
-                    ),
-                  ],
-                );
-              },),)
+                        ),
+                      ],
+                    );
+                  },
+                )
+              }
             },
           ),
           ListTile(
@@ -117,9 +127,36 @@ class NavBar extends StatefulWidget {
             leading: const Icon(Icons.favorite),
             title: const Text('Saved places'),
             onTap: () => {
-               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                 return SavedPlaces();
-               },),)
+              if(!(user!.isAnonymous)) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) =>  SavedPlaces())
+                )
+              }
+              else {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Sorry you can't view this page"),
+                      content: const Text("Sign up or login to view your saved places!"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            logout(context);
+                          },
+                          child: const Text('Login'),
+
+                        ),
+                      ],
+                    );
+                  },
+                )
+              }
             },
           ),
           const Divider(),
