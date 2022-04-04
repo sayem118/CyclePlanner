@@ -208,8 +208,8 @@ final _auth = FirebaseAuth.instance;
   {
     if (_formKey.currentState!.validate())
       {
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        sharedPreferences.setString('email', emailController.text);
+        // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        // sharedPreferences.setString('email', emailController.text);
         await _auth.signInWithEmailAndPassword(email: email, password: password)
             .then((uid) =>
         {

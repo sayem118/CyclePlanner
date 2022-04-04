@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'package:cycle_planner/views/home_screen.dart';
 import 'package:cycle_planner/views/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-import 'dart:math' as math;
 
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -16,15 +14,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class StartState extends State<SplashScreen> {
-  late String userUid;
 
-  Future getUid() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    userUid= sharedPreferences.getString('email')!;
-    if (kDebugMode) {
-      print(userUid);
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +24,20 @@ class StartState extends State<SplashScreen> {
 
   @override
   void initState() {
-    getUid().whenComplete(() => {
-      Timer(
-        const Duration(seconds: 3),
-          () => Navigator.pushReplacement(
-              context,
-              PageTransition(
-                  child: userUid == null ? const LoginScreen() : const HomeScreen(),
-                  type: PageTransitionType.leftToRightWithFade)))
-    });
     super.initState();
-  }
+    Timer(const Duration(seconds: 3), (){
+      User? currentUser= FirebaseAuth.instance.currentUser;
+        if(currentUser == null){
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false);
+        }else {
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    (route) => false);
+        }
+    });
+    }
 
   startTimer() async {
     var duration = const Duration(seconds: 3);
@@ -67,7 +61,7 @@ class StartState extends State<SplashScreen> {
           children: <Widget>[
             Container(
 
-              child: Image.asset("assets/cyclebaynew.png",
+              child: Image.asset("assets/CYCLEBAY.gif",
                 width: 300,
                 height: 300,
                fit: BoxFit.cover,
