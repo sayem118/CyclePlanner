@@ -27,6 +27,9 @@ class CardItem extends StatefulWidget {
 
 class _CardItemState extends State<CardItem> {
   late dynamic docId;
+  final User? currentUser = FirebaseAuth.instance.currentUser;
+  final CollectionReference _collectionRef = FirebaseFirestore.instance.collection("users-favourite-places");
+  
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
@@ -94,7 +97,8 @@ class _CardItemState extends State<CardItem> {
                         ),
                         StreamBuilder(
                           stream: FirebaseFirestore.instance.collection("users-favourite-places").doc(FirebaseAuth.instance.currentUser!.email)
-                          .collection("iconic-places").where("name",isEqualTo: widget.itemTitle).snapshots(), builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          .collection("iconic-places").where("name",isEqualTo: widget.itemTitle).snapshots(), 
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
                             if(snapshot.data == null) {
                               return const Text("No saved places");
                             }
@@ -136,26 +140,22 @@ class _CardItemState extends State<CardItem> {
   }
 
   Future addToFavourite() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    User? currentUser = _auth.currentUser;
-    CollectionReference _collectionRef = FirebaseFirestore.instance.collection("users-favourite-places");
     return _collectionRef
       .doc(currentUser!.email)
       .collection("iconic-places")
       .doc()
-      .set({
-        "name": widget.itemTitle,
-        "image": widget.imageInfo,
-        "place_id": widget.placeId,
-        "place_info": widget.placeInfo,
-        "item_info":widget.itemInfo,
-      }).then((value) => print("Added to favourite"));
+      .set(
+        {
+          "name": widget.itemTitle,
+          "image": widget.imageInfo,
+          "place_id": widget.placeId,
+          "place_info": widget.placeInfo,
+          "item_info":widget.itemInfo,
+        }
+      );
   }
 
   Future removeFromFavourite() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    User? currentUser = _auth.currentUser;
-    CollectionReference _collectionRef = FirebaseFirestore.instance.collection("users-favourite-places");
     return _collectionRef.doc(currentUser!.email).collection("iconic-places").doc(docId).delete();
   }
 }
