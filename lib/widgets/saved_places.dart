@@ -1,10 +1,9 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'fetchData.dart';
+import 'fetchdata.dart';
 
 class SavedPlaces extends StatefulWidget {
+  const SavedPlaces({Key? key}) : super(key: key);
+
   @override
   _SavedPlacesState createState() => _SavedPlacesState();
   }
@@ -17,14 +16,9 @@ class SavedPlaces extends StatefulWidget {
         title: const Text("Saved places"),
         backgroundColor: Colors.blueGrey,
       ),
-  body: SafeArea(
-  child: fetchData("users-favourite-places"),
-  ),
-  );
+      body: SafeArea(
+        child: fetchData("users-favourite-places"),
+      ),
+    );
   }
-
-
-  }
-//
-//
-//
+}
