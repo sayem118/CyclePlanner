@@ -16,14 +16,12 @@ void main() {
     mockCardItem =  ChangeNotifierProvider<ApplicationProcesses>(
       create: (context) => ApplicationProcesses(),
       child: const MaterialApp(
-          home: Scaffold (
-              body: CardItem(
+          home: CardItem(
                   itemTitle: 'Test',
                   itemInfo: 'Test',
                   imageInfo: 'Test',
                   placeId: 'Test',
                   placeInfo: 'Test'
-              )
           )
       )
     );
