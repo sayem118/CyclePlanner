@@ -32,6 +32,7 @@ import 'package:cycle_planner/processes/application_processes.dart';
 
 
 class _CardItemState extends State<CardItem> {
+  late dynamic docId;
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
@@ -109,7 +110,8 @@ class _CardItemState extends State<CardItem> {
                                   Icons.favorite_outline,
                                   size: 20.0,
                                   color: Colors.red[900],
-                                ): Icon(
+                                )
+                                    : Icon(
                         Icons.favorite,
                                   color: Colors.red,
                         ),
@@ -146,5 +148,12 @@ class _CardItemState extends State<CardItem> {
       "place_info": widget.placeInfo,
       "item_info":widget.itemInfo,
     }).then((value) => print("Added to favourite"));
+  }
+  
+  Future removeFromFavourite() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    User? currentUser = _auth.currentUser;
+    CollectionReference _collectionRef = FirebaseFirestore.instance.collection("users-favourite-places");
+    return _collectionRef.doc(currentUser!.email).collection("iconic-places").doc(docId).delete();
   }
 }
