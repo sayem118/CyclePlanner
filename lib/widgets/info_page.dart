@@ -48,4 +48,40 @@ class InfoPageState extends State<InfoPage> {
 
 }
 
+//The widget to be tested
+class ListAppWidget extends StatefulWidget {
+  List<String> listItems =[];
+  ListAppWidget(List<String> lst){
+    listItems.clear(); listItems.addAll(lst);
+  }
+
+  @override
+  ListAppWidgetState createState() => new ListAppWidgetState();
+}
+
+
+class ListAppWidgetState extends State<ListAppWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return(
+        Container(
+            width: MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2,
+            padding: EdgeInsets.only(left:10,right:10,top:20,bottom:20),
+            child: ListView.builder(
+                key:Key("myListView"),
+                itemCount: widget.listItems.length,
+                itemBuilder: (BuildContext ctxt, int index) {
+                  return Card(child:Container(
+                      height:100,
+                      child:Center(child:Text( widget.listItems[index], key:Key("listViewText"))))
+                  );
+                }
+            )
+        )
+
+    );
+  }
+
+}
+
 
