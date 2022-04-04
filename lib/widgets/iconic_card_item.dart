@@ -119,12 +119,13 @@ class _CardItemState extends State<CardItem> {
                                   size: 20.0,
                                   color: Colors.red[900],
                                 )
-                                    : Icon(
-                        Icons.favorite,
+                                    : const Icon(
+                                 Icons.favorite,
                                   color: Colors.red,
                         ),
 
                               ),
+
                             );
                       }),
                      
