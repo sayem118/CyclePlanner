@@ -63,7 +63,7 @@ class StartState extends State<SplashScreen> {
             Image.asset(
               "assets/CYCLEBAY.gif",
               width: 300,
-              height: 300,
+              height: 295,
               fit: BoxFit.cover,
             ),
             const Padding(padding: EdgeInsets.only(top: 20.0)),
