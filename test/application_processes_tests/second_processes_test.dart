@@ -252,6 +252,27 @@ void main() {
       expect(appProcesses.polylines, isA<Set<Polyline>>());
       expect(number, isA<double>());
     });
+
+    test('Testing toggleBikeMarker function', () async {
+
+      final markerService = MarkerService();
+      appProcesses.toggleBikeMarker();
+
+      expect(markerService.bikeMarker, isA<BitmapDescriptor>);
+      expect(appProcesses.currentLocation, isA<Place>);
+      expect(appProcesses.publicBikeStations, isA<List<Marker>>());
+      expect(appProcesses.bounds, isA<StreamController<LatLngBounds>>());
+
+
+
+
+
+
+
+
+
+    });
+
   });
 }
 
