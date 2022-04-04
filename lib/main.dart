@@ -1,5 +1,5 @@
+import 'package:cycle_planner/views/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cycle_planner/views/home_screen.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomeScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

@@ -42,6 +42,7 @@ class SearchPage extends SearchDelegate<String> {
   // Build a list widget that holds search / suggestion results
   Widget resultTemplate(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
+    applicationProcesses.publicBikeStations.clear();
     applicationProcesses.searchPlaces(query);
 
     return ListView.separated(
@@ -56,7 +57,7 @@ class SearchPage extends SearchDelegate<String> {
               applicationProcesses.searchResults[index].placeId
             );
             var markerResult = applicationProcesses.searchResults[index].placeId;
-            applicationProcesses.togglePlaceType(markerResult);
+            applicationProcesses.toggleMarker(markerResult);
             showResults(context);
             close(context, query);
           },

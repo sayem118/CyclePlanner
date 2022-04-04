@@ -7,7 +7,7 @@ class Groups {
   // Class variable
   int groupSize;
 
-  // Class constructor
+  // Class constructors
   Groups({required this.groupSize});
 
   // Return number of people in a group

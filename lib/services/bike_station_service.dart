@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:cycle_planner/models/bikestation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 
 /// Class description:
@@ -6,14 +8,31 @@ import 'package:http/http.dart';
 /// from TFL API and filter the data to show available bike stations
 
 class BikeStationService {
+
+  List<Marker> bikeStops = [];
+
+  Future<List<BikeStation>> getStations(double? lat, double? lon) async {
+    String url = 'https://api.tfl.gov.uk/Bikepoint?radius=400&lat=$lat&lon=$lon';
+
+    // Request URL with user latitude and longitude
+    Response response = await get(Uri.parse(url));
+    
+    // Get bike stations from TFL JSON
+    dynamic json = jsonDecode(response.body);
+
+    List<dynamic> results = json['places'] as List;
+
+    return results.map((station) => BikeStation.fromJson(station)).toList();
+  }
   
   // Return a list of bike stations closest to the user.
   Future<List> getClosestStations(double? lat, double? lon) async {
     // Request URL with user latitude and longitude
     Response response = await get(Uri.parse('https://api.tfl.gov.uk/Bikepoint?radius=6000&lat=$lat&lon=$lon'));
+    List stations = [];
     
     // Get bike stations from TFL JSON
-    List stations = jsonDecode(response.body)['places'];
+    stations = jsonDecode(response.body)['places'];
 
     return stations;
   }
