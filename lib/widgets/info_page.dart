@@ -12,8 +12,26 @@ class InfoPage extends StatefulWidget {
 
 
 class InfoPageState extends State<InfoPage> {
-  List<String> listItems =[];
-  int n = 0;
+  // List<String> listItems =[
+  //   ("Step 1 : take ammars dick"), ("Step 2: drag it along asscrack"), ("Step: 3 shove it back in his ass")
+  // ];
+
+  final List<String> steps = <String>[
+    'Step 1: Choose your destination through search ',
+    'Step 2: View your guided route ',
+    'Step 3: Find your waypoitns ',
+    'Step 4: ddd ',
+    'Step: 5 dddd'
+  ];
+  final List<IconData> icons = <IconData>[
+    Icons.search,
+    Icons.search,
+    Icons.favorite,
+    Icons.favorite,
+    Icons.search
+  ];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,25 +40,9 @@ class InfoPageState extends State<InfoPage> {
           backgroundColor: Colors.redAccent,
         ),
             body: Column(children: <Widget>[
-              Text("Hello, "
+              Text("Guide, "
                   , style: TextStyle(fontSize:20)),
-              ListAppWidget(listItems),
-              RaisedButton(
-                onPressed: () {n +=1 ;
-                listItems.add("item:" + n.toString());
-                setState(() {});
-                },
-                color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.lightBlueAccent)
-                ),
-                child: Text(
-                    'Add',
-                    style: TextStyle(fontSize: 15,color: Colors.white)
-                ),
-              )
-
+              ListAppWidget(steps),
             ],)
         );
 
@@ -50,9 +52,10 @@ class InfoPageState extends State<InfoPage> {
 
 //The widget to be tested
 class ListAppWidget extends StatefulWidget {
-  List<String> listItems =[];
+  List<String> steps =[];
+  List<IconData> icons =[];
   ListAppWidget(List<String> lst){
-    listItems.clear(); listItems.addAll(lst);
+    steps.clear(); steps.addAll(lst);
   }
 
   @override
@@ -69,19 +72,43 @@ class ListAppWidgetState extends State<ListAppWidget> {
             padding: EdgeInsets.only(left:10,right:10,top:20,bottom:20),
             child: ListView.builder(
                 key:Key("myListView"),
-                itemCount: widget.listItems.length,
+                itemCount: widget.steps.length,
                 itemBuilder: (BuildContext ctxt, int index) {
-                  return Card(child:Container(
-                      height:100,
-                      child:Center(child:Text( widget.listItems[index], key:Key("listViewText"))))
-                  );
-                }
-            )
-        )
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon (widget.icons[index]),
+                  Card(
+                  child:Container(
+                  height:100,
+                  child:Center(child:Text( widget.steps[index], key:Key("listViewText")),))
 
+
+                  )
+                    ],
+                  );
+
+                  //   Card(
+                  //     child:Container(
+                  //     height:100,
+                  //     child:Center(child:Text( widget.steps[index], key:Key("listViewText")),))
+                  //
+                  //
+                  // );
+                })
+        )
     );
   }
-
 }
+
+    //     children: <Widget>[
+    //     Icon(icons[index]['icon']),
+    // SizedBox(width: 20.0),
+    // Text(_categories[index]['name']),
+    // ],
+    // );
+
+
+
 
 
