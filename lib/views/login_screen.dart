@@ -174,7 +174,7 @@ final _auth = FirebaseAuth.instance;
                             style: TextStyle(
                                 color: Colors.redAccent,
                                 fontWeight: FontWeight.w900,
-                                fontSize: 25),
+                                fontSize: 17),
                           ),
                         )],
                     ),
@@ -190,7 +190,7 @@ final _auth = FirebaseAuth.instance;
                             style: TextStyle(
                                 color: Colors.redAccent,
                                 fontWeight: FontWeight.w900,
-                                fontSize: 25),
+                                fontSize: 17),
                           ),
                         )],
                     ),
