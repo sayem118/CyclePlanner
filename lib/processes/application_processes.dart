@@ -151,7 +151,7 @@ class ApplicationProcesses with ChangeNotifier {
         || (endStation['lat'] != bikeStations.last.position.latitude && endStation['lon'] != bikeStations.last.position.longitude)) {
       if(startStation.isNotEmpty && endStation.isNotEmpty) {
         bikeStations.clear();
-        polylines = {};
+        removePolyline();
         bikeStations = List<Marker>.from(markers);
         Marker currentLocation =
         Marker(markerId: const MarkerId("current location"),

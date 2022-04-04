@@ -58,7 +58,7 @@ class _MapboxNavigationState extends State<MapboxNavigation> with WidgetsBinding
     appProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
     appProcesses.addListener(_listener);
 
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
 
     startNavigation();
   }
