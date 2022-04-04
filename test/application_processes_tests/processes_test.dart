@@ -10,19 +10,9 @@ import 'package:cycle_planner/models/location.dart';
 import 'package:cycle_planner/models/geometry.dart';
 import 'package:cycle_planner/models/place.dart';
 import 'package:cycle_planner/models/place_search.dart';
-
-import 'dart:async';
-import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:cycle_planner/models/location.dart';
-import 'package:cycle_planner/models/geometry.dart';
-import 'package:cycle_planner/models/place.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mockito/mockito.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:mockito/mockito.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -45,52 +35,41 @@ void main() {
   setUp(() {
     GeolocatorPlatform.instance = MockGeolocatorPlatform();
 
-    const Marker a = Marker(
-      markerId: MarkerId("marker"),
-      position: LatLng(55, 0.12)
-    );
-    const Marker b = Marker(
-        markerId: MarkerId("marker1"),
-    position: LatLng(54, 0.15)
-    );
+    // Markers initialised
+    const Marker a =
+        Marker(markerId: MarkerId("marker"), position: LatLng(55, 0.12));
+    const Marker b =
+        Marker(markerId: MarkerId("marker1"), position: LatLng(54, 0.15));
 
-    const Marker c  = Marker(
-        markerId: MarkerId("marker2"),
-    position: LatLng(56, 0.17)
-    );
-
-
-
-
-
+    const Marker c =
+        Marker(markerId: MarkerId("marker2"), position: LatLng(56, 0.17));
   });
   group('MarkerService', () {
-
-    test('setGroupSize', () async {
+    test('Testing if group size is set', () async {
       appProcesses.setGroupSize(2);
       //ensure the number 2 is set
       expect(appProcesses.groupSize, 2);
     });
 
-    test('Remove Polylines', () async {
+    test('Removal of polylines is tested', () async {
       appProcesses.removePolyline();
 
       expect(appProcesses.polylines, []);
       expect(appProcesses.polyCoords, []);
     });
 
-    test('Remove a marker', () async {
+    test('Remove a marker is tested', () async {
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
-      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
       final markerID = mockPlace.name;
       final marker1 = Marker(
           markerId: MarkerId(markerID),
           draggable: false,
           visible: true,
           infoWindow:
-          InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
+              InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
           position: LatLng(mockPlace.geometry.location.lat,
               mockPlace.geometry.location.lng));
 
@@ -108,29 +87,30 @@ void main() {
       expect(appProcesses.searchResults, isA<List<PlaceSearch>>());
     });
 
-    test('setLocationSelected', () async {
+    test('Testing whethere the location selected is set', () async {
       await appProcesses.setSelectedLocation("ChIJc2nSALkEdkgRkuoJJBfzkUI");
 
       expect(appProcesses.searchResults, []);
       expect(appProcesses.selectedLocation, isA<StreamController<Place>>());
     });
 
-    test('toggleMarker', () async {
+    test('Testing the toggleMarker function if a string is returned', () async {
       await appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
       expect(appProcesses.placeName, isA<String>());
     });
 
-    test('toggleMarker', () async {
+    test(
+        'Testing the toggleMarker function if the specific place name is returned from input',
+        () async {
       await appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
       expect(appProcesses.placeName, "ChIJc2nSALkEdkgRkuoJJBfzkUI");
     });
 
-    test('', () async {
+    test('Testing overall if toggleMarker function works', () async {
       PlacesService place = PlacesService();
       final markerService = MarkerService();
 
       appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
-
 
       expect(appProcesses.placeName, "ChIJc2nSALkEdkgRkuoJJBfzkUI");
 
@@ -148,28 +128,24 @@ void main() {
 
       expect(appProcesses.markers, isA<List<Marker>>());
 
-      final bounds1 = markerService.bounds(Set<Marker>.of(appProcesses.markers));
+      final bounds1 =
+          markerService.bounds(Set<Marker>.of(appProcesses.markers));
       appProcesses.bounds.add(bounds1!);
-
-
-
     });
 
-    test('GetGroupSize', () async {
-
+    test('Testing if the group size is returned', () async {
       final groupSizeNum = appProcesses.groupSize;
 
       expect(appProcesses.getGroupSize(), groupSizeNum);
-
-
     });
 
-    test('DrawRoute', () async {
+    test('Testing if the route is drawn when that function is called',
+        () async {
       // appProcesses.drawRoute();
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
-      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
       final markerID = mockPlace.name;
       final marker1 = Marker(
           markerId: MarkerId(markerID),
@@ -179,7 +155,7 @@ void main() {
       final mockLocation2 = Location(lat: 51.494720, lng: -0.135278);
       final mockGeometry2 = Geometry(location: mockLocation2);
       final mockPlace2 =
-      Place(geometry: mockGeometry2, name: "Test2", vicinity: "Test2");
+          Place(geometry: mockGeometry2, name: "Test2", vicinity: "Test2");
       final markerID2 = mockPlace2.name;
       final marker2 = Marker(
           markerId: MarkerId(markerID2),
@@ -191,18 +167,17 @@ void main() {
       polylinePoints = PolylinePoints();
       appProcesses.bikeStations.add(marker1);
       appProcesses.bikeStations.add(marker2);
-      final PointLatLng markerA = PointLatLng(
-          marker1.position.latitude, marker1.position.longitude);
-      final PointLatLng markerB = PointLatLng(
-          marker2.position.latitude, marker2.position.longitude);
-
+      final PointLatLng markerA =
+          PointLatLng(marker1.position.latitude, marker1.position.longitude);
+      final PointLatLng markerB =
+          PointLatLng(marker2.position.latitude, marker2.position.longitude);
 
       result = await polylinePoints.getRouteBetweenCoordinates(
         "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
         markerA,
         markerB,
-        travelMode: TravelMode.bicycling,);
-
+        travelMode: TravelMode.bicycling,
+      );
 
       late List<LatLng> nPoints = [];
       for (var point in result.points) {
@@ -213,101 +188,65 @@ void main() {
             points: nPoints,
             color: Colors.blue);
         appProcesses.polylines.add(polylineGiven);
-
-        }
+      }
       final polylineGiven1 = Polyline(
           polylineId: const PolylineId("test"),
           points: nPoints,
-          color: Colors.blue
-
-      );
+          color: Colors.blue);
 
       // appProcesses.polylines.add(polylineGiven);
       final ifPossibleDrawRoute = appProcesses.drawRoute();
       ifPossibleDrawRoute;
       // appProcesses.drawRoute();
-
-
-      // for (int i = 1; i < appProcesses.bikeStations.length; i++) {
-      //   late PolylinePoints polylinePoints;
-      //   polylinePoints = PolylinePoints();
-      //   final markerS =  appProcesses.bikeStations.elementAt(i - 1);
-      //   final markerd =  appProcesses.bikeStations.elementAt(i);
-      //   final PointLatLng marker1 = PointLatLng(
-      //       markerd.position.latitude, markerd.position.longitude);
-      //   final PointLatLng marker2 = PointLatLng(
-      //       markerS.position.latitude, markerS.position.longitude);
-      //
-      //
-      //   if (i == 1) {
-      //     result = await polylinePoints.getRouteBetweenCoordinates(
-      //       "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
-      //       marker1,
-      //       marker2,
-      //       travelMode: TravelMode.walking,);
-      //   }
-      //   else {
-      //     result = await polylinePoints.getRouteBetweenCoordinates(
-      //       "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
-      //       marker1,
-      //       marker2,
-      //       travelMode: TravelMode.bicycling,);
       expect(appProcesses.polylines, isA<Set<Polyline>>());
-      expect(appProcesses.polylines.first, polylineGiven1 );
-
+      expect(appProcesses.polylines.first, polylineGiven1);
     });
 
     test('', () async {
-
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
-      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
 
-      final ifPossibleDrawRoute = appProcesses.drawNewRouteIfPossible(BuildContext);
+      final ifPossibleDrawRoute =
+          appProcesses.drawNewRouteIfPossible(BuildContext);
       ifPossibleDrawRoute;
       expect(appProcesses.polylines, isA<Set<Polyline>>());
       // expect(appProcesses.polylines.first, polylineGiven1 );
-
-
     });
 
-    test('dispose', () async {
+    test('testing a dispose function', () async {
       appProcesses.dispose();
 
       expect(appProcesses.selectedLocation.isClosed, true);
       expect(appProcesses.bounds.isClosed, true);
     });
 
-    test('draw between markers', () async{
-
+    test('draw between markers', () async {
       late PolylinePoints polylinePoints;
       late PolylineResult result;
       polylinePoints = PolylinePoints();
 
-      const marker1 = Marker(
-          markerId: MarkerId("marker"),
-          position: LatLng(51.5, 0.01));
+      const marker1 =
+          Marker(markerId: MarkerId("marker"), position: LatLng(51.5, 0.01));
 
-      const marker2 = Marker(
-          markerId: MarkerId("marker"),
-          position: LatLng(51.5, 0.03));
+      const marker2 =
+          Marker(markerId: MarkerId("marker"), position: LatLng(51.5, 0.03));
 
-      final PointLatLng markerA = PointLatLng(
-          marker1.position.latitude, marker1.position.longitude);
-      final PointLatLng markerB = PointLatLng(
-          marker2.position.latitude, marker2.position.longitude);
+      final PointLatLng markerA =
+          PointLatLng(marker1.position.latitude, marker1.position.longitude);
+      final PointLatLng markerB =
+          PointLatLng(marker2.position.latitude, marker2.position.longitude);
 
-
-      final PointLatLng markerC = PointLatLng(
-          marker2.position.latitude, marker2.position.longitude);
-
+      final PointLatLng markerC =
+          PointLatLng(marker2.position.latitude, marker2.position.longitude);
 
       result = await polylinePoints.getRouteBetweenCoordinates(
         "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
         markerA,
         markerB,
-        travelMode: TravelMode.bicycling,);
+        travelMode: TravelMode.bicycling,
+      );
 
       late List<LatLng> nPoints = [];
       double stuff = 0;
@@ -321,7 +260,8 @@ void main() {
         "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
         markerA,
         markerC,
-        travelMode: TravelMode.walking,);
+        travelMode: TravelMode.walking,
+      );
       for (var point in result.points) {
         nPoints.add(LatLng(point.latitude, point.longitude));
         stuff = point.latitude + point.longitude;
@@ -332,56 +272,15 @@ void main() {
       appProcesses.polylineBetweenMarkers(1, stuff, nPoints);
       appProcesses.buildWaypoints(result, nPoints, stuff);
 
-
       expect(appProcesses.polylines, isA<Set<Polyline>>());
       expect(number, isA<double>());
-
     });
-
-
-
-
-
-
-
-    // test('toggleMarker', ()  {
-    //   appProcesses.toggleMarker("westminster");
-    //
-    //   expect(appProcesses.placeName, "westminster");
-    // });
-
-    // test('', () async {
-    //   PlacesService place = PlacesService();
-    //   final markerService = MarkerService();
-    //
-    //   appProcesses.toggleMarker("westminster");
-    //
-    //
-    //   expect(appProcesses.placeName, "westminster");
-    //
-    //   final mockLocation = Location(lat: 50.1109, lng: 8.6821);
-    //   final mockGeometry = Geometry(location: mockLocation);
-    //   appProcesses.selectedLocationStatic =
-    //       Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
-    //   Place place1 = await place.getPlaceMarkers(
-    //       appProcesses.selectedLocationStatic!.geometry.location.lat,
-    //       appProcesses.selectedLocationStatic!.geometry.location.lng,
-    //       appProcesses.placeName!);
-    //
-    //   var newMarker = markerService.createMarkerFromPlace(place1);
-    //   appProcesses.markers.add(newMarker);
-    //
-    //   expect(appProcesses.markers, isA<List<Marker>>);
-
-
   });
-
-
 }
 
 class MockGeolocatorPlatform extends Mock
     with
-    // ignore: prefer_mixin
+        // ignore: prefer_mixin
         MockPlatformInterfaceMixin
     implements
         GeolocatorPlatform {
@@ -455,19 +354,19 @@ class MockGeolocatorPlatform extends Mock
 
   @override
   double distanceBetween(
-      double startLatitude,
-      double startLongitude,
-      double endLatitude,
-      double endLongitude,
-      ) =>
+    double startLatitude,
+    double startLongitude,
+    double endLatitude,
+    double endLongitude,
+  ) =>
       42;
 
   @override
   double bearingBetween(
-      double startLatitude,
-      double startLongitude,
-      double endLatitude,
-      double endLongitude,
-      ) =>
+    double startLatitude,
+    double startLongitude,
+    double endLatitude,
+    double endLongitude,
+  ) =>
       42;
 }
