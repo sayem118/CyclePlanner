@@ -175,7 +175,7 @@ class ApplicationProcesses with ChangeNotifier {
 
           // automatically refresh route overview.
           timer?.cancel();
-          timer = Timer.periodic(const Duration(seconds: 15), (Timer t) => {
+          timer = Timer.periodic(const Duration(minutes: 3), (Timer t) => {
             drawNewRouteIfPossible(context),
           });
         }
@@ -196,57 +196,64 @@ class ApplicationProcesses with ChangeNotifier {
   /// [Polyline] are drawn between [bikeStations] and [markers] coordinates.
   void drawRoute() async {
     for (int i = 1; i < bikeStations.length; i++) {
+      late PolylinePoints polylinePoints;
+      polylinePoints = PolylinePoints();
       final markerS = bikeStations.elementAt(i - 1);
       final markerd = bikeStations.elementAt(i);
       final PointLatLng marker1 = PointLatLng(
-        markerd.position.latitude, markerd.position.longitude
-      );
+          markerd.position.latitude, markerd.position.longitude);
       final PointLatLng marker2 = PointLatLng(
-        markerS.position.latitude, markerS.position.longitude
-      );
+          markerS.position.latitude, markerS.position.longitude);
       //gets a set of coordinates between 2 markers
       late PolylineResult result;
       if (i == 1) {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
+          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
           marker1,
           marker2,
-          travelMode: TravelMode.walking,
-        );
+          travelMode: TravelMode.walking,);
       }
       else {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
+          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
           marker1,
           marker2,
-          travelMode: TravelMode.bicycling,
-        );
+          travelMode: TravelMode.bicycling,);
       }
       //drawing route to bike stations
       late List<LatLng> nPoints = [];
       double stuff = 0;
-      for (var point in result.points) {
-        nPoints.add(LatLng(point.latitude, point.longitude));
-        stuff = point.latitude + point.longitude;
-      }
+      stuff = buildWaypoints(result, nPoints, stuff);
       //adds stuff to polyline
       //if its a cycle path line is red otherwise line is blue
-      if (i == 1 || i == bikeStations.length - 1) {
-        polylines.add(Polyline(
+      polylineBetweenMarkers(i, stuff, nPoints);
+    }
+    notifyListeners();
+  }
+
+  double buildWaypoints(PolylineResult result, List<LatLng> nPoints, double stuff) {
+    for (var point in result.points) {
+      nPoints.add(LatLng(point.latitude, point.longitude));
+      stuff = point.latitude + point.longitude;
+    }
+    return stuff;
+  }
+
+  void polylineBetweenMarkers(int i, double stuff, List<LatLng> nPoints) {
+    if (i == 1 || i == bikeStations.length - 1) {
+      polylines.add(Polyline(
           polylineId: PolylineId(stuff.toString()),
           points: nPoints,
           color: Colors.red
-        ));
-      }
-      else {
-        polylines.add(Polyline(
+      ));
+    }
+    else {
+      polylines.add(Polyline(
           polylineId: PolylineId(stuff.toString()),
           points: nPoints,
           color: Colors.blue
-        ));
-      }
+      ));
     }
-    notifyListeners();
   }
 
   /// Remove a [Marker] from a selected [index]
