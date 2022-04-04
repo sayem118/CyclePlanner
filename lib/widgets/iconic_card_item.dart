@@ -18,7 +18,8 @@ class CardItem extends StatefulWidget {
     required this.imageInfo,
     required this.placeId,
     required this.placeInfo
-  }) : super(key: key);
+  }) : super( // coverage:ignore-line
+      key: key);
 
   @override
   State<CardItem> createState() => _CardItemState();
