@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user_model.dart';
-import 'home_screen.dart';
+import 'package:cycle_planner/models/user_model.dart';
+import 'package:cycle_planner/views/home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -112,7 +111,6 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
 
-
     //password field
     final passwordField = TextFormField(
       autofocus: false,
@@ -141,16 +139,13 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
 
-
     //confirm password field
     final confirmPasswordField = TextFormField(
       autofocus: false,
       controller: confirmPasswordEditingController,
       obscureText: true,
       validator: (value) {
-        if (confirmPasswordEditingController.text !=
-            passwordEditingController.text)
-        {
+        if (confirmPasswordEditingController.text != passwordEditingController.text) {
           return "Passwords Does Not Match";
         }
         return null;
@@ -169,27 +164,28 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
 
-// signup button
+    // signup button
     final signUpButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
       color: Colors.blueGrey,
       child: MaterialButton(
-          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          minWidth: MediaQuery
-              .of(context)
-              .size
-              .width,
-
-          onPressed: () {
-            signUp(emailEditingController.text, passwordEditingController.text);
-          },
-          child: const Text(
-            "SignUp",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-          )),
+        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        minWidth: MediaQuery
+          .of(context)
+          .size
+          .width,
+        onPressed: () {
+          signUp(emailEditingController.text, passwordEditingController.text);
+        },
+        child: const Text(
+          "SignUp",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold
+            ),
+        )
+      ),
     );
 
     return Scaffold(
@@ -217,12 +213,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-
                     SizedBox(
-                        height: 180,
-                        child: Image.asset("assets/CYCLEBAY.gif",
-                          fit: BoxFit.contain,
-                        )),
+                      height: 180,
+                      child: Image.asset("assets/CYCLEBAY.gif",
+                        fit: BoxFit.contain,
+                      )
+                    ),
                     const SizedBox(height: 45),
                     firstNameField,
                     const SizedBox(height: 20),
@@ -246,43 +242,41 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  void signUp(String email, String password) async
-  {
+  void signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password)
-          .then((value) =>
-      {
-      postDetailsToFirestore()
-      }).catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
-      });
+      await _auth.createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) => {
+          postDetailsToFirestore()
+        }).catchError((e) {
+          Fluttertoast.showToast(msg: e!.message);
+        }
+      );
     }
   }
 
  //sending values to firestone
-  postDetailsToFirestore() async
-  {
+  postDetailsToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
 
     UserModel userModel = UserModel();
 
-    // writing all the values
+    // writing all the values from firestore
     userModel.email = user!.email;
     userModel.uid = user.uid;
     userModel.firstName = firstNameEditingController.text;
     userModel.secondName = secondNameEditingController.text;
 
     await firebaseFirestore
-        .collection("users")
-        .doc(user.uid)
-        .set(userModel.toMap());
-    Fluttertoast.showToast(msg: "Account created successfully :) ");
+      .collection("users")
+      .doc(user.uid)
+      .set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Account created successfully :)");
 
     Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-            (route) => false);
+      (context),
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
+      (route) => false
+    );
   }
 }
