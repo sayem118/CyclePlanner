@@ -247,53 +247,7 @@ class ApplicationProcesses with ChangeNotifier {
 
 /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
 /// [Polyline] are drawn between [Marker] coordinates.
-/*
-  drawPolyline(Position? currentLoc) async {
 
-    // // Hard coded for quick testing purposes.
-    // markers.add(
-    //   const Marker(
-    //     markerId: MarkerId("London eye"),
-    //     position: LatLng(51.50461919293181, -0.11954631306912968),
-    //   )
-    // );
-
-    final userMarker = currentLoc!;
-    for(int i = 0; i < markers.length; i++) {
-      final locationMarker = markers.elementAt(i);
-      final PointLatLng marker1 = PointLatLng(userMarker.latitude, userMarker.longitude);
-      final PointLatLng marker2 = PointLatLng(locationMarker.position.latitude, locationMarker.position.longitude);
-
-      PolylineResult result = await polylineService.getMarkerPoints(marker1, marker2);
-
-      double polylineName = 0;
-      if(result.status == 'OK') {
-        for (var point in result.points) {
-          polyCoords.add(LatLng(point.latitude, point.longitude));
-          polylineName = point.latitude + point.longitude;
-        }
-      }
-
-      if (i == 1 || i == markers.length - 1) {
-        polylines.add(
-          Polyline(
-            polylineId: PolylineId(polylineName.toString()),
-            points: polyCoords,
-            color: Colors.red
-          )
-        );
-      }
-      polylines.add(
-        Polyline(
-          polylineId: PolylineId(polylineName.toString()),
-          points: polyCoords,
-          color: Colors.blue
-        )
-      );
-    }
-    notifyListeners();
-  }
-*/
   /// Remove a [Marker] from a selected [index]
   void removeMarker(index) {
     markers.removeAt(index);
