@@ -13,7 +13,7 @@ Widget fetchData (String collectionName){
     builder:
         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
       if (snapshot.hasError) {
-        return Center(
+        return const Center(
           child: Text("Something is wrong"),
         );
       }
