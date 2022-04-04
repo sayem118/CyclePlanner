@@ -144,7 +144,6 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
     List<WayPoint> wayPoints = [];
     for (var stop in appProcesses.bikeStations) {
       wayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
-      print("name of stop: " + wayPoints.last.name.toString());
     }
     _directions.startNavigation(wayPoints: wayPoints, options: _options);
   }
@@ -155,7 +154,6 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
       List<WayPoint> newWayPoints = [];
       for (var stop in appProcesses.bikeStations) {
         newWayPoints.add(WayPoint(name: stop.markerId.toString(), latitude: stop.position.latitude, longitude: stop.position.longitude));
-        print("name of stop: " + newWayPoints.last.name.toString());
       }
       _directions.startNavigation(wayPoints: newWayPoints, options: _options);
     }

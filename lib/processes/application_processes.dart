@@ -170,7 +170,6 @@ class ApplicationProcesses with ChangeNotifier {
         bikeStations.insert(0, currentLocation);
         bikeStations.add(station2);
         drawRoute();
-        print("bike station changed");
         notifyListeners();
 
         // automatically refresh route overview.
