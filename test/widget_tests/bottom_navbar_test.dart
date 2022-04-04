@@ -8,20 +8,20 @@ import 'package:provider/provider.dart';
 void main() {
   late Widget bottomNavBar;
 
-    setUp(() {
-      bottomNavBar =  ChangeNotifierProvider<ApplicationProcesses>(
-        create: (context) => ApplicationProcesses(),
-        child: MaterialApp(
+  setUp(() {
+    bottomNavBar =  ChangeNotifierProvider<ApplicationProcesses>(
+      create: (context) => ApplicationProcesses(),
+      child: MaterialApp(
           title: 'Cycle Planner',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
           home: Scaffold(
             body: BottomNavBar(scaffoldKey: GlobalKey<ScaffoldState>()),
-          ) 
-        ),
-      );
-    });
+          )
+      ),
+    );
+  });
 
   group("Bottom navbar -", () {
 

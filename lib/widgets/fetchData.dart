@@ -10,11 +10,14 @@ Widget fetchData (String collectionName){
       .collection("iconic-places")
       .snapshots(),
     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-      if (snapshot.hasError) {
-        return const Center(
-          child: Text("Something is wrong"),
-        );
+      if (snapshot.hasData){
+        if (snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text("No saved places"),
+          );
+        }
       }
+
 
       return ListView.builder(
         itemCount: snapshot.data == null ? 0 : snapshot.data!.docs.length,
@@ -26,6 +29,7 @@ Widget fetchData (String collectionName){
               leading: Text(_documentSnapshot['name']),
               title: Text(_documentSnapshot['place_info']),
             ),
+
           );
         }
       );

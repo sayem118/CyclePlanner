@@ -146,12 +146,12 @@ class ApplicationProcesses with ChangeNotifier {
     Map endStation = await futureBikeStation2;
 
     // only draw polylines if route has not been drawn already or bike stations have changed.
-    if( bikeStations.isEmpty
+    if( polylines.isEmpty
         || (startStation['lat'] != bikeStations[1].position.latitude && startStation['lon'] != bikeStations[1].position.longitude)
         || (endStation['lat'] != bikeStations.last.position.latitude && endStation['lon'] != bikeStations.last.position.longitude)) {
       if(startStation.isNotEmpty && endStation.isNotEmpty) {
         bikeStations.clear();
-        polylines = {};
+        removePolyline();
         bikeStations = List<Marker>.from(markers);
         Marker currentLocation =
         Marker(markerId: const MarkerId("current location"),
@@ -170,7 +170,6 @@ class ApplicationProcesses with ChangeNotifier {
         bikeStations.insert(0, currentLocation);
         bikeStations.add(station2);
         drawRoute();
-        print("bike station changed");
         notifyListeners();
 
         // automatically refresh route overview.
@@ -204,7 +203,7 @@ class ApplicationProcesses with ChangeNotifier {
       late PolylineResult result;
       if (i == 1) {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
           marker1,
           marker2,
           travelMode: TravelMode.walking,
@@ -212,7 +211,7 @@ class ApplicationProcesses with ChangeNotifier {
       }
       else {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
           marker1,
           marker2,
           travelMode: TravelMode.bicycling,
@@ -247,53 +246,7 @@ class ApplicationProcesses with ChangeNotifier {
 
 /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
 /// [Polyline] are drawn between [Marker] coordinates.
-/*
-  drawPolyline(Position? currentLoc) async {
 
-    // // Hard coded for quick testing purposes.
-    // markers.add(
-    //   const Marker(
-    //     markerId: MarkerId("London eye"),
-    //     position: LatLng(51.50461919293181, -0.11954631306912968),
-    //   )
-    // );
-
-    final userMarker = currentLoc!;
-    for(int i = 0; i < markers.length; i++) {
-      final locationMarker = markers.elementAt(i);
-      final PointLatLng marker1 = PointLatLng(userMarker.latitude, userMarker.longitude);
-      final PointLatLng marker2 = PointLatLng(locationMarker.position.latitude, locationMarker.position.longitude);
-
-      PolylineResult result = await polylineService.getMarkerPoints(marker1, marker2);
-
-      double polylineName = 0;
-      if(result.status == 'OK') {
-        for (var point in result.points) {
-          polyCoords.add(LatLng(point.latitude, point.longitude));
-          polylineName = point.latitude + point.longitude;
-        }
-      }
-
-      if (i == 1 || i == markers.length - 1) {
-        polylines.add(
-          Polyline(
-            polylineId: PolylineId(polylineName.toString()),
-            points: polyCoords,
-            color: Colors.red
-          )
-        );
-      }
-      polylines.add(
-        Polyline(
-          polylineId: PolylineId(polylineName.toString()),
-          points: polyCoords,
-          color: Colors.blue
-        )
-      );
-    }
-    notifyListeners();
-  }
-*/
   /// Remove a [Marker] from a selected [index]
   void removeMarker(index) {
     markers.removeAt(index);
