@@ -64,6 +64,18 @@ void main() {
       expect(appProcesses.placeName, isA<String>());
     });
 
+    test('Testing the toggleMarker function if publicBikeStations variable is emptied', () async {
+      await appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      expect(appProcesses.publicBikeStations.isEmpty, true);
+    });
+
+    test('Testing the toggleMarker function if a string is returned and if publicBikeStations variable is emptied',
+      () async {
+      await appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      expect(appProcesses.placeName, isA<String>());
+      expect(appProcesses.publicBikeStations.isEmpty, true);
+    });
+
     test(
         'Testing the toggleMarker function if the specific place name is returned from input',
             () async {
