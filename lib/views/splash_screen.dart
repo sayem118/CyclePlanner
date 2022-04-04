@@ -2,9 +2,7 @@ import 'dart:async';
 import 'package:cycle_planner/views/home_screen.dart';
 import 'package:cycle_planner/views/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,9 +12,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class StartState extends State<SplashScreen> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return initScreen(context);
@@ -25,19 +20,24 @@ class StartState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), (){
+    Timer(const Duration(seconds: 3), () {
       User? currentUser= FirebaseAuth.instance.currentUser;
-        if(currentUser == null){
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  (route) => false);
-        }else {
-            Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
-                    (route) => false);
-        }
+      if(currentUser == null) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+          (route) => false
+        );
+      }
+      else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false
+        );
+      }
     });
-    }
+  }
 
   startTimer() async {
     var duration = const Duration(seconds: 3);
@@ -45,34 +45,33 @@ class StartState extends State<SplashScreen> {
   }
 
   route() {
-    Navigator.pushReplacement(context, MaterialPageRoute(
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
         builder: (context) => const HomeScreen()
-    )
+      )
     );
   }
 
   initScreen(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-
-              child: Image.asset("assets/CYCLEBAY.gif",
-                width: 300,
-                height: 300,
-               fit: BoxFit.cover,
-              ),
+            Image.asset(
+              "assets/CYCLEBAY.gif",
+              width: 300,
+              height: 300,
+              fit: BoxFit.cover,
             ),
             const Padding(padding: EdgeInsets.only(top: 20.0)),
             const Text(
               "Take a ride around London!",
               style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white
+                fontSize: 20.0,
+                color: Colors.white
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 20.0)),
