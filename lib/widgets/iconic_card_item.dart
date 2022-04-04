@@ -97,9 +97,9 @@ class _CardItemState extends State<CardItem> {
                               ),
                       StreamBuilder(
                           stream: FirebaseFirestore.instance.collection("users-favourite-places").doc(FirebaseAuth.instance.currentUser!.email)
-                              .collection("places").where("name",isEqualTo: widget.itemTitle).snapshots(), builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              .collection("iconic-places").where("name",isEqualTo: widget.itemTitle).snapshots(), builder: (BuildContext context, AsyncSnapshot snapshot) {
                             if(snapshot.data == null){
-                              return Text("");
+                              return Text("No saved places");
                             }
                             return Padding(
                               padding: const EdgeInsets.only(right: 8),
@@ -111,6 +111,7 @@ class _CardItemState extends State<CardItem> {
                                   color: Colors.red[900],
                                 ): Icon(
                         Icons.favorite,
+                                  color: Colors.red,
                         ),
 
                               ),
@@ -140,9 +141,10 @@ class _CardItemState extends State<CardItem> {
         .doc()
         .set({
       "name": widget.itemTitle,
-      "images": widget.imageInfo,
-      "Id": widget.placeId,
-      "info": widget.itemInfo,
+      "image": widget.imageInfo,
+      "place_id": widget.placeId,
+      "place_info": widget.placeInfo,
+      "item_info":widget.itemInfo,
     }).then((value) => print("Added to favourite"));
   }
 }

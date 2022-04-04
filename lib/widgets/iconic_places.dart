@@ -23,7 +23,7 @@ class _IconicScreenState extends State<IconicScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Iconic Places"),
+        title: const Text("Iconic places"),
         backgroundColor: Colors.redAccent,
       ),
 

@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cycle_planner/widgets/saved_places.dart';
+
+import 'package:cycle_planner/widgets/profile_page.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/widgets/iconic_places.dart';
@@ -35,26 +39,34 @@ class NavBar extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+
       child: ListView(
         padding: EdgeInsets.zero,
+
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("${loggedInUser.firstName} ${loggedInUser.secondName}"),
-            // style: TextStyle(
-            //  color: Colors.black,
-            //  fontWeight: FontWeight.bold,)
-            //)
-            accountEmail: Text("${loggedInUser.email}"),
+            accountName: Text("${loggedInUser.firstName ??"Guest" } ${loggedInUser.secondName ?? "User"}  " ,
+            style: const TextStyle(
+             color: Colors.black,
+             fontWeight: FontWeight.bold,)
+            ),
+            accountEmail: Text("${loggedInUser.email ?? ""}" ,
+              style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,)
+    ),
+
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.network(
-                  'https://media1.giphy.com/media/l41lYNASsqlUOt9Xq/giphy.gif',
+                child: Image.asset(
+                  "assets/CYCLEBAY.gif",
                   fit: BoxFit.fill,
                   width: 200,
                   height: 200,
                 ),
               ),
             ),
+
             decoration: const BoxDecoration(
               color: Colors.blue,
               image: DecorationImage(
@@ -65,13 +77,41 @@ class NavBar extends StatefulWidget {
               ),
             ),
           ),
+
           ListTile(
-            leading: const Icon(Icons.info),
+            leading: const Icon(Icons.person),
             title: const Text('Profile'),
             onTap: () => {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                return const IconicScreen();
-              },),)
+              if(!(user!.isAnonymous)) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) => const ProfilePage())
+                )
+              }
+              else {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Sorry you can't view this page"),
+                      content: const Text("Sign up or login to view your profile!"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            logout(context);
+                          },
+                          child: const Text('Login'),
+
+                        ),
+                      ],
+                    );
+                  },
+                )
+              }
             },
           ),
           ListTile(
@@ -86,11 +126,38 @@ class NavBar extends StatefulWidget {
           ListTile(
             leading: const Icon(Icons.favorite),
             title: const Text('Saved places'),
-            onTap: () => {}
-              // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-              //   return SavedPlaces();
-              // },),)
-            //},
+            onTap: () => {
+              if(!(user!.isAnonymous)) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) =>  SavedPlaces())
+                )
+              }
+              else {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Sorry you can't view this page"),
+                      content: const Text("Sign up or login to view your saved places!"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            logout(context);
+                          },
+                          child: const Text('Login'),
+
+                        ),
+                      ],
+                    );
+                  },
+                )
+              }
+            },
           ),
           const Divider(),
           ListTile(
@@ -101,9 +168,27 @@ class NavBar extends StatefulWidget {
           const Divider(),
           ActionChip(
             label: Text("Logout"),
-            onPressed: () {
-              logout(context);
-            },
+            onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('Logout from this account'),
+                content: const Text('Are you sure you would like to Logout?'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      logout(context);
+                    },
+                    child: const Text('Logout'),
+
+                  ),
+                ],
+              ),
+            ),
+
           ),
         ],
       ),
