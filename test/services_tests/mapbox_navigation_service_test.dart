@@ -9,6 +9,9 @@ import 'package:cycle_planner/models/place.dart';
 
 final navigation = MapboxNavigationService();
 
+MapboxNavigationService() {
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   // var routeEventHandler;
