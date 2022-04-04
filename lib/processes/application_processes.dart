@@ -306,14 +306,6 @@ class ApplicationProcesses with ChangeNotifier {
     polyCoords = [];
   }
 
-  @override
-  void dispose() {
-    selectedLocation.close();
-    bounds.close();
-    super.dispose();
-  }
-
-
   // Creates alert if there are no available bike stations near final stop.
   Future<void> showNoStationsFinalStopAlert(context) async {
     return showDialog<void>(
@@ -368,5 +360,12 @@ class ApplicationProcesses with ChangeNotifier {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    selectedLocation.close();
+    bounds.close();
+    super.dispose();
   }
 }

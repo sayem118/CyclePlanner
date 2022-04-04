@@ -1,5 +1,4 @@
 import 'package:cycle_planner/views/splash_screen.dart';
-import 'package:cycle_planner/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
