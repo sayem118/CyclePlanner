@@ -25,6 +25,7 @@ Widget fetchData (String collectionName){
             DocumentSnapshot _documentSnapshot =
             snapshot.data!.docs[index];
 
+
             return Card(
               elevation: 5,
               child: ListTile(
@@ -32,7 +33,6 @@ Widget fetchData (String collectionName){
                 title: Text(_documentSnapshot['place_info']),
                 ),
               );
-
           });
     },
   );
