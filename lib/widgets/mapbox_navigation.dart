@@ -111,19 +111,25 @@ class _MapboxNavigationState extends State<MapboxNavigation> with WidgetsBinding
         break;
       case MapBoxEvent.navigation_finished:
         setState(() {
+          _isNavigating = false;
           _directions.finishNavigation();
           _controller.finishNavigation();
-          AlertDialog(
-            title: const Text("Destination reached"),
-            content: const Text("You have reached your destination"),
-            actions: [
-              TextButton(
-                child: const Text("OK"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Destination reached"),
+                content: const Text("You have successfully reached your destination"),
+                actions: [
+                  TextButton(
+                    child: const Text("OK"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              );
+            },
           );
         });
         break;
@@ -177,5 +183,5 @@ class _MapboxNavigationState extends State<MapboxNavigation> with WidgetsBinding
         _isNavigating = false;
         break;
     }
-}
+  }
 }
