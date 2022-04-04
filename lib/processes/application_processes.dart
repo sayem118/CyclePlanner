@@ -32,12 +32,13 @@ class ApplicationProcesses with ChangeNotifier {
   List<Marker> markers = [];
   Timer? timer;
 
-  //hidden set of markers to be used behind the scenes
+  // hidden set of markers to be used behind the scenes
   List<Marker> bikeStations = [];
 
+  // Bike stations around the user's location
   List<Marker> publicBikeStations = [];
 
-  //station1 has initial bike station and station 2 has last one
+  // station1 has initial bike station and station 2 has last one
   Set<Polyline> polylines = {};
   List<LatLng> polyCoords = [];
   int groupSize = 1;
@@ -138,59 +139,63 @@ class ApplicationProcesses with ChangeNotifier {
       groupSize
     );
     Map startStation = await futureBikeStation1;
+    if(markers.isNotEmpty) {
+      Marker temp = markers.last;
+      Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(
+          temp.position.latitude, temp.position.longitude, groupSize
+      );
+      Map endStation = await futureBikeStation2;
 
-    Marker temp = markers.last;
-    Future<Map> futureBikeStation2 = bikeService.getStationWithSpaces(
-        temp.position.latitude, temp.position.longitude, groupSize
-    );
-    Map endStation = await futureBikeStation2;
+      // only draw polylines if route has not been drawn already or bike stations have changed.
+      if( polylines.isEmpty
+          || (startStation['lat'] != bikeStations[1].position.latitude && startStation['lon'] != bikeStations[1].position.longitude)
+          || (endStation['lat'] != bikeStations.last.position.latitude && endStation['lon'] != bikeStations.last.position.longitude)) {
+        if(startStation.isNotEmpty && endStation.isNotEmpty) {
+          bikeStations.clear();
+          removePolyline();
+          bikeStations = List<Marker>.from(markers);
+          Marker currentLocation =
+          Marker(markerId: const MarkerId("current location"),
+              position: LatLng(position.latitude, position.longitude)
+          );
+          //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
+          Marker station1 = Marker(
+              markerId: const MarkerId("start station"),
+              position: LatLng(startStation['lat'], startStation['lon'])
+          );
+          Marker station2 = Marker(
+              markerId: const MarkerId("end station"),
+              position: LatLng(endStation['lat'], endStation['lon'])
+          );
+          bikeStations.insert(0, station1);
+          bikeStations.insert(0, currentLocation);
+          bikeStations.add(station2);
+          drawRoute();
+          notifyListeners();
 
-    // only draw polylines if route has not been drawn already or bike stations have changed.
-    if( polylines.isEmpty
-        || (startStation['lat'] != bikeStations[1].position.latitude && startStation['lon'] != bikeStations[1].position.longitude)
-        || (endStation['lat'] != bikeStations.last.position.latitude && endStation['lon'] != bikeStations.last.position.longitude)) {
-      if(startStation.isNotEmpty && endStation.isNotEmpty) {
-        bikeStations.clear();
-        removePolyline();
-        bikeStations = List<Marker>.from(markers);
-        Marker currentLocation =
-        Marker(markerId: const MarkerId("current location"),
-            position: LatLng(position.latitude, position.longitude)
-        );
-        //for now it assumes group size is 1 all the time but someone can prolly easily change it to be a variable
-        Marker station1 = Marker(
-            markerId: const MarkerId("start station"),
-            position: LatLng(startStation['lat'], startStation['lon'])
-        );
-        Marker station2 = Marker(
-            markerId: const MarkerId("end station"),
-            position: LatLng(endStation['lat'], endStation['lon'])
-        );
-        bikeStations.insert(0, station1);
-        bikeStations.insert(0, currentLocation);
-        bikeStations.add(station2);
-        drawRoute();
-        notifyListeners();
-
-        // automatically refresh route overview.
-        timer?.cancel();
-        timer = Timer.periodic(const Duration(seconds: 15), (Timer t) => {
-          drawNewRouteIfPossible(context),
-        });
+          // automatically refresh route overview.
+          timer?.cancel();
+          timer = Timer.periodic(const Duration(seconds: 15), (Timer t) => {
+            drawNewRouteIfPossible(context),
+          });
+        }
+        else if (endStation.isEmpty) {
+          showNoStationsFinalStopAlert(context);
+        }
+        else {
+          showNoStationsCurrentLocationAlert(context);
+        }
       }
-      else if (endStation.isEmpty) {
-        showNoStationsFinalStopAlert(context);
-      }
-      else {
-        showNoStationsCurrentLocationAlert(context);
-      }
+    }
+    else {
+      removePolyline();
     }
   }
 
+  /// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
+  /// [Polyline] are drawn between [bikeStations] and [markers] coordinates.
   void drawRoute() async {
     for (int i = 1; i < bikeStations.length; i++) {
-      late PolylinePoints polylinePoints;
-      polylinePoints = PolylinePoints();
       final markerS = bikeStations.elementAt(i - 1);
       final markerd = bikeStations.elementAt(i);
       final PointLatLng marker1 = PointLatLng(
@@ -243,9 +248,6 @@ class ApplicationProcesses with ChangeNotifier {
     }
     notifyListeners();
   }
-
-/// Draw a [Polyline] between user's [currentLocation] and one or more selected [Place].
-/// [Polyline] are drawn between [Marker] coordinates.
 
   /// Remove a [Marker] from a selected [index]
   void removeMarker(index) {
