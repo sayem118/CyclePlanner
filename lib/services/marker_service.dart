@@ -1,4 +1,4 @@
-import 'package:cycle_planner/models/bikeStation.dart';
+import 'package:cycle_planner/models/bikestation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/place.dart';

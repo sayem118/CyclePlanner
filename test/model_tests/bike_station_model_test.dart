@@ -1,5 +1,5 @@
 //import test package and groups model
-import 'package:cycle_planner/models/bikeStation.dart';
+import 'package:cycle_planner/models/bikestation.dart';
 import 'package:test/test.dart';
 
 void main() {

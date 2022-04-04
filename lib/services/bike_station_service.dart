@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:cycle_planner/models/bikeStation.dart';
+import 'package:cycle_planner/models/bikestation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 
