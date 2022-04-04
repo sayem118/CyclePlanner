@@ -1,19 +1,28 @@
 import 'package:cycle_planner/models/bikestation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/place.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:ui' as ui;
+import 'dart:typed_data';
+
 
 class MarkerService{
-  BitmapDescriptor? bikeMarker;
+  late BitmapDescriptor bikeMarker;
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
+
+  Future<BitmapDescriptor> getBitmapDescriptorFromAssetBytes(String path, int width) async {
+    final Uint8List imageData = await getBytesFromAsset(path, width);
+    return BitmapDescriptor.fromBytes(imageData);
+  }
 
   void setBikeMarkerIcon() async {
-    bikeMarker = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(
-        devicePixelRatio: 2.0,
-        size: Size(2.0, 2.0),
-      ),
-      'assets/bike-marker.png'
-    );
+    bikeMarker = await getBitmapDescriptorFromAssetBytes("assets/bike-marker.png", 120);
   }
 
   LatLngBounds? bounds(Set<Marker> markers) {
@@ -35,7 +44,7 @@ class MarkerService{
   Marker createBikeMarker(BikeStation station) {
     return Marker(
       markerId: MarkerId(station.id),
-      icon: bikeMarker!,
+      icon: bikeMarker,
       draggable: false,
       visible: true,
       infoWindow: InfoWindow(
