@@ -148,14 +148,4 @@ class _CardItemState extends State<CardItem> {
       "item_info":widget.itemInfo,
     }).then((value) => print("Added to favourite"));
   }
-
-  Future deleteFromFavourite() async {
-    final _db = FirebaseFirestore.instance;
-
-    await _db.collection("users-favourite-places").doc().delete();
-  }
-
-
-
-
 }
