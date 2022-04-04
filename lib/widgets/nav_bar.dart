@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cycle_planner/widgets/info_screen.dart';
 import 'package:cycle_planner/widgets/saved_places.dart';
 
 import 'package:cycle_planner/widgets/profile_page.dart';
@@ -163,7 +164,10 @@ class NavBar extends StatefulWidget {
           ListTile(
             leading:const Icon(Icons.info),
             title: const Text('Info'),
-            onTap: () => {null},
+            onTap: () => { Navigator.push(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) =>  InfoPage())
+            )},
           ),
           const Divider(),
           ActionChip(
