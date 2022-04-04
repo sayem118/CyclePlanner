@@ -27,6 +27,7 @@ Position get mockPosition => Position(
 final appProcesses = ApplicationProcesses();
 
 void main() {
+
   GeolocatorPlatform.instance = MockGeolocatorPlatform();
   TestWidgetsFlutterBinding.ensureInitialized();
   const MethodChannel('flutter.baseflow.com/geolocator')
@@ -76,6 +77,10 @@ void main() {
       expect(addedMarker, []);
 
     });
+
+
+
+
 
     test('Timer is null', () async {
       Builder(
