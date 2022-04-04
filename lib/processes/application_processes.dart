@@ -146,7 +146,7 @@ class ApplicationProcesses with ChangeNotifier {
     Map endStation = await futureBikeStation2;
 
     // only draw polylines if route has not been drawn already or bike stations have changed.
-    if( bikeStations.isEmpty
+    if( polylines.isEmpty
         || (startStation['lat'] != bikeStations[1].position.latitude && startStation['lon'] != bikeStations[1].position.longitude)
         || (endStation['lat'] != bikeStations.last.position.latitude && endStation['lon'] != bikeStations.last.position.longitude)) {
       if(startStation.isNotEmpty && endStation.isNotEmpty) {
