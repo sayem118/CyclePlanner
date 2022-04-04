@@ -105,8 +105,16 @@ class _CardItemState extends State<CardItem> {
                             return Padding(
                               padding: const EdgeInsets.only(right: 8),
                               child: IconButton(
-                                onPressed: () => snapshot.data.docs.length == 0? addToFavourite():print ("Already added"),
-                                icon: snapshot.data.docs.length == 0? Icon(
+                                onPressed: () {
+                                  if(snapshot.data.docs.length == 0) {
+                                    addToFavourite();
+                                  }
+                                  else {
+                                    docId = snapshot.data.docs[0].id;
+                                    removeFromFavourite();
+                                  }
+                                },
+                                  icon: snapshot.data.docs.length == 0? Icon(
                                   Icons.favorite_outline,
                                   size: 20.0,
                                   color: Colors.red[900],
@@ -149,7 +157,7 @@ class _CardItemState extends State<CardItem> {
       "item_info":widget.itemInfo,
     }).then((value) => print("Added to favourite"));
   }
-  
+
   Future removeFromFavourite() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     User? currentUser = _auth.currentUser;
