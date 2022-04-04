@@ -12,7 +12,7 @@ import 'package:cycle_planner/models/place.dart';
 class PlacesService {
 
   // Google API key
-  final String key = 'AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY';
+  final String key = 'AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk';
 
   // Return autocompleted user typed search results
   Future<List<PlaceSearch>> getAutocomplete(String search) async {

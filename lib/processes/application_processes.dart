@@ -204,7 +204,7 @@ class ApplicationProcesses with ChangeNotifier {
       late PolylineResult result;
       if (i == 1) {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
           marker1,
           marker2,
           travelMode: TravelMode.walking,
@@ -212,7 +212,7 @@ class ApplicationProcesses with ChangeNotifier {
       }
       else {
         result = await polylinePoints.getRouteBetweenCoordinates(
-          "AIzaSyDHP-Fy593557yNJxow0ZbuyTDd2kJhyCY",
+          "AIzaSyBDiE-PLzVVbe4ARNyLt_DD91lqFpqGHFk",
           marker1,
           marker2,
           travelMode: TravelMode.bicycling,
