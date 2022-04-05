@@ -11,31 +11,6 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   MarkerService serviceMarker = MarkerService();
 
-
-  // var routeEventHandler;
-  // late final ApplicationProcesses applicationProcesses;
-  // var wayPoints = <WayPoint>[];
-  //
-  // final _directions = MapBoxNavigation(onRouteEvent: routeEventHandler);
-  // final _options = MapBoxOptions(
-  //   initialLatitude: 53.1424,
-  //   initialLongitude: 7.6921,
-  //   zoom: 15,
-  //   tilt: 0.0,
-  //   bearing: 0.0,
-  //   enableRefresh: true,
-  //   alternatives: true,
-  //   voiceInstructionsEnabled: true,
-  //   bannerInstructionsEnabled: true,
-  //   allowsUTurnAtWayPoints: true,
-  //   mode: MapBoxNavigationMode.cycling,
-  //   units: VoiceUnits.imperial,
-  //   simulateRoute: false,
-  //   animateBuildRoute: true,
-  //   longPressDestinationEnabled: false,
-  //   language: "en",
-  // );
-
   group('MarkerService', () {
     test('Null value given when bound is empty', () async {
       // final boundsGiven = serviceMarker.bounds(<Marker>{});
@@ -77,13 +52,12 @@ void main() {
             devicePixelRatio: 2.0,
             size: Size(2.0, 2.0),
           ),
-          'assets/bike-marker.png'
-      );
+          'assets/bike-marker.png');
 
-      var station = BikeStation(id: "test", commonName: "test", lat: 55, lon: 0.15);
+      var station =
+          BikeStation(id: "test", commonName: "test", lat: 55, lon: 0.15);
 
       expect(serviceMarker.createBikeMarker(station), isA<Marker>());
     });
-
   });
 }

@@ -38,7 +38,6 @@ void main() {
   });
 
   group('MarkerService', () {
-
     test('setGroupSize', () async {
       appProcesses.setGroupSize(2);
       //ensure the number 2 is set
@@ -53,18 +52,17 @@ void main() {
     });
 
     test('Remove a marker', () async {
-
       final mockLocation = Location(lat: 50.1109, lng: 8.6821);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
-      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
       final markerID = mockPlace.name;
       final marker1 = Marker(
           markerId: MarkerId(markerID),
           draggable: false,
           visible: true,
           infoWindow:
-          InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
+              InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
           position: LatLng(mockPlace.geometry.location.lat,
               mockPlace.geometry.location.lng));
 
@@ -74,64 +72,59 @@ void main() {
       appProcesses.removeMarker(0);
 
       expect(addedMarker, []);
-
     });
 
     test('Timer is null', () async {
-      Builder(
-          builder: (BuildContext context) {
-            appProcesses.drawNewRouteIfPossible(context);
-            return Placeholder();
-          });
+      Builder(builder: (BuildContext context) {
+        appProcesses.drawNewRouteIfPossible(context);
+        return Placeholder();
+      });
       expect(appProcesses.timer?.isActive, null);
     });
 
     test('Bike stations length is 0', () async {
-      Builder(
-          builder: (BuildContext context) {
-            appProcesses.drawNewRouteIfPossible(context);
-            return Placeholder();
-          });
+      Builder(builder: (BuildContext context) {
+        appProcesses.drawNewRouteIfPossible(context);
+        return Placeholder();
+      });
       expect(appProcesses.bikeStations.length, 0);
     });
 
     test('Markers length is 0', () async {
-      Builder(
-          builder: (BuildContext context) {
-            appProcesses.drawNewRouteIfPossible(context);
-            return Placeholder();
-          });
+      Builder(builder: (BuildContext context) {
+        appProcesses.drawNewRouteIfPossible(context);
+        return Placeholder();
+      });
       expect(appProcesses.markers.length, 0);
     });
 
     test('Markers length is 1 after adding marker', () async {
-
-      final mockLocation = Location(lat: 51.49419789342217, lng: -0.1324269658815591);
+      final mockLocation =
+          Location(lat: 51.49419789342217, lng: -0.1324269658815591);
       final mockGeometry = Geometry(location: mockLocation);
       final mockPlace =
-      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+          Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
       final markerID = mockPlace.name;
       final marker = Marker(
           markerId: MarkerId(markerID),
           draggable: false,
           visible: true,
           infoWindow:
-          InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
+              InfoWindow(title: mockPlace.name, snippet: mockPlace.vicinity),
           position: LatLng(mockPlace.geometry.location.lat,
               mockPlace.geometry.location.lng));
 
-      appProcesses.currentLocation = await MockGeolocatorPlatform().getCurrentPosition();
+      appProcesses.currentLocation =
+          await MockGeolocatorPlatform().getCurrentPosition();
       appProcesses.markers.add(marker);
 
-      await Builder(
-          builder: (BuildContext context) {
-            appProcesses.drawNewRouteIfPossible(context);
-            return Placeholder();
-          });
-
-      expect(appProcesses.markers.length, 1);
+      await Builder(builder: (BuildContext context) {
+        appProcesses.drawNewRouteIfPossible(context);
+        return Placeholder();
       });
 
+      expect(appProcesses.markers.length, 1);
+    });
   });
 }
 

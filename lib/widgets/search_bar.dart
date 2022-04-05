@@ -4,7 +4,8 @@ import 'package:cycle_planner/widgets/search_page.dart';
 class SearchBar extends StatelessWidget {
   const SearchBar({
     Key? key,
-  }) : super(key: key);
+  }) : super( // coverage:ignore-line
+      key: key);
 
   @override
   Widget build(BuildContext context) {
