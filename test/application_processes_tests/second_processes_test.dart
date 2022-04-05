@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/marker_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cycle_planner/models/location.dart';
@@ -35,14 +33,14 @@ void main() {
   setUp(() {
     GeolocatorPlatform.instance = MockGeolocatorPlatform();
 
-    // Markers initialised
-    const Marker a =
-    Marker(markerId: MarkerId("marker"), position: LatLng(55, 0.12));
-    const Marker b =
-    Marker(markerId: MarkerId("marker1"), position: LatLng(54, 0.15));
-
-    const Marker c =
-    Marker(markerId: MarkerId("marker2"), position: LatLng(56, 0.17));
+    // // Markers initialised
+    // const Marker a =
+    // Marker(markerId: MarkerId("marker"), position: LatLng(55, 0.12));
+    // const Marker b =
+    // Marker(markerId: MarkerId("marker1"), position: LatLng(54, 0.15));
+    //
+    // const Marker c =
+    // Marker(markerId: MarkerId("marker2"), position: LatLng(56, 0.17));
   });
   group('Application Processes tests', () {
 
