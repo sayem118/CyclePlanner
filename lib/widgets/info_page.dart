@@ -6,6 +6,7 @@ class InfoPage extends StatefulWidget {
   String name = "";
   d(nme){
     name = nme;
+    IconData icon;
   }
   InfoPageState createState() => new InfoPageState();
 }
@@ -32,6 +33,8 @@ class InfoPageState extends State<InfoPage> {
   ];
 
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +45,7 @@ class InfoPageState extends State<InfoPage> {
             body: Column(children: <Widget>[
               Text("Guide, "
                   , style: TextStyle(fontSize:20)),
-              ListAppWidget(steps),
+              ListAppWidget(steps, icons),
             ],)
         );
 
@@ -54,8 +57,8 @@ class InfoPageState extends State<InfoPage> {
 class ListAppWidget extends StatefulWidget {
   List<String> steps =[];
   List<IconData> icons =[];
-  ListAppWidget(List<String> lst){
-    steps.clear(); steps.addAll(lst);
+  ListAppWidget(List<String> lst, List<IconData> icons){
+    steps.clear(); steps.addAll(lst); icons.clear(); icons.add(icons);
   }
 
   @override
@@ -66,26 +69,26 @@ class ListAppWidget extends StatefulWidget {
 class ListAppWidgetState extends State<ListAppWidget> {
   @override
   Widget build(BuildContext context) {
-    return(
+    return (
         Container(
-            width: MediaQuery.of(context).size.width,height:MediaQuery.of(context).size.height/2,
-            padding: EdgeInsets.only(left:10,right:10,top:20,bottom:20),
+            width: MediaQuery
+                .of(context)
+                .size
+                .width, height: MediaQuery
+            .of(context)
+            .size
+            .height / 2,
+            padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
             child: ListView.builder(
-                key:Key("myListView"),
+                key: Key("myListView"),
                 itemCount: widget.steps.length,
                 itemBuilder: (BuildContext ctxt, int index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon (widget.icons[index]),
-                  Card(
-                  child:Container(
-                  height:100,
-                  child:Center(child:Text( widget.steps[index], key:Key("listViewText")),))
+                  return Card(
+                      child: ListTile(
+                        leading: Icon(widget.icons[index]),
+                        title: Text(widget.steps[index]),
+                      )
 
-
-                  )
-                    ],
                   );
 
                   //   Card(
@@ -100,6 +103,7 @@ class ListAppWidgetState extends State<ListAppWidget> {
     );
   }
 }
+
 
     //     children: <Widget>[
     //     Icon(icons[index]['icon']),
