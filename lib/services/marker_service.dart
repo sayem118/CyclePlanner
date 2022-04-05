@@ -27,7 +27,7 @@ class MarkerService {
   }
 
   /// Prepare custom [Marker]
-  void setBikeMarkerIcon() async {
+  Future<void> setBikeMarkerIcon() async {
     bikeMarker = await getBitmapDescriptorFromAssetBytes("assets/bike-marker.png", 120);
   }
 
