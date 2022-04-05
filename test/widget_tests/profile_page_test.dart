@@ -9,12 +9,7 @@ void main() {
   setUpAll(() {
     HttpOverrides.global = null;
     profilePage = const MaterialApp(
-        home: ProfilePage()
-    );
-  });
-
-  testWidgets('ProfilePage created successfully', (WidgetTester tester) async {
-    ProfilePage testProfilePage= const ProfilePage(
+      home: ProfilePage()
     );
   });
 

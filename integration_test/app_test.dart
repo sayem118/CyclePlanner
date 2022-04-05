@@ -1,11 +1,8 @@
-import 'package:cycle_planner/widgets/bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:cycle_planner/main.dart' as app;
 import 'package:firebase_core/firebase_core.dart';
-
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 void main() {
   group('App Test', () {

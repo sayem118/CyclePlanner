@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen>{
     setState(() {
       isLoading = true;
     });
-    UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+    await FirebaseAuth.instance.signInAnonymously();
     Fluttertoast.showToast(msg: "Logged in as Guest");
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
     setState(() {

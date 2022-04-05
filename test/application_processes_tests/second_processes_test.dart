@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:cycle_planner/models/bikestation.dart';
+import 'dart:io';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/marker_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
@@ -33,6 +33,7 @@ Position get mockPosition => Position(
 void main() {
   setUp(() {
     GeolocatorPlatform.instance = MockGeolocatorPlatform();
+    HttpOverrides.global = null;
 
     // // Markers initialised
     // const Marker a =
