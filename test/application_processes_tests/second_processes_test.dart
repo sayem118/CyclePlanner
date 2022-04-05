@@ -180,18 +180,18 @@ void main() {
           expect(appProcesses.polylines.first, polylineGiven1);
         });
 
-    test('', () async {
-      final mockLocation = Location(lat: 50.1109, lng: 8.6821);
-      final mockGeometry = Geometry(location: mockLocation);
-      final mockPlace =
-      Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
-
-      final ifPossibleDrawRoute =
-      appProcesses.drawNewRouteIfPossible(BuildContext);
-      ifPossibleDrawRoute;
-      expect(appProcesses.polylines, isA<Set<Polyline>>());
-      // expect(appProcesses.polylines.first, polylineGiven1 );
-    });
+    // test('', () async {
+    //   final mockLocation = Location(lat: 50.1109, lng: 8.6821);
+    //   final mockGeometry = Geometry(location: mockLocation);
+    //   final mockPlace =
+    //   Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+    //
+    //   final ifPossibleDrawRoute =
+    //   appProcesses.drawNewRouteIfPossible(BuildContext);
+    //   ifPossibleDrawRoute;
+    //   expect(appProcesses.polylines, isA<Set<Polyline>>());
+    //   // expect(appProcesses.polylines.first, polylineGiven1 );
+    // });
 
     test('draw between markers', () async {
       late PolylinePoints polylinePoints;
