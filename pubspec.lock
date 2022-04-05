@@ -500,6 +500,16 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+=======
+>>>>>>> a6649863f6bd4be17d6799f1530bfcffb4db65be
+>>>>>>> a70708dbd7d2a9e12b3faebfd3686abbc65642f8
   logging:
     dependency: transitive
     description:
