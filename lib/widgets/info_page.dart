@@ -58,7 +58,7 @@ class ListAppWidget extends StatefulWidget {
   List<String> steps =[];
   List<IconData> icons =[];
   ListAppWidget(List<String> lst, List<IconData> icons){
-    steps.clear(); steps.addAll(lst); icons.clear(); icons.add(icons);
+    steps.clear(); steps.addAll(lst);
   }
 
   @override
