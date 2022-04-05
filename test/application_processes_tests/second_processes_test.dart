@@ -193,13 +193,6 @@ void main() {
       // expect(appProcesses.polylines.first, polylineGiven1 );
     });
 
-    test('testing a dispose function', () async {
-      appProcesses.dispose();
-
-      expect(appProcesses.selectedLocation.isClosed, true);
-      expect(appProcesses.bounds.isClosed, true);
-    });
-
     test('draw between markers', () async {
       late PolylinePoints polylinePoints;
       late PolylineResult result;
@@ -257,10 +250,29 @@ void main() {
     test('Testing toggleBikeMarker function', () async {
 
       final markerService = MarkerService();
+      markerService.setBikeMarkerIcon();
+      PlacesService place = PlacesService();
+      appProcesses.currentLocation = mockPosition;
+
+      final mockLocation = Location(lat: 50.1109, lng: 8.6821);
+      final mockGeometry = Geometry(location: mockLocation);
+      appProcesses.selectedLocationStatic =
+          Place(geometry: mockGeometry, name: "Test", vicinity: "Test");
+
+      appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+
+      Place place1 = await place.getPlaceMarkers(
+          appProcesses.selectedLocationStatic!.geometry.location.lat,
+          appProcesses.selectedLocationStatic!.geometry.location.lng,
+          appProcesses.placeName!);
+
+      final newMarker = markerService.createMarkerFromPlace(place1);
+
+      appProcesses.publicBikeStations.add(newMarker);
       await appProcesses.toggleBikeMarker();
 
-      expect(markerService.bikeMarker, isA<BitmapDescriptor>);
-      expect(appProcesses.currentLocation, isA<Place>);
+      expect(markerService.bikeMarker.runtimeType, BitmapDescriptor);
+      expect(appProcesses.currentLocation.runtimeType, Position);
       expect(appProcesses.publicBikeStations, isA<List<Marker>>());
       expect(appProcesses.bounds, isA<StreamController<LatLngBounds>>());
     });
@@ -310,6 +322,13 @@ void main() {
       await tester.tap(ok);
 
       await tester.pumpAndSettle();
+    });
+
+    test('testing a dispose function', () async {
+      appProcesses.dispose();
+
+      expect(appProcesses.selectedLocation.isClosed, true);
+      expect(appProcesses.bounds.isClosed, true);
     });
   });
 }
