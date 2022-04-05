@@ -2,8 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'fake_maps_controllers.dart';
+import '../widget_tests/fake_maps_controllers.dart';
 
 Widget _mapWithPolylines(Set<Polyline> polylines) {
   return Directionality(
