@@ -310,6 +310,43 @@ void main() {
 
       await tester.pumpAndSettle();
     });
+
+    test('drawRouteIfPossible', () async {
+
+      appProcesses.markers.isNotEmpty;
+      appProcesses.polylines.isEmpty;
+      appProcesses.drawNewRouteIfPossible(BuildContext);
+      expect(appProcesses.currentLocation, isA<Position>());
+      expect(appProcesses.bikeStations, isA<List<Marker>>());
+      // expect(await appProcesses.showNoStationsFinalStopAlert(), showDialog<void>(
+      //   context: context,
+      //   barrierDismissible: false, // user must tap button!
+      //   builder: (BuildContext context) {
+      //     return AlertDialog(
+      //       title: const Text('No available bike stations near your final stop.'),
+      //       content: SingleChildScrollView(
+      //         child: ListBody(
+      //           children: const <Widget>[
+      //             Text('Try reordering your stops or changing your final stop.'),
+      //           ],
+      //         ),
+      //       ),
+      //       actions: <Widget>[
+      //         TextButton(
+      //           child: const Text('Ok'),
+      //           onPressed: () {
+      //             Navigator.of(context).pop();
+      //           },
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );)
+      Builder(builder: (BuildContext context) {
+        appProcesses.drawNewRouteIfPossible(context);
+        return Placeholder();
+      });
+      expect(appProcesses.timer?.isActive, 3);
   });
 }
 
