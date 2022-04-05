@@ -1,7 +1,5 @@
- /// Class description:
- /// This class provides information on locations
- /// entered by the user.
- /// Location's information is provided using Google Places API.
+/// This class creates a [PlaceSearch] object from a parsed JSON.
+/// [PlaceSearch] information is provided by Google Places Autocomplete API.
 
 class PlaceSearch {
   
@@ -12,11 +10,11 @@ class PlaceSearch {
   // Class constructor
   PlaceSearch({required this.description, required this.placeId});
 
-  // Return placeID & description data from Google Places API JSON.
-  factory PlaceSearch.fromJson(Map<String, dynamic> json) {
+  /// Construct a [PlaceSearch] object from [parsedJson]
+  factory PlaceSearch.fromJson(Map<String, dynamic> parsedJson) {
     return PlaceSearch(
-      description: json['description'],
-      placeId: json['place_id'],
+      description: parsedJson['description'],
+      placeId: parsedJson['place_id'],
     );
   }
 }
