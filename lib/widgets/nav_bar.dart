@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cycle_planner/widgets/saved_places.dart';
-
 import 'package:cycle_planner/widgets/profile_page.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cycle_planner/widgets/iconic_places.dart';
 import 'package:cycle_planner/models/user_model.dart';
-
-import '../views/login_screen.dart';
-import 'info_page.dart';
+import 'package:cycle_planner/views/login_screen.dart';
+import 'package:cycle_planner/widgets/info_page.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);

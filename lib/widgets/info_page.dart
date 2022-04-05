@@ -78,11 +78,3 @@ class ListAppWidgetState extends State<ListAppWidget> {
     );
   }
 }
-
-
-
-
-
-
-
-
