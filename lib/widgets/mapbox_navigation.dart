@@ -182,6 +182,8 @@ class _MapboxNavigationState extends State<MapboxNavigation> with WidgetsBinding
         print("Nav Resumed");
         _isNavigating = false;
         break;
+      case AppLifecycleState.detached:
+        break;
     }
   }
 }

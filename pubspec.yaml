@@ -60,9 +60,6 @@ dependencies:
   animated_text_kit: ^4.2.1
   shared_preferences: ^2.0.13
   page_transition: ^2.0.5
-
-
-
   property_change_notifier: ^0.3.0
 
 metadata: ^1.0.2

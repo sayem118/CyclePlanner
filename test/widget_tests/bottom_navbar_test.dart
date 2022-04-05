@@ -4,21 +4,26 @@ import 'package:cycle_planner/widgets/bottom_navbar.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
+import 'package:cycle_planner/widgets/search_page.dart';
+import 'searchPageTemplate.dart';
 
 void main() {
   late Widget bottomNavBar;
+  late GlobalKey<ScaffoldState> scaffoldKey;
 
   setUp(() {
+    scaffoldKey = GlobalKey<ScaffoldState>();
     bottomNavBar =  ChangeNotifierProvider<ApplicationProcesses>(
       create: (context) => ApplicationProcesses(),
       child: MaterialApp(
-          title: 'Cycle Planner',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: Scaffold(
-            body: BottomNavBar(scaffoldKey: GlobalKey<ScaffoldState>()),
-          )
+        title: 'Cycle Planner',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+          key: scaffoldKey,
+          body: BottomNavBar(scaffoldKey: scaffoldKey),
+        )
       ),
     );
   });
@@ -66,8 +71,11 @@ void main() {
 
       // Search for the menu icon in the tree and verify it exists.
       expect(menuIcon, findsOneWidget);
+      
+      // Tap the menu icon
+      await tester.tap(menuIcon);
 
-      // Icon tap testing will be included in the integration test.
+      await tester.pumpAndSettle();
     });
 
     testWidgets('Directions Bike icon', (WidgetTester tester) async {
@@ -92,6 +100,10 @@ void main() {
 
       // Search for the add icon in the tree and verify it exists.
       expect(addIcon, findsOneWidget);
+
+      await tester.pumpWidget(DelegatePage(delegate: SearchPage()));
+
+      await tester.pumpAndSettle();
 
       // Icon tap testing will be included in the integration test.
     });
@@ -133,7 +145,10 @@ void main() {
       // Search for the group icon in the tree and verify it exists.
       expect(groupIcon, findsOneWidget);
 
-      // Icon tap testing will be included in the integration test.
+      // Tap the group icon
+      await tester.tap(groupIcon);
+
+      await tester.pumpAndSettle();
     });
   });
 }
