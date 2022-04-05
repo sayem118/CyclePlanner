@@ -4,7 +4,7 @@ A new Flutter project.
 
 ## Team members: Sayem Ahmed, Badr Almakky, Ammar Alshareef, Arham Azhary, Maya Dejonge, Hadwa El Toubshy, Muhammad Jawad, Mahmood Ndanusa, Katinka Singh
 
-(link for deployment){[https://appetize.io/app/r73w8kfu6wbrq2pyexfvkkujg0?device=pixel4&osVersion=12.0&scale=75]
+(link for deployment){[https://appetize.io/app/d9vfdtm65qaxnm4q6f6wbuwbpm?device=pixel4&osVersion=12.0&scale=75]
 
 Below you should find the sources which any code may have been reused to the best of our knowledge.
 
