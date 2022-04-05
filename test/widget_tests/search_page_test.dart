@@ -1,14 +1,14 @@
 import 'dart:io';
-
-import 'package:cycle_planner/processes/application_processes.dart';
+import 'package:cycle_planner/models/place_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/widgets/search_page.dart';
 import 'package:provider/provider.dart';
+import 'package:cycle_planner/processes/application_processes.dart';
 import 'searchPageTemplate.dart';
 
 void main() {
-  late dynamic searchPage;
+  late var searchPage;
 
   setUp(() {
     HttpOverrides.global = null;
