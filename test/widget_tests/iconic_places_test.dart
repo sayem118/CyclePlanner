@@ -1,42 +1,38 @@
 import 'package:cycle_planner/widgets/iconic_places.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:cycle_planner/widgets/iconic_places.dart';
 import 'dart:io';
 
 void main() {
-  const iconicCollection = "iconic-places";
+  //const iconicCollection = "iconic-places";
   late Widget iconicScreen;
 
   setUpAll(() {
     HttpOverrides.global = null;
-    iconicScreen = const Scaffold(
-        body: IconicScreen()
+    iconicScreen = const MaterialApp(
+        home: IconicScreen()
     );
   });
 
-  testWidgets('Iconic Screen created successfully', (WidgetTester tester) async {
+  //testWidgets('Iconic Screen created successfully', (WidgetTester tester) async {
 
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-            title: const Text("Iconic Places"),
-        ),
-      )
-    ));
+    // await tester.pumpWidget(MaterialApp(
+    //   home: Scaffold(
+    //     appBar: AppBar(
+    //         title: const Text("Iconic Places"),
+    //     ),
+    //   )
+    // ));
 
-    await tester.pumpWidget(
-    const MaterialApp(
-          home:IconicScreen( )
-      ),
-    );
-    Finder title = find.text("Iconic Places");
-      expect(title, findsOneWidget);
-  });
+    // await tester.pumpWidget(
+    // const MaterialApp(
+    //       home:IconicScreen( )
+    //   ),
+    // );
+  //   Finder title = find.text("Iconic Places");
+  //   expect(title, findsOneWidget);
+  // });
 
   testWidgets('contains appropriate text', (WidgetTester tester) async {
     // Build our app and trigger a frame.
@@ -45,4 +41,5 @@ void main() {
     // Search for list tiles in the tree and verify it exists.
     expect(find.text("Iconic Places"), findsOneWidget);
   });
+
 }

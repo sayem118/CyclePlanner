@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 250,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.deepPurple, Colors.deepPurple.shade200],
+                colors: [Colors.blueGrey, Colors.deepPurple.shade200],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 stops: const [0.5, 0.9],
@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       backgroundColor: Colors.white70,
                       minRadius: 60.0,
                       child: CircleAvatar(
-                        radius: 50.0,
+                        radius: 60.0,
                         backgroundImage:
                         AssetImage("assets/CYCLEBAY.gif"),
                       ),
@@ -150,7 +150,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const Divider(),
               ActionChip(
-                label: const Text("Logout"),
+                  backgroundColor: Colors.grey,
+                  label: const Text("Logout"),
                 onPressed: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
@@ -173,7 +174,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const Divider(),
               ActionChip(
-                label: const Text("Delete account"),
+               backgroundColor: Colors.redAccent,
+               label: const Text("Delete account"),
                 onPressed: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
@@ -191,14 +193,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: const Text('Delete'),
                       ),
                     ],
-                  ),
-                ),
               ),
-            ],
-          )
-        ],
-      ),
-    );
+                ),
+    )],
+          )],
+            ),
+          );
   }
 
   // the logout function

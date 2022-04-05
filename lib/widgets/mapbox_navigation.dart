@@ -12,7 +12,7 @@ class MapboxNavigation extends StatefulWidget {
   State<MapboxNavigation> createState() => _MapboxNavigationState();
 }
 
-class _MapboxNavigationState extends State<MapboxNavigation> {
+class _MapboxNavigationState extends State<MapboxNavigation> with WidgetsBindingObserver {
   late MapBoxNavigationViewController _controller;
   late MapBoxOptions _options;
   late MapBoxNavigation _directions;
@@ -57,6 +57,8 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
 
     appProcesses = Provider.of<ApplicationProcesses>(context, listen:false);
     appProcesses.addListener(_listener);
+
+    WidgetsBinding.instance!.addObserver(this);
 
     startNavigation();
   }
@@ -109,19 +111,25 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
         break;
       case MapBoxEvent.navigation_finished:
         setState(() {
+          _isNavigating = false;
           _directions.finishNavigation();
           _controller.finishNavigation();
-          AlertDialog(
-            title: const Text("Destination reached"),
-            content: const Text("You have reached your destination"),
-            actions: [
-              TextButton(
-                child: const Text("OK"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Destination reached"),
+                content: const Text("You have successfully reached your destination"),
+                actions: [
+                  TextButton(
+                    child: const Text("OK"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              );
+            },
           );
         });
         break;
@@ -149,7 +157,7 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
   }
 
   Future<void> _listener() async {
-    // if(_isNavigating) {
+    if(_isNavigating) {
       _directions.finishNavigation();
       List<WayPoint> newWayPoints = [];
       for (var stop in appProcesses.bikeStations) {
@@ -157,5 +165,25 @@ class _MapboxNavigationState extends State<MapboxNavigation> {
       }
       _directions.startNavigation(wayPoints: newWayPoints, options: _options);
     }
-  // }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.inactive:
+        print("Nav Inactive");
+        _isNavigating = false;
+        break;
+        case AppLifecycleState.paused:
+        print("Nav Paused");
+        _isNavigating = true;
+        break;
+        case AppLifecycleState.resumed:
+        print("Nav Resumed");
+        _isNavigating = false;
+        break;
+      case AppLifecycleState.detached:
+        break;
+    }
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:cycle_planner/processes/application_processes.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/widgets/iconic_card_item.dart';
@@ -16,14 +15,12 @@ void main() {
     mockCardItem =  ChangeNotifierProvider<ApplicationProcesses>(
       create: (context) => ApplicationProcesses(),
       child: const MaterialApp(
-          home: Scaffold (
-              body: CardItem(
+          home: CardItem(
                   itemTitle: 'Test',
                   itemInfo: 'Test',
                   imageInfo: 'Test',
                   placeId: 'Test',
                   placeInfo: 'Test'
-              )
           )
       )
     );

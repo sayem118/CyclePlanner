@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'fetchdata.dart';
+import 'fetchData.dart';
 
 class SavedPlaces extends StatefulWidget {
   const SavedPlaces({Key? key}) : super(key: key);

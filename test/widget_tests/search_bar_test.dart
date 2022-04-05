@@ -15,11 +15,6 @@ void main() {
     );
   });
 
-  testWidgets('SearchBar created successfully', (WidgetTester tester) async {
-    SearchBar testSearchBar = const SearchBar(
-    );
-  });
-
   testWidgets('contains child row', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(searchbar);

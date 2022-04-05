@@ -2,7 +2,6 @@ import 'package:cycle_planner/views/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cycle_planner/views/home_screen.dart';
 
 class LoginScreen extends StatefulWidget{
@@ -30,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen>{
     setState(() {
       isLoading = true;
     });
-    UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+    await FirebaseAuth.instance.signInAnonymously();
     Fluttertoast.showToast(msg: "Logged in as Guest");
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
     setState(() {

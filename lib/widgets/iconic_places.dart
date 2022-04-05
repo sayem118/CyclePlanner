@@ -17,7 +17,7 @@ class _IconicScreenState extends State<IconicScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Iconic places"),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.blueGrey,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestore.collection("iconic-places").snapshots(),

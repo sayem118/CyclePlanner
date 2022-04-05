@@ -1,23 +1,20 @@
 import 'package:cycle_planner/models/place.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:cycle_planner/widgets/search_bar.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
 
+/// Google maps widget, controller and stream listeners
 
 class GoogleMapPage extends StatefulWidget {
   const GoogleMapPage({
     Key? key,
-    required Completer<GoogleMapController> mapController,
-    required this.applicationProcesses, 
+    required Completer<GoogleMapController> mapController, 
   }) : _mapController = mapController, super(key: key);
 
   final Completer<GoogleMapController> _mapController;
-  final ApplicationProcesses applicationProcesses;
-  
 
   @override
   State<GoogleMapPage> createState() => _MapPageState();
@@ -53,6 +50,7 @@ class _MapPageState extends State<GoogleMapPage> {
 
   @override
   Widget build(BuildContext context) {
+    ApplicationProcesses applicationProcesses = Provider.of<ApplicationProcesses>(context);
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -60,21 +58,19 @@ class _MapPageState extends State<GoogleMapPage> {
             onMapCreated: (GoogleMapController controller) => widget._mapController.complete(controller),
             myLocationButtonEnabled: false,
             myLocationEnabled: true,
-            polylines: widget.applicationProcesses.polylines,
+            polylines: applicationProcesses.polylines,
             zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(
-              target: widget.applicationProcesses.currentLocation != null ? LatLng(
-                widget.applicationProcesses.currentLocation!.latitude, 
-                widget.applicationProcesses.currentLocation!.longitude,
+              target: applicationProcesses.currentLocation != null ? LatLng(
+                applicationProcesses.currentLocation!.latitude, 
+                applicationProcesses.currentLocation!.longitude,
               )
               : _center,
               zoom: 11.0,
             ),
-            markers: (widget.applicationProcesses.publicBikeStations.isNotEmpty) ? Set<Marker>.of(widget.applicationProcesses.publicBikeStations)
-            :Set<Marker>.of(widget.applicationProcesses.markers),
-            //onTap: _handleTap,
+            markers: (applicationProcesses.publicBikeStations.isNotEmpty) ? Set<Marker>.of(applicationProcesses.publicBikeStations)
+            :Set<Marker>.of(applicationProcesses.markers),
           ),
-
         ),
         const Positioned(
           top: 50.0,
@@ -84,26 +80,9 @@ class _MapPageState extends State<GoogleMapPage> {
         ),
       ],
     );
-
   }
 
-  // _handleTap(LatLng tappedPoint){
-  //   print(tappedPoint);
-  //   setState(() {
-  //     myMarker = [];
-  //     myMarker.add(
-  //         Marker(
-  //           markerId: MarkerId(tappedPoint.toString()),
-  //           position: tappedPoint,
-  //           draggable: true,
-  //           onDragEnd: (dragEndPosition){
-  //             print(dragEndPosition);
-  //           }
-  //         )
-  //     );
-  //   });
-  // }
-
+  /// Set the map camera to a [Place]
   Future<void> _goToPlace(Place place) async {
     final GoogleMapController controller = await widget._mapController.future;
     controller.animateCamera(
