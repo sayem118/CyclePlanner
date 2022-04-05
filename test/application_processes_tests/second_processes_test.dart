@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cycle_planner/models/bikestation.dart';
 import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:cycle_planner/services/marker_service.dart';
 import 'package:cycle_planner/services/places_service.dart';
@@ -58,7 +59,8 @@ void main() {
     });
 
     test('Testing the toggleMarker function if a string is returned', () async {
-      await appProcesses.toggleMarker("ChIJc2nSALkEdkgRkuoJJBfzkUI");
+      await appProcesses.setSelectedLocation('ChIJlQh0H88adkgRT1sjAmMXQt4');
+      await appProcesses.toggleMarker("ChIJlQh0H88adkgRT1sjAmMXQt4");
       expect(appProcesses.placeName, isA<String>());
     });
 
@@ -254,23 +256,60 @@ void main() {
     test('Testing toggleBikeMarker function', () async {
 
       final markerService = MarkerService();
-      appProcesses.toggleBikeMarker();
+      await appProcesses.toggleBikeMarker();
 
       expect(markerService.bikeMarker, isA<BitmapDescriptor>);
       expect(appProcesses.currentLocation, isA<Place>);
       expect(appProcesses.publicBikeStations, isA<List<Marker>>());
       expect(appProcesses.bounds, isA<StreamController<LatLngBounds>>());
-
-
-
-
-
-
-
-
-
     });
 
+    testWidgets('show No Stations Final Stop Alert', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: alertDialogTest()
+          )
+        )
+      );
+
+      await tester.pumpAndSettle();
+      Finder addButton = find.byIcon(Icons.add);
+
+      await tester.tap(addButton);
+
+      await tester.pumpAndSettle();
+
+      Finder ok = find.byType(TextButton);
+
+      await tester.tap(ok);
+
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('show No Stations Final Stop Alert', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: alertDialogTest()
+          )
+        )
+      );
+
+      await tester.pumpAndSettle();
+
+      Finder removeButton = find.byIcon(Icons.remove);
+
+      await tester.tap(removeButton);
+
+      await tester.pumpAndSettle();
+
+      Finder ok = find.byType(TextButton);
+
+      await tester.tap(ok);
+
+      await tester.pumpAndSettle();
+    });
   });
 }
 
@@ -365,4 +404,33 @@ class MockGeolocatorPlatform extends Mock
       double endLongitude,
       ) =>
       42;
+}
+
+class alertDialogTest extends StatefulWidget {
+  const alertDialogTest({ Key? key }) : super(key: key);
+
+  @override
+  State<alertDialogTest> createState() => _alertDialogTestState();
+}
+
+class _alertDialogTestState extends State<alertDialogTest> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+          IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            appProcesses.showNoStationsFinalStopAlert(context);
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.remove),
+          onPressed: () {
+            appProcesses.showNoStationsCurrentLocationAlert(context);
+          },
+        ),
+      ]
+    );
+  }
 }

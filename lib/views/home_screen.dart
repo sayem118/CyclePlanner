@@ -7,6 +7,10 @@ import 'package:cycle_planner/processes/application_processes.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+/// Main page for routes & direction overview.
+/// Display Google Maps UI, Search Bar
+/// Navbar and Bottom navbar
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
 
@@ -15,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  // Class variables
   final Completer<GoogleMapController> _mapController = Completer();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -28,8 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  late GoogleMapController mapController;
-
   @override
   Widget build(BuildContext context) {
     final applicationProcesses = Provider.of<ApplicationProcesses>(context);
@@ -39,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         key: scaffoldKey,
         extendBody: true,
         drawer: const NavBar(),
-        body: GoogleMapPage(mapController: _mapController, applicationProcesses: applicationProcesses),
+        body: GoogleMapPage(mapController: _mapController),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final GoogleMapController controller = await _mapController.future;
