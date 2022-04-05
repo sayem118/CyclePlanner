@@ -5,8 +5,13 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 
+/// Creates a [Marker] from user selected [Place] or [BikeStation].
+/// Handles [Marker] size and camera position when a [Marker] is added to the map.
+/// Markers are provided by Google maps.
 
-class MarkerService{
+class MarkerService {
+
+  // Class variables
   late BitmapDescriptor bikeMarker;
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -21,15 +26,18 @@ class MarkerService{
     return BitmapDescriptor.fromBytes(imageData);
   }
 
+  /// Prepare custom [Marker]
   void setBikeMarkerIcon() async {
     bikeMarker = await getBitmapDescriptorFromAssetBytes("assets/bike-marker.png", 120);
   }
 
+  /// Set camera bounds based on number of [Marker] in the map
   LatLngBounds? bounds(Set<Marker> markers) {
     if (markers.isEmpty) return null;
     return createBounds(markers.map((m) => m.position).toList());
   }
 
+  /// Create bounds based of the [Marker]'s [postions]
   LatLngBounds createBounds(List<LatLng> positions) {
     final southwestLat = positions.map((p) => p.latitude).reduce((value, element) => value < element ? value : element); // smallest
     final southwestLon = positions.map((p) => p.longitude).reduce((value, element) => value < element ? value : element);
@@ -41,6 +49,7 @@ class MarkerService{
     );
   }
 
+  /// Create a [Marker] from a [BikeStation]'s information
   Marker createBikeMarker(BikeStation station) {
     return Marker(
       markerId: MarkerId(station.id),
@@ -57,6 +66,7 @@ class MarkerService{
     );
   }
 
+  /// Create a [Marker] from a [Place]'s information
   Marker createMarkerFromPlace(Place place) {
     String markerId = place.name;
 

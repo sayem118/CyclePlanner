@@ -30,7 +30,7 @@ class ListAppWidgetState extends State<ListAppWidget> {
     ('Step 4: Enjoy your journey through London!'),
     ('Extra Features'),
     ('Pick a group size or even manage your journey through our journey planner!'),
-    ('Enjoy our most iconic places that will guide you around the city!'),
+    ('Enjoy London\'s most iconic places all around the city!'),
     ('Create an account in order to save your favourite destinations!'),
   ];
 
