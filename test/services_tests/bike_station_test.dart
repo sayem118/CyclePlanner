@@ -2,9 +2,7 @@ import 'package:cycle_planner/models/bikestation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cycle_planner/services/bike_station_service.dart';
 
-
 void main() {
-
   BikeStationService bikeStations = BikeStationService();
   group('BikeStationService', () {
     test('returns closest bike stations to latitude and longitude given)',
@@ -34,14 +32,9 @@ void main() {
       expect(test, {});
     });
 
-    test('get bike station list', () async{
-      expect(bikeStations.getStations(55.2, 0.16), isA<Future<List<BikeStation>>>());
+    test('get bike station list', () async {
+      expect(bikeStations.getStations(55.2, 0.16),
+          isA<Future<List<BikeStation>>>());
     });
-
-
-
-
-
-
   });
 }
