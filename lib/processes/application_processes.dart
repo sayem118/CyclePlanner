@@ -131,6 +131,8 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Refresh the journey route and draw a route if 
+  /// a bike station is available
   void drawNewRouteIfPossible(context) async {
     var position = currentLocation;
     Future<Map> futureBikeStation1 = bikeService.getStationWithBikes(
@@ -196,8 +198,6 @@ class ApplicationProcesses with ChangeNotifier {
   /// [Polyline] are drawn between [bikeStations] and [markers] coordinates.
   void drawRoute() async {
     for (int i = 1; i < bikeStations.length; i++) {
-      late PolylinePoints polylinePoints;
-      polylinePoints = PolylinePoints();
       final markerS = bikeStations.elementAt(i - 1);
       final markerd = bikeStations.elementAt(i);
       final PointLatLng marker1 = PointLatLng(
@@ -231,6 +231,7 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Prepare mapbox waypoints information
   double buildWaypoints(PolylineResult result, List<LatLng> nPoints, double stuff) {
     for (var point in result.points) {
       nPoints.add(LatLng(point.latitude, point.longitude));
@@ -239,6 +240,8 @@ class ApplicationProcesses with ChangeNotifier {
     return stuff;
   }
 
+  /// Red polyline is set for walking to bikeStations
+  /// Blue polyline is set for on-bike navigation
   void polylineBetweenMarkers(int i, double stuff, List<LatLng> nPoints) {
     if (i == 1 || i == bikeStations.length - 1) {
       polylines.add(Polyline(
@@ -262,13 +265,13 @@ class ApplicationProcesses with ChangeNotifier {
     notifyListeners();
   }
 
-  /// For now, removes all [polylines] from the map
+  /// Remove all [polylines] from the map
   void removePolyline() {
     polylines = {};
     polyCoords = [];
   }
 
-  // Creates alert if there are no available bike stations near final stop.
+  /// Creates alert if there are no available bike stations near final stop.
   Future<void> showNoStationsFinalStopAlert(context) async {
     return showDialog<void>(
       context: context,
@@ -296,7 +299,7 @@ class ApplicationProcesses with ChangeNotifier {
     );
   }
 
-  // Creates alert if there are no available bike stations near final stop.
+  /// Creates alert if there are no available bike stations near final stop.
   Future<void> showNoStationsCurrentLocationAlert(context) async {
     return showDialog<void>(
       context: context,

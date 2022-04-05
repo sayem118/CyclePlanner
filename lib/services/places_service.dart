@@ -43,8 +43,8 @@ class PlacesService {
   /// Return a [Place]'s data to be used in creating a marker
   Future<Place> getPlaceMarkers(double? lat, double? lng, String placeId) async {
     // Request URL
-
     String url = 'https://maps.googleapis.com/maps/api/place/details/json?key=$key&place_id=$placeId';
+    
     // Get URL response
     return await getResponse(url, 'result');
   }
