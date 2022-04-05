@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
 
 class InfoPage extends StatefulWidget {
-  InfoPageState createState() => new InfoPageState();
+  InfoPageState createState() => InfoPageState();
 }
 
 class InfoPageState extends State<InfoPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("How to use the app?"),
+        backgroundColor: Colors.blueGrey,
+      ),
+      body: ListAppWidget()
+    );
+  }
+}
 
+class ListAppWidget extends StatefulWidget {
+  @override
+  ListAppWidgetState createState() => new ListAppWidgetState();
+}
+
+class ListAppWidgetState extends State<ListAppWidget> {
   final List<String> listItems = [
     ('Step 1: Choose one or multiple destinations!'),
     ('Step 2: Click on the direction icon to view your route!'),
@@ -19,34 +36,9 @@ class InfoPageState extends State<InfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("How to use the app?"),
-        backgroundColor: Colors.blueGrey,
-      ),
-      body: ListAppWidget(listItems)
-    );
-  }
-}
-
-//The widget to be tested
-class ListAppWidget extends StatefulWidget {
-  List<String> listItems = [];
-  ListAppWidget(List<String> lst) {
-    listItems.clear(); listItems.addAll(lst);
-  }
-
-  @override
-  ListAppWidgetState createState() => new ListAppWidgetState();
-}
-
-class ListAppWidgetState extends State<ListAppWidget> {
-  @override
-  Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-        key: Key("myListView"),
-        itemCount: widget.listItems.length,
+        itemCount: listItems.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             padding: EdgeInsets.all(5),
@@ -60,7 +52,7 @@ class ListAppWidgetState extends State<ListAppWidget> {
                   child: Container(
                     padding: EdgeInsets.fromLTRB(7, 10, 5, 10),
                     child: Text(
-                      widget.listItems[index],
+                      listItems[index],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -68,7 +60,6 @@ class ListAppWidgetState extends State<ListAppWidget> {
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),
-                      key:Key("listViewText")
                     ),
                   )
                 )
